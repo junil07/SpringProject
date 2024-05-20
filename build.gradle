@@ -1,0 +1,67 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.2.5'
+	id 'io.spring.dependency-management' version '1.1.4'
+}
+
+group = 'com.example.demo'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	sourceCompatibility = '17'
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	// Spring Boot Starter 의존성
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'  // JPA 의존성 추가
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.session:spring-session-core'
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.3.0'
+	implementation 'mysql:mysql-connector-java:8.0.32'
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
+
+
+	// Spring Data JDBC 의존성
+	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+
+	// Spring Data REST 의존성
+	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+
+	// Spring Batch 의존성
+	implementation 'org.springframework.boot:spring-boot-starter-batch'
+
+	// Swagger 의존성
+	implementation 'io.springfox:springfox-boot-starter:3.0.0' // 버전을 명시적으로 추가
+
+	// Validation 의존성
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	// Apache Commons 라이브러리 의존성
+	implementation 'org.apache.commons:commons-lang3'
+
+	// Lombok 의존성
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	// 개발용 의존성
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	// 테스트 의존성
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

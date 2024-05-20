@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{_layout/index}">
+<th:block layout:fragment="pageContent">
+    <h1>Category</h1>
+    <ul>
+        <li th:each="category : ${category}">
+            <span th:text="${category.category_name}"></span>
+        </li>
+    </ul>
+</th:block>
+</html>
