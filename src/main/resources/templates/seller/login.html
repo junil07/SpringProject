@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <!-- 부트스트랩 CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 추가적인 CSS 파일 -->
+    <link href="/assets/css/login.css" rel="stylesheet">
+    <link rel="shortcut icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico">
+    <link rel="mask-icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-b4b4269c16397ad2f0f7a01bcdf513a1994f4c94b8af2f191c09eb0d601762b1.svg" color="#111">
+    <!-- Iconify JavaScript 파일 -->
+    <script src="https://code.iconify.design/2/2.1.2/iconify.min.js"></script>
+
+</head>
+<body>
+<header>
+    <a href="index" class="logo" ><!-- 나중에 사용자 메인 홈페이지로 변경-->
+        <img src="https://assets.codepen.io/1462889/fcy.png" alt="">cupeng
+    </a>
+</header>
+<main>
+    <div class="section">
+        <div class="container">
+            <div class="row full-height justify-content-center">
+                <div class="col-12 text-center align-self-center py-5">
+                    <div class="section pb-5 pt-5 pt-sm-2 text-center">
+                        <h6 class="mb-0 pb-3">
+                            <span>일반 로그인</span>
+                            <span>동업자</span>
+                        </h6>
+                        <input class="checkbox" type="checkbox" id="reg-log" name="reg-log"/>
+                        <label for="reg-log"></label>
+                        <div class="card-3d-wrap mx-auto">
+                            <div class="card-3d-wrapper">
+                                <div class="card-front" style="height: 450px;">
+                                    <div class="center-wrap">
+                                        <div class="section text-center">
+                                            <h4 class="mb-4 pb-3">Log In</h4>
+                                            <div class="form-group">
+                                                <span class="iconify input-icon" data-icon="mdi:account" data-inline="false"></span>
+                                                <input type="text" name="userid" class="form-style" placeholder="Your ID" id="userid" autocomplete="off">
+                                            </div>
+                                            <div class="form-group mt-2">
+                                                <span class="iconify input-icon" data-icon="mdi:lock" data-inline="false"></span>
+                                                <input type="password" name="userpass" class="form-style" placeholder="Your Password" id="userpass" autocomplete="off">
+                                            </div>
+                                            <a href="#" class="btn mt-4">Submit</a>
+                                            <p class="mb-0 mt-4 text-center"><a href="#0" class="link">Forgot your password?</a></p>
+                                            <p class="mb-0 mt-4 text-center"><a href="signup" class="link">make account?</a></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-back" style="height: 450px;">
+                                    <div class="center-wrap">
+                                        <div class="section text-center">
+                                            <h4 class="mb-4 pb-3">Log In</h4>
+                                            <div class="form-group">
+                                                <span class="iconify input-icon" data-icon="mdi:account" data-inline="false"></span>
+                                                <input type="text" name="sellerid" class="form-style" placeholder="Your ID" id="sellerid" autocomplete="off">
+                                            </div>
+                                            <div class="form-group mt-2">
+                                                <span class="iconify input-icon" data-icon="mdi:lock" data-inline="false"></span>
+                                                <input type="password" name="sellerpass" class="form-style" placeholder="Your Password" id="sellerpass" autocomplete="off">
+                                            </div>
+                                            <a href="#" class="btn mt-4">Submit</a>
+                                            <p class="mb-0 mt-4 text-center"><a href="#0" class="link">Forgot your password?</a></p>
+                                            <p class="mb-0 mt-4 text-center"><a href="signup" class="link">make account?</a></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

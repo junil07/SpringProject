@@ -1,0 +1,25 @@
+<html layout:decorate="~{_layout/seller/index}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<th:block layout:fragment="pageHead">
+	<title th:text="${pageName}"></title>
+</th:block>
+<th:block layout:fragment="pageContent">
+	<main id="main" class="main d-flex">
+		<!-- 메인컨텐츠 시작 main 지우지 말것-->
+		<!-- 주문 배송, 클레임 정산-->
+		<section class="container">
+			<div class="row">
+				<div class="col">
+					<div class="border bg-white">주문/배송</div>
+				</div>
+				<div class="col">
+					<div class="border bg-white">클레임/정산</div>
+				</div>
+			</div>
+		</section>
+		<section>
+
+		</section>
+	</main><!-- End #main -->
+</th:block>
+</html>
