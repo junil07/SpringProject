@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -17,8 +18,7 @@ public class BuyerController {
 	private CategoryService categoryService;
 
 	@RequestMapping("buyer/{subPath}")
-	public String main
-			(@PathVariable String subPath, Model model) {
+	public String main(@PathVariable("subPath") String subPath, Model model) {
 		List<Category> categories = categoryService.getAll();
 		model.addAttribute("category", categories);
 		return "buyer/"+subPath;
