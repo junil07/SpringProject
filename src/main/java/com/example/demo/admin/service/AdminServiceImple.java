@@ -1,7 +1,7 @@
 package com.example.demo.admin.service;
 
-import com.example.project.admin.Entity.Admin;
-import com.example.project.admin.repository.AdminRepository;
+import com.example.demo.admin.Entity.Admin;
+import com.example.demo.admin.repository.AdminRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
 

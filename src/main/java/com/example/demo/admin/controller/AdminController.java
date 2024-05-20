@@ -1,6 +1,6 @@
 package com.example.demo.admin.controller;
 
-import com.example.project.admin.service.AdminServiceImple;
+import com.example.demo.admin.service.AdminServiceImple;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

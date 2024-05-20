@@ -1,6 +1,6 @@
 package com.example.demo.admin.service;
 
-import com.example.project.admin.Entity.Admin;
+import com.example.demo.admin.Entity.Admin;
 import jakarta.servlet.http.HttpSession;
 
 import java.util.List;
