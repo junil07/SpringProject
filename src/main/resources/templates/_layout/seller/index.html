@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="utf-8">
+	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+	<title>판매자 연습</title>
+	<meta content="" name="description">
+	<meta content="" name="keywords">
+	<th:block th:replace="~{_layout/seller/link::defaultLink}"></th:block>
+
+</head>
+<body>
+<th:block th:replace="~{_layout/seller/header::defaultHeader}"></th:block>
+<th:block th:replace="~{_layout/seller/sidebar::defaultSidebar}"></th:block>
+<th:block layout:fragment="pageContent"></th:block>
+</body>
+<footer id="footer" class="footer">
+	<th:block th:replace="~{_layout/seller/footer::defaultFooter}"></th:block>
+	<th:block th:replace="~{_layout/seller/script::defaultScript}"></th:block>
+</footer>
+</html>
