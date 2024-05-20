@@ -1,6 +1,6 @@
 package com.example.demo.admin.repository;
 
-import com.example.project.admin.Entity.Admin;
+import com.example.demo.admin.Entity.Admin;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
