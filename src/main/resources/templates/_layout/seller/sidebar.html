@@ -1,0 +1,156 @@
+<th:block th:fragment="defaultSidebar" xmlns:th="http://www.thymeleaf.org">
+	<aside id="sidebar" class="sidebar">
+		<ul class="sidebar-nav" id="sidebar-nav">
+			<!-- 상품 관리 사이드바-->
+			<li class="nav-item">
+				<a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+					<i class="bi bi-menu-button-wide"></i><span>상품관리</span><i
+						class="bi bi-chevron-down ms-auto"></i>
+				</a>
+				<!-- 아이디값 변경 금지 : 드랍다운 설정되어 있음-->
+				<ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+					<li>
+						<a th:href="@{/seller/pm/inquiry}">
+						   <i class="bi bi-circle"></i><span>상품 조회/수정</span>
+						</a>
+					</li>
+					<li>
+						<a th:href="@{/seller/pm/registration}">
+							<i class="bi bi-circle"></i><span>상품 등록</span>
+						</a>
+					</li>
+					<li>
+						<a th:href="@{/seller/pm/relation}">
+							<i class="bi bi-circle"></i><span>연관상품 관리</span>
+						</a>
+					</li>
+					<li>
+						<a th:href="@{/seller/pm/deliver}">
+							<i class="bi bi-circle"></i><span>배송정보 관리</span>
+						</a>
+					</li>
+				</ul>
+			</li><!-- End Components Nav -->
+			<!-- 상품 관리 사이드바 끝-->
+			
+			<!-- 판매 관리 사이드바 시작-->
+			<li class="nav-item">
+				<a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
+					<i class="bi bi-journal-text"></i><span>판매관리</span><i class="bi bi-chevron-down ms-auto"></i>
+				</a>
+				<ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+					<li>
+						<a th:href="@{/seller/cm/ordersearch}">
+							<i class="bi bi-circle"></i><span>주문통합검색</span>
+						</a>
+					</li>
+					<li>
+						<a th:href="@{/seller/cm/outstanding}">
+							<i class="bi bi-circle"></i><span>미결제 확인</span>
+						</a>
+					</li>
+					<li>
+						<a th:href="@{/seller/cm/order}">
+							<i class="bi bi-circle"></i><span>발주(주문)확인/발송관리</span>
+						</a>
+					</li>
+					<li>
+						<a th:href="@{/seller/cm/deliverystatus}">
+							<i class="bi bi-circle"></i><span>배송현황 관리</span>
+						</a>
+					</li>
+					<li>
+						<a th:href="@{/seller/cm/buyconfirmation}">
+							<i class="bi bi-circle"></i><span>구매확정 내역</span>
+						</a>
+					</li>
+					<li>
+						<a th:href="@{/seller/cm/cancel}">
+							<i class="bi bi-circle"></i><span>취소관리</span>
+						</a>
+					</li>
+					<li>
+						<a th:href="@{/seller/cm/preturn}">
+							<i class="bi bi-circle"></i><span>반품관리</span>
+						</a>
+					</li>
+					<li>
+						<a th:href="@{/seller/cm/exchange}">
+							<i class="bi bi-circle"></i><span>교환관리</span>
+						</a>
+					</li>
+					
+				</ul>
+			</li><!-- End Forms Nav -->
+			<!-- 판매 관리 사이드바 끝-->
+			
+			<!-- 정산 관리 사이드바 시작-->
+			<li class="nav-item">
+				<a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+					<i class="bi bi-layout-text-window-reverse"></i><span>정산관리</span><i
+						class="bi bi-chevron-down ms-auto"></i>
+				</a>
+				<ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+					<li>
+						<a th:href="@{/seller/so/calculate}">
+							<i class="bi bi-circle"></i><span>정산 내역</span>
+						</a>
+					</li>
+					<li>
+						<a th:href="@{/seller/so/dcalculate}">
+							<i class="bi bi-circle"></i><span>항목별 정산 내역</span>
+						</a>
+					</li>
+				</ul>
+			</li><!-- End Tables Nav -->
+			<!-- 정산 관리 사이드바 끝-->
+			
+			<!-- 문의/리뷰 관리 사이드바 시작-->
+			<li class="nav-item">
+				<a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
+					<i class="bi bi-bar-chart"></i><span>문의/리뷰관리</span><i class="bi bi-chevron-down ms-auto"></i>
+				</a>
+				<ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+					<li class="nav-heading">문의 관리</li>
+					<li>
+						<a th:href="@{/seller/ir/inquiries}">
+							<i class="bi bi-circle"></i><span>문의관리</span>
+						</a>
+					</li>
+					<li class="nav-heading">리뷰 관리</li>
+					<li>
+						<a th:href="@{/seller/ir/reviews}">
+							<i class="bi bi-circle"></i><span>리뷰관리</span>
+						</a>
+					</li>
+				</ul>
+			</li><!-- End Charts Nav -->
+			<!-- 문의/리뷰 관리 사이드바 끝-->
+
+			<li class="nav-heading">Pages</li>
+
+			<li class="nav-item">
+				<a class="nav-link collapsed" href="users-profile">
+					<i class="bi bi-person"></i>
+					<span>프로필</span>
+				</a>
+			</li><!-- End Profile Page Nav -->
+
+			<li class="nav-item">
+				<a class="nav-link collapsed" href="pages-faq">
+					<i class="bi bi-question-circle"></i>
+					<span>F.A.Q</span>
+				</a>
+			</li><!-- End F.A.Q Page Nav -->
+
+			<li class="nav-item">
+				<!-- 로그아웃으로 변경 및 로그아웃 작동-->
+				<a class="nav-link collapsed" href="/seller/login">
+					<i class="bi bi-box-arrow-in-right"></i>
+					<span>Login</span>
+				</a>
+			</li><!-- End Login Page Nav -->
+		</ul>
+
+	</aside><!-- End Sidebar-->
+</th:block>
