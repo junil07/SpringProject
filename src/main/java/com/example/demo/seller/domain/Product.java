@@ -28,7 +28,7 @@ public class Product {
     private Seller SELLER_ID;
 
     @ManyToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "CATEGORY_ID", referencedColumnName = "CATEGORY_ID")
-    private Category CATEGORY_ID;
+    @JoinColumn(name = "CATEGORY_ID", referencedColumnName = "categoryId")
+    private Category categoryId;
 
 }

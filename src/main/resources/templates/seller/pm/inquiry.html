@@ -38,7 +38,7 @@
 						<!-- Thymeleaf 코드로 상품 목록을 반복하여 출력합니다 -->
 						<tr th:each="product : ${product}" class="product-row" th:data-product-id="${product.productId}">
 							<td th:text="${product.productId}"></td>
-							<td th:text="${product.CATEGORY_ID.category_name}"></td>
+							<td th:text="${product.categoryId.categoryName}"></td>
 							<td th:text="${product.PRODUCT_NAME}"></td>
 							<td th:text="${product.PRODUCT_EXPLAIN}"></td>
 							<td th:text="${product.PRODUCT_PRICE}"></td>

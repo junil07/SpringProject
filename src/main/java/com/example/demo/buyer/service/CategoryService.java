@@ -16,6 +16,11 @@ public class CategoryService implements BuyerService {
     private CategoryRepository categoryRepository;
 
     @Override
+    public List<Category> getAll(){
+        return categoryRepository.findAll();
+    }
+
+    @Override
     public List<Category> getRows() {
         List<Category> categories = categoryRepository.findAll();
         Map<Long, List<Category>> categoriesByParentId = categories.stream().collect(Collectors.groupingBy(Category::getCategoryParentId));

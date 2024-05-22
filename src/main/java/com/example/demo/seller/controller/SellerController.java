@@ -38,8 +38,8 @@ public class SellerController {
 		model.addAttribute("price", price);
 		Map<String, Integer> buyer = orderitemService.findDisBuyer();
 		model.addAttribute("buyer", buyer);
-		Map<String, Integer> product = orderitemService.countsellproduct();
-		model.addAttribute("product", product);
+//		Map<String, Integer> product = orderitemService.countsellproduct();
+//		model.addAttribute("product", product);
 		List<Seller> sellers = sellerService.getAllSellers();
 		model.addAttribute("sellers", sellers);
 		return "seller/index";
