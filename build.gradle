@@ -23,14 +23,13 @@ repositories {
 
 dependencies {
 	// Spring Boot Starter 의존성
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'  // JPA 의존성 추가
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'   // JPA 의존성 추가
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.session:spring-session-core'
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.3.0'
-	implementation 'mysql:mysql-connector-java:8.0.32'
+	implementation 'mysql:mysql-connector-java:8.0.32'                       // 최신 버전 사용
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
-
 
 	// Spring Data JDBC 의존성
 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
@@ -42,7 +41,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-batch'
 
 	// Swagger 의존성
-	implementation 'io.springfox:springfox-boot-starter:3.0.0' // 버전을 명시적으로 추가
+	implementation 'io.springfox:springfox-boot-starter:3.0.0'                // 버전을 명시적으로 추가
 
 	// Validation 의존성
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
