@@ -13,6 +13,8 @@
 	    <link rel="stylesheet" href="/admin/vendor/owl-carousel/css/owl.theme.default.min.css">
 	    <link href="/admin/vendor/jqvmap/css/jqvmap.min.css" rel="stylesheet">
 	    <link href="/admin/css/style.css" rel="stylesheet">
+		<!-- Datatable -->
+		<link href="/admin/vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
 		
 		<th:block layout:fragment="pageHead"></th:block>
 		
@@ -41,7 +43,7 @@
 		</div>	
 		
 		<th:block th:replace="~{layout/admin/inc::bottomscript}"></th:block>
-		
+		<th:block layout:fragment="bottomScriptAdd"></th:block>
 		
 	</body>
 

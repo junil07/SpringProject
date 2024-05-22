@@ -22,7 +22,166 @@
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
-    
+
+    <style>
+        .banner {
+            position: relative;
+            display: inline-block;
+            text-align: center;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .banner img {
+            width: 100%;
+            height: auto;
+        }
+
+        .banner-title {
+            position: absolute;
+            top: 50%; /* Adjust this value to change the vertical position */
+            left: 10%; /* Adjust this value to 2/3 of the width */
+            transform: translateY(-50%);
+            text-align: left; /* Align text to the left */
+        }
+
+        .banner-title .eng {
+            font-size: 4rem;
+            font-weight: bold;
+            display: block;
+        }
+
+        .banner-title .kor {
+            font-size: 2rem;
+            margin-top: 1.3rem;
+            display: block;
+        }
+
+        .title-wrap span {
+            display: block;
+            margin-top: 0.5rem 0; /* Adjust the vertical margin as needed */
+        }
+
+        .slider {
+            position: relative;
+            width: 100%;
+            margin: auto;
+            overflow: hidden;
+            border: 2px solid #000;
+        }
+
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            width: 100%;
+        }
+
+        .slides .banner {
+            width: 100%;
+            flex: 0 0 100%;
+        }
+
+        .slides img {
+            width: 100%;
+            display: block;
+        }
+
+        .banner-title {
+            position: absolute;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: left; /* 텍스트를 왼쪽으로 정렬 */
+        }
+
+        .banner-navigation {
+            position: absolute;
+            bottom: 20px; /* 하단 간격 조정 */
+            right: 20px; /* 오른쪽 간격 조정 */
+        }
+
+        .nav-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* 버튼과 페이지 정보 간격 조정 */
+            background-color: white;
+            border: 1px solid black;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .banner-navigation .prev, .banner-navigation .next {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            color: black; /* 폰트 색상 변경 */
+            background-color: white; /* 버튼 배경색 변경 */
+        }
+
+        .banner-navigation .page-info {
+            color: black; /* 폰트 색상 변경 */
+            font-size: 1.2rem;
+        }
+        .banner-navigation button {
+            background-color: rgba(0, 0, 0, 0.5);
+            border: none;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+
+        }
+
+        .header-navigation .row {
+            display: flex;
+            align-items: center;
+        }
+
+        .header-navigation .col-sm-9 {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .util-menu {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* 공통 스타일 설정 */
+        .util-menu a {
+            display: inline-block;
+            width: 36px;
+            height: 36px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            text-indent: -9999px; /* 텍스트 숨기기 */
+        }
+
+        /* 로그인 아이콘 */
+        .util-login {
+            background-image: url('/assets/image/login_icon.png'); /* 로그인 아이콘 경로 */
+        }
+
+        /* 회원가입 아이콘 */
+        .util-register {
+            background-image: url('/assets/image/join_icon.png'); /* 회원가입 아이콘 경로 */
+        }
+
+        /* 장바구니 아이콘 */
+        .util-cart {
+            background-image: url('/assets/image/cart_icon.png'); /* 장바구니 아이콘 경로 */
+        }
+
+        /* 추가적인 스타일링 필요 시 */
+        .util-menu li {
+            display: inline-block;
+            margin-right: 10px; /* 아이콘 사이 간격 조정 */
+        }
+    </style>
+
     <!-- THEME CSS
 	================================================== -->
     <!-- Bootstrap -->
@@ -34,6 +193,8 @@
     <link rel="stylesheet" href="/plugins/slick-carousel/slick-theme.css">
     <!-- manin stylesheet -->
     <link rel="stylesheet" href="/css/style.css">
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </head>
 <body>
 

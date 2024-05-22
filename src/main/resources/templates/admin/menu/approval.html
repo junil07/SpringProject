@@ -1,11 +1,112 @@
+<!--
+    칼럼 명 배열로 for문 써서 넣기
+    th로 반환 튜플 수 만큼 행 만들기
+ -->
+
 <html layout:decorate="~{layout/admin/index}">
 
     <th:block layout:fragment="pageHead">
-        <title>구매자 가입 승인</title>
+        <title>상품 등록 승인</title>
     </th:block>
 
     <th:block layout:fragment="pageContent">
-        <h1>ㅎㅇㅋㅋ</h1>
+        <div class="row page-titles mx-0">
+            <div class="col-sm-6 p-md-0">
+                <div class="welcome-text">
+                    <h4>관리자 [[${adminName}]]님 반갑습니다.</h4>
+                </div>
+            </div>
+            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">승인 관리</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">상품 등록 승인</a></li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">상품 등록 승인</h4>
+                    </div>
+                    <div class="card-body">
+                        <p>판매자가 등록한 상품 승인 대기 내역입니다.</p>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped my-4" style="min-width: 480px; width: 150%;">
+                                <thead>
+
+                                <tr>
+                                    <th>
+                                        <div class="custom-control custom-checkbox pl-4">
+                                            <input type="checkbox">
+                                        </div>
+                                    </th>
+                                    <th class="text-center text-dark">
+                                        상품 ID<br>
+                                        <small class="text-muted">&lt;576px</small>
+                                    </th>
+                                    <th class="text-center text-dark">
+                                        판매자 ID<br>
+                                        <small class="text-muted">≥576px</small>
+                                    </th>
+                                    <th class="text-center text-dark">
+                                        상품명<br>
+                                        <small class="text-muted">≥768px</small>
+                                    </th>
+                                    <th class="text-center text-dark">
+                                        상품 설명<br>
+                                        <small class="text-muted">≥992px</small>
+                                    </th>
+                                    <th class="text-center text-dark">
+                                        상품 가격<br>
+                                        <small class="text-muted">≥1200px</small>
+                                    </th>
+                                    <th class="text-center text-dark">
+                                        할인율<br>
+                                        <small class="text-muted">≥1200px</small>
+                                    </th>
+                                    <th class="text-center text-dark">
+                                        해쉬태그<br>
+                                        <small class="text-muted">≥1200px</small>
+                                    </th>
+                                    <th class="text-center text-dark">
+                                        상태<br>
+                                        <small class="text-muted">≥1200px</small>
+                                    </th>
+                                    <th class="text-center text-dark">
+                                        카테고리<br>
+                                        <small class="text-muted">≥1200px</small>
+                                    </th>
+                                </tr>
+
+                                </thead>
+                                <tbody>
+
+                                <tr>
+                                    <th style="width: 5%;">
+                                        <div class="custom-control custom-checkbox pl-4">
+                                            <input type="checkbox">
+                                        </div>
+                                    </th>
+                                    <td>ㅎㅎㅎㅎ</td>
+                                    <td>하하하하하하하하하하하하</td>
+                                    <td>720px</td>
+                                    <td>960px</td>
+                                    <td>1140px</td>
+                                    <td>1140px</td>
+                                    <td>1140px</td>
+                                    <td>1140px</td>
+                                    <td>1140px</td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </th:block>
 
 </html>

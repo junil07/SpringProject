@@ -1,0 +1,292 @@
+<!-- 메인 화면  -->
+<html layout:decorate="~{layout/admin/index}">
+
+<th:block layout:fragment="pageHead">
+    <title>구매자 관리</title>
+
+    <link rel="stylesheet" href="./vendor/select2/css/select2.min.css">
+
+    <style>
+
+        a:hover {
+            background : #d0d6fa;
+            cursor : pointer;
+        }
+
+        table.dataTable tr.selected {
+            color: #BDBDC7;
+        }
+
+    </style>
+</th:block>
+
+<th:block layout:fragment="pageContent">
+
+    <div class="row page-titles mx-0">
+        <div class="col-sm-6 p-md-0">
+            <div class="welcome-text">
+                <h4>관리자 [[${adminName}]]님 반갑습니다.</h4>
+            </div>
+        </div>
+        <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)">회원 관리</a></li>
+                <li class="breadcrumb-item active"><a href="javascript:void(0)">구매자 관리</a></li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">구매자 관리<br><small>
+                        계정 활성화 여부와 등급은 변경할 수 있습니다.
+                    </small></h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="example2" class="display" style="width:100%">
+                            <thead>
+                            <tr>
+                                <th>
+                                    <div class="custom-control custom-checkbox pl-4">
+                                        <input type="checkbox" id="checkAll">
+                                    </div>
+                                </th>
+                                <th class="text-center text-dark" th:each="columnName : ${columnName}">
+                                    [[${columnName}]]
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="buyer : ${buyerList}">
+                                <td>
+                                    <div class="custom-control custom-checkbox pl-4">
+                                        <input type="checkbox" class="check_id" th:id="${buyer.buyerId}">
+                                    </div>
+                                </td>
+                                <td>[[${buyer.buyerId}]]</td>
+                                <td>[[${buyer.buyerName}]]</td>
+                                <td>[[${buyer.buyerBirth}]]</td>
+                                <td>[[${buyer.buyerEmail}]]</td>
+                                <td>[[${buyer.buyerAddress}]]</td>
+                                <td class="text-center">[[${buyer.buyerPhoneNum}]]</td>
+                                <td class="text-center">[[${buyer.buyerActivation}]]</td>
+                                <td class="text-center">[[${buyer.buyerLastLogin}]]</td>
+                                <td class="text-center">[[${buyer.buyerGrade}]]</td>
+                            </tr>
+
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th>
+                                    <div class="custom-control custom-checkbox pl-4">
+
+                                    </div>
+                                </th>
+                                <th class="text-center text-dark" th:each="columnName : ${columnName}">
+                                    [[${columnName}]]
+                                </th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                        <div class="bootstrap-modal" style="float: right; display: ruby;">
+                            <!-- Anchor trigger modal -->
+                            <button class="btn btn-rounded btn-primary" data-toggle="modal" data-target="#activate">계정 활성화 변경</button>
+                            <!-- Modal -->
+                            <form name="Afrm" method="post" th:action="@{/admin/ActivationUpdate}" th:object="${activation}">
+                                <div class="modal fade" id='activate'>
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">계정 활성화 변경</h5>
+                                                <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body" id="ActivateModal">
+
+                                                <!-- 셀렉트 박스 -->
+                                                <div class="row">
+                                                    <div class="col-xl-6" style="flex: 0 0 100%; max-width: 100%;">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <div class="mb-4">
+                                                                    <h4 class="card-title">선택된 사용자의 계정 활성화 상태가 변경됩니다.</h4>
+                                                                    <div id="ActivationInput1"></div>
+                                                                </div>
+
+                                                                <select class="disabling-options" th:field="*{activationUpdate}">
+                                                                    <option value="1">정상</option>
+                                                                    <option value="0">정지</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- 셀렉트 박스 끝 -->
+                                                <input type="hidden" id="ActivationInput2" th:field="*{activationId}">
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-primary" onclick="ActivationUpdate()">저장</button>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <!-- Anchor trigger modal -->
+                            <button class="btn btn-rounded btn-primary" data-toggle="modal" data-target="#grade">등급 변경</button>
+                            <!-- Modal -->
+                            <form name="Gfrm" method="post" th:action="@{/admin/GradeUpdate}" th:object="${grade}">
+                                <div class="modal fade" id='grade'>
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">등급 변경</h5>
+                                                <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body" id="GradeModal">
+
+                                                <!-- 셀렉트 박스 -->
+                                                <div class="row">
+                                                    <div class="col-xl-6" style="flex: 0 0 100%; max-width: 100%;">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <div class="mb-4">
+                                                                    <h4 class="card-title">선택된 사용자의 등급이 변경됩니다.</h4>
+                                                                    <div id="GradeInput1"></div>
+                                                                </div>
+
+                                                                <select id="single-select" th:field="*{gradeUpdate}">
+                                                                    <option value="1">Bronze</option>
+                                                                    <option value="2">Silver</option>
+                                                                    <option value="3">Gold</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- 셀렉트 박스 끝 -->
+                                                <input type="hidden" id="GradeInput2" th:field="*{gradeId}">
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-primary" onclick="GradeUpdate()">저장</button>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</th:block>
+
+<th:block layout:fragment="bottomScriptAdd">
+    <script>
+
+        var idList = [];
+        var checkboxes = document.querySelectorAll('.check_id');
+        var checkAllBox = document.getElementById('checkAll');
+
+        function addList(text) {
+            console.log(text + "확인용");
+            if (idList.includes(text)) {
+                console.log(text + "있습니다");
+            } else {
+                idList.push(text);
+                console.log(text + "추가됨");
+            }
+        }
+
+        function removeList(text) {
+            var index = idList.indexOf(text);
+
+            if (index !== -1) {
+                idList.splice(index, 1);
+                console.log("제거됨");
+            } else {
+                console.log("원래 없음");
+            }
+        }
+
+        function updateCheck(event) {
+            var checkbox = event.target;
+            if (checkbox.checked) {
+                console.log(checkbox.id);
+                addList(checkbox.id);
+                var result = idList.join("/");
+                document.getElementById('GradeInput1').textContent = result;
+                document.getElementById('GradeInput2').value = result;
+                document.getElementById('ActivationInput1').textContent = result;
+                document.getElementById('ActivationInput2').value = result;
+                console.log(idList);
+            } else {
+                console.log("hell nah");
+                removeList(checkbox.id);
+                var result = idList.join("/");
+                document.getElementById('GradeInput1').textContent = result;
+                document.getElementById('GradeInput2').value = result;
+                document.getElementById('ActivationInput1').textContent = result;
+                document.getElementById('ActivationInput2').value = result;
+                console.log(idList);
+            }
+        }
+
+        checkboxes.forEach(function(checkbox) {
+            checkbox.addEventListener('change', updateCheck);
+        });
+
+        checkAllBox.addEventListener('change', function(event) {
+            var isChecked = event.target.checked;
+            checkboxes.forEach(function(checkbox) {
+                checkbox.checked = isChecked;
+                checkbox.dispatchEvent(new Event('change'));
+            });
+        });
+
+        function GradeUpdate() {
+            var isChecked = false;
+            checkboxes.forEach(function(checkbox) {
+                if (checkbox.checked) {
+                    isChecked = true;
+                }
+            });
+
+            if(!isChecked) {
+                alert("사용자를 선택해주세요");
+            } else {
+                if (confirm("변경하시겠습니까?")) {
+                    document.Gfrm.submit();
+                } else {
+
+                }
+            }
+        }
+
+        function ActivationUpdate() {
+            if (confirm("변경하시겠습니까?")) {
+                document.Afrm.submit();
+            } else {
+
+            }
+        }
+
+    </script>
+
+    <script src="./vendor/select2/js/select2.full.min.js"></script>
+    <script src="./js/plugins-init/select2-init.js"></script>
+
+</th:block>
+
+</html>
