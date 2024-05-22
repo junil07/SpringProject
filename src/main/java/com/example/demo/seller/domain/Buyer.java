@@ -15,6 +15,7 @@ public class Buyer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private String BUYER_ID;
 
     private String BUYER_PASSWORD;
