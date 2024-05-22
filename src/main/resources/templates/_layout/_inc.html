@@ -1,4 +1,4 @@
-<th:block th:fragment="defaultHeader">
+<th:block th:fragment="defaultHeader" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <div class="trending-bar-dark hidden-xs">
     <div class="container">
@@ -9,79 +9,27 @@
                     <div class="item">
                         <div class="post-content">
                             <h2 class="post-title title-sm">
-                                <a href="single-post.html">양배추 25% 세일 한포기 2800원 !!</a>
+                                <a href="single-post.html">adidas FAMILY WEEK 최대 60%</a>
                             </h2>
                         </div>
                     </div>
                     <div class="item">
                         <div class="post-content">
                             <h2 class="post-title title-sm">
-                                <a href="single-post.html">회원 전용 특가 세일 !! 전 상품 5% 할인 !!</a>
+                                <a href="single-post.html">여름맞이 아쿠아슈즈 할인상품</a>
                             </h2>
                         </div>
                     </div>
                     <div class="item">
                         <div class="post-content">
                             <h2 class="post-title title-sm">
-                                <a href="single-post.html" >블랙 생필품 위크 !! 생필품 특가 할인 !!</a>
+                                <a href="single-post.html" >나이키 페스타 15% 할인</a>
                             </h2>
                         </div>
                     </div>
                 </div>
             </div>
-
-
-            <div class="col-md-12 col-sm-12 col-xs-12 top-nav-social-lists text-lg-right col-lg-4 ml-lg-auto">
-                <ul class="list-unstyled mt-4 mt-lg-0">
-                    <li>
-                        <a href="#">
-                            <span class="social-icon">
-                                <i class="fa fa-facebook-f"></i>
-                            </span>
-                        </a>
-                        <a href="#">
-                            <span class="social-icon">
-                                <i class="fa fa-twitter"></i>
-                            </span>
-                        </a>
-                        <a href="#">
-                            <span class="social-icon">
-                                <i class="fa fa-google-plus"></i>
-                            </span>
-                        </a>
-                        <a href="#">
-                            <span class="social-icon">
-                                <i class="fa fa-youtube"></i>
-                            </span>
-                        </a>
-                        <a href="#">
-                            <span class="social-icon">
-                                <i class="fa fa-linkedin"></i>
-                            </span>
-                        </a>
-                        <a href="#">
-                            <span class="social-icon">
-                                <i class="fa fa-pinterest-p"></i>
-                            </span>
-                        </a>
-                        <a href="#">
-                            <span class="social-icon">
-                                <i class="fa fa-rss"></i>
-                            </span>
-                        </a>
-                        <a href="#">
-                            <span class="social-icon">
-                                <i class="fa fa-github"></i>
-                            </span>
-                        </a>
-                        <a href="#">
-                            <span class="social-icon">
-                                <i class="fa fa-reddit-alien"></i>
-                            </span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            <!--로그인 버튼-->
 
         </div>
     </div>
@@ -92,19 +40,28 @@
         <div class="row align-items-center">
             <div class="col-xs-12 col-sm-3 col-md-3">
                 <!-- Logo -->
-                <div class="logo">
+                <div class="logo" style="padding:0px">
                     <a href="index.html">
-                        <img src="/images/logos/logo.png" alt=""> <!-- Replace Logo Here -->
+                        <img src="/assets/image/LOGO.png" alt="LOGO.png" style="height:95px;"> <!-- Replace Logo Here -->
                     </a>
                 </div>
                 <!-- End Logo -->
             </div>
-            <div class="col-xs-12 col-sm-9 col-md-9">
-                <div class="top-ad-banner float-right">
-                    <a href="#">
-                        <img src="/images/news/ad-pro.png" class="img-fluid" alt="banner-ads">
-                    </a>
-                </div>
+            <div class="col-sm-9 col-md-9">
+                <ul class="util-menu">
+                    <li>
+                        <a href="login" class="util-login" title="로그인"></a>
+                        <span>로그인</span>
+                    </li>
+                    <li>
+                        <a href="register" class="util-register" title="회원가입"></a>
+                        <span>회원가입</span>
+                    </li>
+                    <li>
+                        <a href="cart" class="util-cart" title="장바구니"></a>
+                        <span>장바구니</span>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
@@ -114,77 +71,48 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <nav class="navbar navbar-expand-lg site-main-nav navigation">
-                      <a class="navbar-brand d-lg-none" href="index.html">
-                        <img src="/images/logos/footer-logo.png" alt=""> 
-                     </a>
-  
-                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="fa fa-bars"></span>
-                  </button>
+                <nav class="navbar navbar-expand-lg site-main-nav navigation" style="position:relative; z-index:1000;">
+                    <a class="navbar-brand d-lg-none" href="index.html">
+                        <img src="/images/logos/footer-logo.png" alt="">
+                    </a>
+
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="fa fa-bars"></span>
+                    </button>
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav mr-auto">
-                           
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                 Home
-                                </a>
-                                <div class="dropdown-menu" >
-                                  <a class="dropdown-item" href="index.html" >Home 1</a>
-                                  <a class="dropdown-item" href="index-2.html">Home 2</a>
+                            <li th:each="rootCategory : ${categories}" class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="${rootCategory.categoryName}"></a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="z-index:1001;">
+                                    <ul th:if="${rootCategory.children != null and rootCategory.children.size() > 0}" class="list-unstyled dropmenu2" style="display:none;">
+                                        <li th:each="child : ${rootCategory.children}" class="nav-item dropdown">
+                                            <a class="dropdown-item nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="${child.categoryName}"></a>
+                                            <ul th:if="${child.children != null and child.children.size() > 0}" class="list-unstyled pl-3 dropmenu3" style="display:none;">
+                                                <li th:each="grandchild : ${child.children}">
+                                                    <a class="dropdown-item" href="#" th:text="${grandchild.categoryName}"></a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
                                 </div>
                             </li>
-                           
-                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  Post
-                                </a>
-                                <div class="dropdown-menu" >
-                                <a class="dropdown-item" href="post-left-sidebar.html">Post Left Sidebar</a>
-                                  <a class="dropdown-item" href="post-full-width.html">Post Full Width</a>
-                                  <a class="dropdown-item" href="single-post.html">Single Post</a>
-                                  <a class="dropdown-item" href="post-category-1.html">Category 1</a>
-                                  <a class="dropdown-item" href="post-category-2.html">Category 2</a>
-                                  <a class="dropdown-item" href="author.html">Author</a>
-                                </div>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  Account
-                                </a>
-                                <div class="dropdown-menu">
-                                  <a class="dropdown-item" href="account.html">Log In</a>
-                                  <a class="dropdown-item" href="signup.html">Register</a>
-                                </div>
-                            </li>
-
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  About
-                                </a>
-                                <div class="dropdown-menu">
-                                  <a class="dropdown-item" href="about.html">About</a>
-                                  <a class="dropdown-item" href="terms.html">Terms</a>
-                                  <a class="dropdown-item" href="privacy.html">Privacy Policy</a>
-                                  <a class="dropdown-item" href="job.html">Career</a>
-                                </div>
-                            </li>
-                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  Pages
-                                </a>
-                                <div class="dropdown-menu">
-                                  <a class="dropdown-item" href="404.html">404 Page</a>
-                                  <a class="dropdown-item" href="search.html">Search Page</a>
-                                </div>
-                            </li>
-
-                             <li class="nav-item">
-                                <a class="nav-link" href="contact.html">Contact</a>
-                            </li>
-
                         </ul>
+                        <script>
+                            $(document).ready(function() {
+                                $("#navbarSupportedContent > ul > li").on("mouseenter", function() {
+                                    $(this).find("ul.dropmenu2").stop(true, true).slideDown();
+                                }).on("mouseleave", function() {
+                                    $(this).find("ul.dropmenu2").stop(true, true).slideUp();
+                                });
+
+                                $("ul.dropmenu2 > li").on("mouseenter", function() {
+                                    $(this).find("ul.dropmenu3").stop(true, true).slideDown();
+                                }).on("mouseleave", function() {
+                                    $(this).find("ul.dropmenu3").stop(true, true).slideUp();
+                                });
+                            });
+                        </script>
                         <div class="nav-search ml-auto d-none d-lg-block">
                             <span id="search">
                                 <i class="fa fa-search"></i>
@@ -192,7 +120,7 @@
                         </div>
                     </div>
                 </nav>
-                
+
             </div>
         </div>
     </div>
@@ -206,11 +134,9 @@
     </form>
 </div>
 
-<div class="py-30"></div>
-
 </th:block>
 
-<th:block th:fragment="defaultFooter">
+<th:block th:fragment="defaultFooter" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <div class="py-40"></div>
 
@@ -249,6 +175,7 @@
 ================================================== -->
 <!-- initialize jQuery Library -->
 <script src="/plugins/jquery/jquery.js"></script>
+
 <!-- Bootstrap jQuery -->
 <script src="/plugins/bootstrap/js/bootstrap.min.js"></script>
 <!-- Slick Slider -->

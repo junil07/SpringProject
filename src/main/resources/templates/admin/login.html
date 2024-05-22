@@ -19,16 +19,22 @@
 <body>
 
     <script>
-        window.onload = function() {
+        var currentDate = new Date();
+
+        $(document).ready(function() {
+            alert("페이지가 완전히 로드되었습니다.");
+            console.log("현재 시간은2 " + currentDate);
+
             var alertMessage = "[[${alert}]]";
             if (alertMessage) {
                 alert(alertMessage);
                 alert("테스트");
-                var currentDate = new Date();
+
                 console.log("현재 시간은 " + currentDate);
                 // location.href = "/admin/main";
             }
-        };
+        });
+
 
     </script>
 

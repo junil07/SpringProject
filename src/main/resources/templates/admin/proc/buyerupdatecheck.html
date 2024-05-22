@@ -1,0 +1,12 @@
+<html xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layout/admin/index}">
+
+<th:block layout:fragment="pageHead">
+
+    <script>
+        alert("[[${error}]]");
+        location.href = "/admin/buyermanagement";
+    </script>
+
+</th:block>
+
+</html>

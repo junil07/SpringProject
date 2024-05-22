@@ -5,7 +5,6 @@ import com.example.demo.admin.repository.AdminRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,7 +25,9 @@ public class AdminServiceImple implements AdminService {
             Admin admin1 = admin.get();
             if (admin1.getAdminPassword().equals(adminPassword)) {
                 // 세션 저장
-                httpSession.setAttribute("adminSession", admin1);
+                httpSession.setAttribute("adminSession", admin1.getAdminId());
+                httpSession.setAttribute("adminName", admin1.getAdminName());
+                // System.out.println("세션이 저장되었다 " + httpSession.getAttribute("adminSession"));
                 return true;
             }
         }
@@ -40,7 +41,10 @@ public class AdminServiceImple implements AdminService {
 
     @Override
     public boolean isLoggedIn() {
+        System.out.println((String) httpSession.getAttribute("adminSession"));
         return httpSession.getAttribute("adminSession") != null;
     }
+
+
 
 }

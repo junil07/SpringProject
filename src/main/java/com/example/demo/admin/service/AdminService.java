@@ -8,9 +8,8 @@ import java.util.List;
 public interface AdminService {
 
     public boolean login(String adminId, String adminPassword);
-
     public void logout();
-
     public boolean isLoggedIn();
+
 
 }

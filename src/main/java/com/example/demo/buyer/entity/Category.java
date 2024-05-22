@@ -1,25 +1,64 @@
 package com.example.demo.buyer.entity;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
+import java.util.List;
 
 @Entity
-@Getter
-@Setter
-@ToString
+@Table(name = "Category")
 public class Category {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int category_id; // 카테고리 아이디
-    private String category_name; // 카테고리 이름
-    private int category_def; // 카테고리 깊이
-    private int category_parent_id; // 카테고리 상위 아이디
+    private Long categoryId;
+    private String categoryName;
+    private int categoryDef;
+    private Long categoryParentId;
 
+
+    @Transient
+    private List<Category> children;
+
+    // getters and setters
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public int getCategoryDef() {
+        return categoryDef;
+    }
+
+    public void setCategoryDef(int categoryDef) {
+        this.categoryDef = categoryDef;
+    }
+
+    public Long getCategoryParentId() {
+        return categoryParentId;
+    }
+
+    public void setCategoryParentId(Long categoryParentId) {
+        this.categoryParentId = categoryParentId;
+    }
+
+    public List<Category> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Category> children) {
+        this.children = children;
+    }
 }
