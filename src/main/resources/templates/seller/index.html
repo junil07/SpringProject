@@ -340,7 +340,28 @@
 	<script th:inline="javascript">
 
 	</script>
+	<script th:inline="javascript">
+		var labels = /*[[${labels}]]*/ [];
+        var values = /*[[${values}]]*/ [];
 
+        // Chart.js를 사용하여 그래프를 그림
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: values,
+                    backgroundColor: ['red', 'blue', 'yellow'] // 색상은 예시
+                }]
+            },
+            options: {
+                // 도넛 차트로 설정
+                cutoutPercentage: 50,
+                // 기타 옵션들 설정 가능
+            }
+        });
+	</script>
 
 	<style>
 		/* 라디오 버튼 숨기기 */
