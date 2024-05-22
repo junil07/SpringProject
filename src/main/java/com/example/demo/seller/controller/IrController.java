@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/seller/ir")
-public class irController {
-	public irController() {
+public class IrController {
+	public IrController() {
 		// TODO Auto-generated constructor stub
 	}
 	

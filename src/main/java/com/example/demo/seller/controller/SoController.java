@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/seller/so")
-public class soController {
-	public soController() {
+public class SoController {
+	public SoController() {
 		// TODO Auto-generated constructor stub
 	}
 	

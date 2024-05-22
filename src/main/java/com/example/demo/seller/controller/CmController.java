@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/seller/cm")
-public class cmController {
-	public cmController() {
+public class CmController {
+	public CmController() {
 		// TODO Auto-generated constructor stub
 	}
 	

@@ -11,7 +11,7 @@
 						<div class="col-xxl-6 col-md-6">
 							<div class="card info-card sales-card">
 								<div class="card-body">
-									<h5 class="card-title border-bottom">주문/배송</h5>
+									<h5 class="card-title border-bottom fw-bold">주문/배송</h5>
 									<section class="col-lg-12 d-flex">
 										<div class="col-xxl-6 col-md-6 d-flex">
 											<div class="col-xxl-2 col-md-2 card-icon rounded-circle d-flex align-items-center justify-content-center">
@@ -63,7 +63,7 @@
 						<div class="col-xxl-6 col-md-6">
 							<div class="card info-card sales-card">
 								<div class="card-body">
-									<h5 class="card-title border-bottom">클레임/정산</h5>
+									<h5 class="card-title border-bottom fw-bold">클레임/정산</h5>
 									<section class="col-lg-12 d-flex">
 										<div class="col-xxl-6 col-md-6 d-flex">
 											<div class="col-xxl-2 col-md-2 card-icon rounded-circle d-flex align-items-center justify-content-center">
@@ -120,14 +120,15 @@
 						<div class="col-xxl-8 col-md-8">
 							<div class="card info-card sales-card">
 								<div class="card-body">
-									<div class="d-flex border-bottom p-2">
+									<div class="d-flex justify-content-center align-items-center border-bottom p-2">
 										<div>
-											<span>매출 통계</span>
+											<h5 style="margin-bottom: 0px;" class="fw-bold">매출 통계</h5>
 										</div>
-										<div class="float-end">
+										<div class="ms-auto">
 											아이디 출력
 										</div>
 									</div>
+
 									<div class="mt-2">
 										<div class="d-flex justify-content-center">
 											<div data-toggle="buttons" class="btn-group btn-group-customize">
@@ -166,8 +167,13 @@
 						</div>
 						<div class="col-xxl-4 col-md-4">
 							<div class="card info-card sales-card">
-								<div class="card-body">
-
+								<div class="card-body" style="height:537px;">
+									<div class="d-flex justify-content-center align-items-center border-bottom p-2">
+										<h5 style="margin-bottom: 0px;" class="fw-bold">제품별 매출 현황</h5>
+									</div>
+									<div id="product" style="display: block;">
+										<canvas id="orderproduct" ></canvas>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -179,172 +185,181 @@
 	</main><!-- End #main -->
 	<script>
 		// 각 라디오 버튼을 클릭했을 때 실행되는 함수
-            function printValue(selectedValue) {
-                // 선택된 값에 따라 해당하는 <div> 요소를 보여줍니다.
-                if (selectedValue === "1") {
-                    document.getElementById("count").style.display = "block";
-                    document.getElementById("people").style.display = "none";
-                    document.getElementById("price").style.display = "none";
-                } else if (selectedValue === "2") {
-                    document.getElementById("count").style.display = "none";
-                    document.getElementById("people").style.display = "block";
-                    document.getElementById("price").style.display = "none";
-                } else if (selectedValue === "3") {
-                    document.getElementById("count").style.display = "none";
-                    document.getElementById("people").style.display = "none";
-                    document.getElementById("price").style.display = "block";
-                }
+          function printValue(selectedValue) {
+              // 선택된 값에 따라 해당하는 <div> 요소를 보여줍니다.
+              if (selectedValue === "1") {
+                  document.getElementById("count").style.display = "block";
+                  document.getElementById("people").style.display = "none";
+                  document.getElementById("price").style.display = "none";
+              } else if (selectedValue === "2") {
+                  document.getElementById("count").style.display = "none";
+                  document.getElementById("people").style.display = "block";
+                  document.getElementById("price").style.display = "none";
+              } else if (selectedValue === "3") {
+                  document.getElementById("count").style.display = "none";
+                  document.getElementById("people").style.display = "none";
+                  document.getElementById("price").style.display = "block";
+              }
 
-                // 선택된 라디오 버튼을 제외한 나머지 라디오 버튼을 해제합니다.
-                var radios = document.querySelectorAll('input[type="radio"]');
-                radios.forEach(function(radio) {
-                    if (radio.value !== selectedValue) {
-                        radio.checked = false;
-                    }
-                });
-            }
+              // 선택된 라디오 버튼을 제외한 나머지 라디오 버튼을 해제합니다.
+              var radios = document.querySelectorAll('input[type="radio"]');
+              radios.forEach(function(radio) {
+                  if (radio.value !== selectedValue) {
+                      radio.checked = false;
+                  }
+              });
+          }
 	</script>
 	<script th:inline="javascript">
 		/*결제건수 그래프 출력*/
-          /*<![CDATA[*/
-            document.addEventListener('DOMContentLoaded', function () {
-                const ctx = document.getElementById('ordercount').getContext('2d');
-                const data = /*[[${count}]]*/ {};
+        /*<![CDATA[*/
+          document.addEventListener('DOMContentLoaded', function () {
+              const ctx = document.getElementById('ordercount').getContext('2d');
+              const data = /*[[${count}]]*/ {};
 
-                // 날짜 순으로 정렬된 배열 생성
-                const sortedLabels = Object.keys(data).sort();
-                // 정렬된 날짜 순서에 따라 값 배열을 재배열
-                const sortedValues = sortedLabels.map(label => data[label]);
+              // 날짜 순으로 정렬된 배열 생성
+              const sortedLabels = Object.keys(data).sort();
+              // 정렬된 날짜 순서에 따라 값 배열을 재배열
+              const sortedValues = sortedLabels.map(label => data[label]);
 
-                const config = {
-                    type: 'line',
-                    data: {
-                        labels: sortedLabels,
-                        datasets: [{
-                            label: '총 결제 건수',
-                            data: sortedValues,
-                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                            borderColor: 'rgba(75, 192, 192, 1)',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                       responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            y: {
-                                beginAtZero: true
+              const config = {
+                  type: 'line',
+                  data: {
+                      labels: sortedLabels,
+                      datasets: [{
+                          label: '총 결제 건수',
+                          data: sortedValues,
+                          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                          borderColor: 'rgba(75, 192, 192, 1)',
+                          borderWidth: 1
+                      }]
+                  },
+                  options: {
+                     responsive: true,
+                      maintainAspectRatio: false,
+                      scales: {
+                          y: {
+                              beginAtZero: true,
+                              ticks: {
+                              	precision: 0 // 소수점 이하 자리수를 0으로 설정하여 소수점 제거
+							  }
+                          }
+                      }
+                  }
+              };
+              const canvas = document.getElementById('ordercount');
+            canvas.style.height = '440px';
+              new Chart(ctx, config);
+          });
+          /*]]>*/
+	</script>
+	<script th:inline="javascript">
+		/*결제건수 그래프 출력*/
+        /*<![CDATA[*/
+        document.addEventListener('DOMContentLoaded', function () {
+            const ctx = document.getElementById('orderbuyer').getContext('2d');
+            const data = /*[[${buyer}]]*/ {};
+
+            // 날짜 순으로 정렬된 배열 생성
+            const sortedLabels = Object.keys(data).sort();
+            // 정렬된 날짜 순서에 따라 값 배열을 재배열
+            const sortedValues = sortedLabels.map(label => data[label]);
+
+            const config = {
+                type: 'line',
+                data: {
+                    labels: sortedLabels,
+                    datasets: [{
+                        label: '총 결제 건수',
+                        data: sortedValues,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                precision: 0 // 소수점 이하 자리수를 0으로 설정하여 소수점 제거
                             }
                         }
                     }
-                };
-                const canvas = document.getElementById('ordercount');
-              canvas.style.height = '440px';
-                new Chart(ctx, config);
-            });
-            /*]]>*/
-	</script>
-	<script th:inline="javascript">
-		/*결제건수 그래프 출력*/
-          /*<![CDATA[*/
-            document.addEventListener('DOMContentLoaded', function () {
-                const ctx = document.getElementById('orderbuyer').getContext('2d');
-                const data = /*[[${buyer}]]*/ {};
-
-                // 날짜 순으로 정렬된 배열 생성
-                const sortedLabels = Object.keys(data).sort();
-                // 정렬된 날짜 순서에 따라 값 배열을 재배열
-                const sortedValues = sortedLabels.map(label => data[label]);
-
-                const config = {
-                    type: 'line',
-                    data: {
-                        labels: sortedLabels,
-                        datasets: [{
-                            label: '총 결제 건수',
-                            data: sortedValues,
-                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                            borderColor: 'rgba(75, 192, 192, 1)',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                   responsive: true,
-                   maintainAspectRatio: false,
-                   scales: {
-                      y: {
-                         beginAtZero: true
-                      }
-                   }
                 }
-                };
-                const canvas = document.getElementById('orderbuyer');
-              canvas.style.height = '440px';
-                new Chart(ctx, config);
-            });
-            /*]]>*/
+            };
+            const canvas = document.getElementById('orderbuyer');
+            canvas.style.height = '440px';
+            new Chart(ctx, config);
+        });
+        /*]]>*/
 	</script>
+
 	<script th:inline="javascript">
 		/*결제금액 그래프 출력*/
-            /*<![CDATA[*/
-            document.addEventListener('DOMContentLoaded', function () {
-                const ctx = document.getElementById('orderprice').getContext('2d');
-                const data = /*[[${price}]]*/ {};
+          /*<![CDATA[*/
+          document.addEventListener('DOMContentLoaded', function () {
+              const ctx = document.getElementById('orderprice').getContext('2d');
+              const data = /*[[${price}]]*/ {};
 
-                // 날짜 순으로 정렬된 배열 생성
-                const sortedLabels = Object.keys(data).sort();
-                // 정렬된 날짜 순서에 따라 값 배열을 재배열
-                const sortedValues = sortedLabels.map(label => data[label]);
+              // 날짜 순으로 정렬된 배열 생성
+              const sortedLabels = Object.keys(data).sort();
+              // 정렬된 날짜 순서에 따라 값 배열을 재배열
+              const sortedValues = sortedLabels.map(label => data[label]);
 
-                const config = {
-                    type: 'line',
-                    data: {
-                        labels: sortedLabels,
-                        datasets: [{
-                            label: '총 금액',
-                            data: sortedValues,
-                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                            borderColor: 'rgba(75, 192, 192, 1)',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
-                    }
-                };
-             const canvas = document.getElementById('orderprice');
-              canvas.style.height = '440px';
-                new Chart(ctx, config);
-            });
-            /*]]>*/
+              const config = {
+                  type: 'line',
+                  data: {
+                      labels: sortedLabels,
+                      datasets: [{
+                          label: '총 금액',
+                          data: sortedValues,
+                          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                          borderColor: 'rgba(75, 192, 192, 1)',
+                          borderWidth: 1
+                      }]
+                  },
+                  options: {
+                      responsive: true,
+                      maintainAspectRatio: false,
+                      scales: {
+                          y: {
+                              beginAtZero: true
+                          }
+                      }
+                  }
+              };
+           const canvas = document.getElementById('orderprice');
+            canvas.style.height = '440px';
+              new Chart(ctx, config);
+          });
+          /*]]>*/
 	</script>
+	<script th:inline="javascript">
 
+	</script>
 
 
 	<style>
 		/* 라디오 버튼 숨기기 */
-            input[type="radio"] {
-              display: none;
-            }
+          input[type="radio"] {
+            display: none;
+          }
 
-          input[type="radio"]:checked + label {
-             background-color: skyblue;
-          }
-        #ordercount {
-              height: 420px !important;
-          }
-        #orderbuyer {
-              height: 420px !important;
-          }
-        #orderprice {
-              height: 420px !important;
-          }
+        input[type="radio"]:checked + label {
+           background-color: skyblue;
+        }
+		#ordercount {
+            height: 420px !important;
+        }
+		#orderbuyer {
+            height: 420px !important;
+        }
+		#orderprice {
+            height: 420px !important;
+        }
 	</style>
 </th:block>
 </html>
