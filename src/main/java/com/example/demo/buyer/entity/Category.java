@@ -17,6 +17,7 @@ public class Category {
     private int categoryDef;
     private Long categoryParentId;
 
+
     @Transient
     private List<Category> children;
 

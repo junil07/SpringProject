@@ -1,26 +1,366 @@
 <html xmlns:th="http://www.thymleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml"
 	  layout:decorate="~{_layout/seller/index}">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<th:block layout:fragment="pageHead">
-	<title th:text="${pageName}"></title>
-</th:block>
 <th:block layout:fragment="pageContent">
-	<main id="main" class="main d-flex">
-		<!-- 메인컨텐츠 시작 main 지우지 말것-->
-		<!-- 주문 배송, 클레임 정산-->
-		<section class="container">
+	<main id="main" class="main">
+
+		<section class="section dashboard">
 			<div class="row">
-				<div class="col">
-					<div class="border bg-white">주문/배송</div>
+				<div class="col-lg-12">
+					<div class="row">
+						<!-- Sales Card -->
+						<div class="col-xxl-6 col-md-6">
+							<div class="card info-card sales-card">
+								<div class="card-body">
+									<h5 class="card-title border-bottom fw-bold">주문/배송</h5>
+									<section class="col-lg-12 d-flex">
+										<div class="col-xxl-6 col-md-6 d-flex">
+											<div class="col-xxl-2 col-md-2 card-icon rounded-circle d-flex align-items-center justify-content-center">
+												<i class = "bi bi-cart"></i>
+											</div>
+											<ul class="col-xxl-8 col-md-8 list-group border-0">
+												<li class="list-group-item border-0">
+													<span>결제대기</span>
+													<span class="float-end">0<span class="float-end">건</span></span>
+												</li>
+												<li class="list-group-item border-0">
+													<span>신규주문</span>
+													<span class="float-end">0<span class="float-end">건</span></span>
+												</li>
+												<li class="list-group-item border-0">
+													<span>오늘출발</span>
+													<span class="float-end">0<span class="float-end">건</span></span>
+												</li>
+												<li class="list-group-item border-0">
+													<span>예약구매</span>
+													<span class="float-end">0<span class="float-end">건</span></span>
+												</li>
+											</ul>
+										</div>
+										<div class="col-xxl-6 col-md-6 d-flex">
+											<div class="col-xxl-2 col-md-2 card-icon rounded-circle d-flex align-items-center justify-content-center">
+												<i class = "bi bi-truck"></i>
+											</div>
+											<ul class="col-xxl-8 col-md-8 list-group border-0">
+												<li class="list-group-item border-0">
+													<span>배송준비</span>
+													<span class="float-end">0<span class="float-end">건</span></span>
+												</li>
+												<li class="list-group-item border-0">
+													<span>배송중</span>
+													<span class="float-end">0<span class="float-end">건</span></span>
+												</li>
+												<li class="list-group-item border-0">
+													<span>배송완료</span>
+													<span class="float-end">0<span class="float-end">건</span></span>
+												</li>
+											</ul>
+										</div>
+									</section>
+								</div>
+							</div>
+						</div><!-- End Sales Card -->
+						<!-- Revenue Card -->
+						<div class="col-xxl-6 col-md-6">
+							<div class="card info-card sales-card">
+								<div class="card-body">
+									<h5 class="card-title border-bottom fw-bold">클레임/정산</h5>
+									<section class="col-lg-12 d-flex">
+										<div class="col-xxl-6 col-md-6 d-flex">
+											<div class="col-xxl-2 col-md-2 card-icon rounded-circle d-flex align-items-center justify-content-center">
+												<i class = "bi bi-arrow-counterclockwise"></i>
+											</div>
+											<ul class="col-xxl-8 col-md-8 list-group border-0">
+												<li class="list-group-item border-0">
+													<span>취소요청</span>
+													<span class="float-end">0<span class="float-end">건</span></span>
+												</li>
+												<li class="list-group-item border-0">
+													<span>반품요청</span>
+													<span class="float-end">0<span class="float-end">건</span></span>
+												</li>
+												<li class="list-group-item border-0">
+													<span>교환요청</span>
+													<span class="float-end">0<span class="float-end">건</span></span>
+												</li>
+												<li class="list-group-item border-0">
+													<span>총 해결건수</span>
+													<span class="float-end">0<span class="float-end">건</span></span>
+												</li>
+											</ul>
+										</div>
+										<div class="col-xxl-6 col-md-6 d-flex">
+											<div class="col-xxl-2 col-md-2 card-icon rounded-circle d-flex align-items-center justify-content-center">
+												<i class = "bi bi-currency-dollar"></i>
+											</div>
+											<ul class="col-xxl-8 col-md-8 list-group border-0">
+												<li class="list-group-item border-0">
+													<span>구매확정</span>
+													<span class="float-end">0<span class="float-end">건</span></span>
+												</li>
+												<li class="list-group-item border-0">
+													<span>오늘정산</span>
+													<span class="float-end">0<span class="float-end">건</span></span>
+												</li>
+												<li class="list-group-item border-0">
+													<span>정산예정</span>
+													<span class="float-end">0<span class="float-end">건</span></span>
+												</li>
+											</ul>
+										</div>
+									</section>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
-				<div class="col">
-					<div class="border bg-white">클레임/정산</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="row">
+						<div class="col-xxl-8 col-md-8">
+							<div class="card info-card sales-card">
+								<div class="card-body">
+									<div class="d-flex justify-content-center align-items-center border-bottom p-2">
+										<div>
+											<h5 style="margin-bottom: 0px;" class="fw-bold">매출 통계</h5>
+										</div>
+										<div class="ms-auto">
+											아이디 출력
+										</div>
+									</div>
+
+									<div class="mt-2">
+										<div class="d-flex justify-content-center">
+											<div data-toggle="buttons" class="btn-group btn-group-customize">
+												<input type="radio" id="seller-count" name="seller-count" value="1">
+												<label class="btn px-4 py-1 btn-sm d-flex align-items-center justify-content-center"
+													   for="seller-count" onclick="printValue('1')">
+													결제건수
+												</label><br>
+												<input type="radio" id="seller-people" name="seller-people" value="2">
+												<label class="btn px-4 py-1 btn-sm d-flex align-items-center justify-content-center"
+													   for="seller-people" onclick="printValue('2')">
+													결제자수
+												</label><br>
+												<input type="radio" id="seller-price" name="seller-price" value="3">
+												<label class="btn px-4 py-1 btn-sm d-flex align-items-center justify-content-center"
+													   for="seller-price" onclick="printValue('3')">
+													결제금액
+												</label><br><br>
+											</div>
+										</div>
+										<div>
+											<div id="count" style="display: block;">
+												<canvas id="ordercount" ></canvas>
+											</div>
+											<div id="people" style="display: none;">
+												<canvas id="orderbuyer" ></canvas>
+											</div>
+											<div id="price" style="display: none;">
+												<!--일별 총 결제 금액-->
+												<canvas id="orderprice" ></canvas>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-xxl-4 col-md-4">
+							<div class="card info-card sales-card">
+								<div class="card-body" style="height:537px;">
+									<div class="d-flex justify-content-center align-items-center border-bottom p-2">
+										<h5 style="margin-bottom: 0px;" class="fw-bold">제품별 매출 현황</h5>
+									</div>
+									<div id="product" style="display: block;">
+										<canvas id="orderproduct" ></canvas>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</section>
-		<section>
 
-		</section>
 	</main><!-- End #main -->
+	<script>
+		// 각 라디오 버튼을 클릭했을 때 실행되는 함수
+          function printValue(selectedValue) {
+              // 선택된 값에 따라 해당하는 <div> 요소를 보여줍니다.
+              if (selectedValue === "1") {
+                  document.getElementById("count").style.display = "block";
+                  document.getElementById("people").style.display = "none";
+                  document.getElementById("price").style.display = "none";
+              } else if (selectedValue === "2") {
+                  document.getElementById("count").style.display = "none";
+                  document.getElementById("people").style.display = "block";
+                  document.getElementById("price").style.display = "none";
+              } else if (selectedValue === "3") {
+                  document.getElementById("count").style.display = "none";
+                  document.getElementById("people").style.display = "none";
+                  document.getElementById("price").style.display = "block";
+              }
+
+              // 선택된 라디오 버튼을 제외한 나머지 라디오 버튼을 해제합니다.
+              var radios = document.querySelectorAll('input[type="radio"]');
+              radios.forEach(function(radio) {
+                  if (radio.value !== selectedValue) {
+                      radio.checked = false;
+                  }
+              });
+          }
+	</script>
+	<script th:inline="javascript">
+		/*결제건수 그래프 출력*/
+        /*<![CDATA[*/
+          document.addEventListener('DOMContentLoaded', function () {
+              const ctx = document.getElementById('ordercount').getContext('2d');
+              const data = /*[[${count}]]*/ {};
+
+              // 날짜 순으로 정렬된 배열 생성
+              const sortedLabels = Object.keys(data).sort();
+              // 정렬된 날짜 순서에 따라 값 배열을 재배열
+              const sortedValues = sortedLabels.map(label => data[label]);
+
+              const config = {
+                  type: 'line',
+                  data: {
+                      labels: sortedLabels,
+                      datasets: [{
+                          label: '총 결제 건수',
+                          data: sortedValues,
+                          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                          borderColor: 'rgba(75, 192, 192, 1)',
+                          borderWidth: 1
+                      }]
+                  },
+                  options: {
+                     responsive: true,
+                      maintainAspectRatio: false,
+                      scales: {
+                          y: {
+                              beginAtZero: true,
+                              ticks: {
+                              	precision: 0 // 소수점 이하 자리수를 0으로 설정하여 소수점 제거
+							  }
+                          }
+                      }
+                  }
+              };
+              const canvas = document.getElementById('ordercount');
+            canvas.style.height = '440px';
+              new Chart(ctx, config);
+          });
+          /*]]>*/
+	</script>
+	<script th:inline="javascript">
+		/*결제건수 그래프 출력*/
+        /*<![CDATA[*/
+        document.addEventListener('DOMContentLoaded', function () {
+            const ctx = document.getElementById('orderbuyer').getContext('2d');
+            const data = /*[[${buyer}]]*/ {};
+
+            // 날짜 순으로 정렬된 배열 생성
+            const sortedLabels = Object.keys(data).sort();
+            // 정렬된 날짜 순서에 따라 값 배열을 재배열
+            const sortedValues = sortedLabels.map(label => data[label]);
+
+            const config = {
+                type: 'line',
+                data: {
+                    labels: sortedLabels,
+                    datasets: [{
+                        label: '총 결제 건수',
+                        data: sortedValues,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                precision: 0 // 소수점 이하 자리수를 0으로 설정하여 소수점 제거
+                            }
+                        }
+                    }
+                }
+            };
+            const canvas = document.getElementById('orderbuyer');
+            canvas.style.height = '440px';
+            new Chart(ctx, config);
+        });
+        /*]]>*/
+	</script>
+
+	<script th:inline="javascript">
+		/*결제금액 그래프 출력*/
+          /*<![CDATA[*/
+          document.addEventListener('DOMContentLoaded', function () {
+              const ctx = document.getElementById('orderprice').getContext('2d');
+              const data = /*[[${price}]]*/ {};
+
+              // 날짜 순으로 정렬된 배열 생성
+              const sortedLabels = Object.keys(data).sort();
+              // 정렬된 날짜 순서에 따라 값 배열을 재배열
+              const sortedValues = sortedLabels.map(label => data[label]);
+
+              const config = {
+                  type: 'line',
+                  data: {
+                      labels: sortedLabels,
+                      datasets: [{
+                          label: '총 금액',
+                          data: sortedValues,
+                          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                          borderColor: 'rgba(75, 192, 192, 1)',
+                          borderWidth: 1
+                      }]
+                  },
+                  options: {
+                      responsive: true,
+                      maintainAspectRatio: false,
+                      scales: {
+                          y: {
+                              beginAtZero: true
+                          }
+                      }
+                  }
+              };
+           const canvas = document.getElementById('orderprice');
+            canvas.style.height = '440px';
+              new Chart(ctx, config);
+          });
+          /*]]>*/
+	</script>
+	<script th:inline="javascript">
+
+	</script>
+
+
+	<style>
+		/* 라디오 버튼 숨기기 */
+          input[type="radio"] {
+            display: none;
+          }
+
+        input[type="radio"]:checked + label {
+           background-color: skyblue;
+        }
+		#ordercount {
+            height: 420px !important;
+        }
+		#orderbuyer {
+            height: 420px !important;
+        }
+		#orderprice {
+            height: 420px !important;
+        }
+	</style>
 </th:block>
 </html>
