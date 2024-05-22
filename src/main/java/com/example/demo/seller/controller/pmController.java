@@ -57,7 +57,7 @@ public class pmController {
 
 	//상품 상세페이지 이동
 	@GetMapping("/{productId}")
-	public String getProductDetail(@PathVariable String productId, Model model) {
+	public String getProductDetail(@PathVariable("productId") String productId, Model model) {
 		List<Product_detail> productDetail = productService.getProductDetail(productId);
 		model.addAttribute("productDetail", productDetail);
 		List<Category> categories = categoryService.getAll();
