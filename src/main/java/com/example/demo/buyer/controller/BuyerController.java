@@ -18,7 +18,7 @@ public class BuyerController {
 
 	@RequestMapping("buyer/{subPath}")
 	public String main
-			(@PathVariable String subPath, Model model) {
+			(@PathVariable("subPath") String subPath, Model model) {
 		List<Category> categories = categoryService.getAll();
 		model.addAttribute("category", categories);
 		return "buyer/"+subPath;

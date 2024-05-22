@@ -17,7 +17,7 @@ public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long category_id; // 카테고리 아이디
+    private int category_id; // 카테고리 아이디
     private String category_name; // 카테고리 이름
     private int category_def; // 카테고리 깊이
     private int category_parent_id; // 카테고리 상위 아이디

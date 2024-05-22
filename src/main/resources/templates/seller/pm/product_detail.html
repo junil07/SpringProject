@@ -1,0 +1,168 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{_layout/seller/index}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<th:block layout:fragment="pageContent">
+    <main id="main" class="main">
+        <div class="container-fluid">
+            <div class="container-fluid">
+                <div class="card">
+                    <div class="card-body">
+                        <tr th:each="productDetail : ${productDetail}">
+                        <h1 class="card-title fw-semibold mb-4" style="font-size:30px;">  상품 조회/수정  </h1>
+
+                        <div class="card mb-0" style="float:left;">
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label for="productid" class="form-label">ID</label>
+                                    <input type="text" class="form-control" id="productid" aria-describedby="emailHelp" th:value="${productDetail.productId.productId}">
+                                    <div id="emailHelp" class="form-text">상품 코드 작성 양식 : {판매자 아이디}{상품 코드}{상품 색상}</div>
+                                </div>
+                                <div style="width: 430px; height: 450px;">
+                                    <label for="preview" class="form-label">상품 이미지 미리보기</label>
+                                    <img id="preview" src="#" alt="미리보기" style="max-width: 400px; max-height: 400px;">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="productimage" class="form-label">이미지 업로드</label>
+                                    <input type="file" class="form-control" id="productimage">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="productname" class="form-label">소재</label>
+                                    <input type="text" class="form-control" id="productname">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="productexplain" class="form-label">설명</label>
+                                    <input type="text" class="form-control" id="productexplain">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="productprice" class="form-label">가격</label>
+                                    <input type="text" class="form-control" id="productprice">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="productdiscount" class="form-label">할인율</label>
+                                    <input type="text" class="form-control" id="productdiscount">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="producthash" class="form-label">해시태그</label>
+                                    <input type="text" class="form-control" id="producthash">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="productcategory" class="form-label">카테고리</label>
+                                    <select id="productcategory" class="form-select">
+                                        <option th:each="category : ${category}" th:value="${category.category_id}" th:text="${category.category_name}">카테고리 선택</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <form>
+                                    <div>
+
+
+                                        <!-- 이미지 부분 -->
+
+
+                                        <div class="mb-3">
+                                            <label for="productmate" class="form-label">소재</label>
+                                            <input type="text" class="form-control" id="productmate" th:value="${productDetail.PRODUCT_DETAIL_MATE}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="productheight" class="form-label">굽높이</label>
+                                            <input type="text" class="form-control" id="productheight" th:value="${productDetail.PRODUCT_DETAIL_HEIGHT}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="productmaker" class="form-label">제조자</label>
+                                            <input type="text" class="form-control" id="productmaker" th:value="${productDetail.PRODUCT_DETAIL_MAKER}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="productcountry" class="form-label">제조국</label>
+                                            <input type="text" class="form-control" id="productcountry" th:value="${productDetail.PRODUCT_DETAIL_COUNTRY}">
+                                        </div>
+
+                                    </div>
+                                    <div>
+                                        <div class="mb-3">
+                                            <label for="productcolor" class="form-label">색상</label>
+                                            <input type="text" class="form-control" id="productcolor" th:value="${productDetail.PRODUCT_DETAIL_COLOR}">
+                                        </div>
+
+
+                                        <div class="mb-3">
+                                            <label for="productsize" class="form-label">치수</label>
+                                            <input type="text" class="form-control" id="productsize" th:value="${productDetail.PRODUCT_DETAIL_SIZE}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="productyear" class="form-label">제조년월</label>
+                                            <input type="text" class="form-control" id="productyear" th:value="${productDetail.PRODUCT_DETAIL_YEAR}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="productwarning" class="form-label">소재별 관리방법</label>
+                                            <input type="text" class="form-control" id="productwarning" th:value="${productDetail.PRODUCT_DETAIL_WARNING}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="productas" class="form-label">A/S 책임자와 전화번호</label>
+                                            <input type="text" class="form-control" id="productas" th:value="${productDetail.PRODUCT_DETAIL_AS}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="productstandard" class="form-label">품질보증기준</label>
+                                            <input type="text" class="form-control" id="productstandard" th:value="${productDetail.PRODUCT_DETAIL_STANDARD}">
+                                        </div>
+                                        <div class="mb-3 form-check">
+                                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                            <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </form>
+                            </div>
+                        </div>
+                        </tr>
+                        <h5 class="card-title fw-semibold mb-4">Disabled forms</h5>
+                        <div class="card mb-0">
+                            <div class="card-body">
+                                <form>
+                                    <fieldset disabled>
+                                        <legend>Disabled fieldset example</legend>
+                                        <div class="mb-3">
+                                            <label for="disabledTextInput" class="form-label">Disabled input</label>
+                                            <input type="text" id="disabledTextInput" class="form-control" placeholder="Disabled input">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="disabledSelect" class="form-label">Disabled select menu</label>
+                                            <select id="disabledSelect" class="form-select">
+                                                <option>Disabled select</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="disabledFieldsetCheck" disabled>
+                                                <label class="form-check-label" for="disabledFieldsetCheck">
+                                                    Can't check this
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+    <script>
+        // 이미지 미리보기 기능
+        document.getElementById("productimage").onchange = function (evt) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById("preview").src = e.target.result;
+            };
+            reader.readAsDataURL(this.files[0]);
+        };
+
+    </script>
+</th:block>
+</html>
