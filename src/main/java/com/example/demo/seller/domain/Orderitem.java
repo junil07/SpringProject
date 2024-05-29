@@ -20,7 +20,7 @@ public class Orderitem {
 
     // Product 엔티티와의 매핑
     @ManyToOne
-    @JoinColumn(name = "PRODUCT_ID", referencedColumnName = "productid")
+    @JoinColumn(name = "PRODUCT_ID", referencedColumnName = "productId")
     private Product productid;
 
     private String ORDERITEM_PSTATUS;

@@ -513,7 +513,7 @@ d="M256 349q-52 0 -86 -60t-34 -161q0 -57 21.5 -88t62.5 -31q53 0 87 62t34 153q0 5
 t46.5 -103t12 -111q0 -163 -64.5 -271.5t-157.5 -108.5q-68 0 -110 51t-42 137q0 82 53 143.5t125 61.5q44 0 72.5 -22t45.5 -71z" />
     <glyph glyph-name="Delta" unicode="&#x2206;" horiz-adv-x="612" 
 d="M92 45h373l-186 459zM595 0h-574l276 672h22z" />
-    <glyph glyph-name="product" unicode="&#x220f;" horiz-adv-x="823" 
+    <glyph glyph-name="product" unicode="&#x220f;" horiz-adv-x="823"
 d="M118 -176v880h-88v40h767v-40h-88v-880h88v-40h-264v40h84v880h-407v-880h84v-40h-264v40h88z" />
     <glyph glyph-name="fraction" unicode="&#x2215;" horiz-adv-x="167" 
 d="M310 714h23l-476 -748h-23z" />

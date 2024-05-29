@@ -1,0 +1,14 @@
+<!-- subcategories.html -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Subcategories</title>
+</head>
+<body>
+<select id="subSubCategory">
+    <option value="">Select SubCategory</option>
+    <option th:each="subSubcategory : ${subSubcategories}" th:value="${subSubcategory.id}" th:text="${subSubcategory.name}"></option>
+</select>
+</body>
+</html>

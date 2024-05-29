@@ -1,7 +1,6 @@
 package com.example.demo.buyer.service;
 
 import com.example.demo.buyer.entity.Category;
-import com.example.demo.buyer.entity.CategoryPath;
 import com.example.demo.buyer.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +18,19 @@ public class CategoryService implements BuyerService {
     public List<Category> getAll(){
         return categoryRepository.findAll();
     }
+
+    //다인 수정
+    @Override
+    public List<Category> getSubCategories(Long parentId) {
+        return categoryRepository.findByCategoryParentId(parentId);
+    }
+
+   public Category getCategory(Long category) {
+        return categoryRepository.findByCategoryId(category);
+    }
+
+    //
+
 
     @Override
     public List<Category> getRows() {
