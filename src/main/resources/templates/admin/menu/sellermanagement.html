@@ -1,8 +1,12 @@
-<!-- 메인 화면  -->
+<!-- 판매자의  -->
 <html layout:decorate="~{layout/admin/index}">
 
 <th:block layout:fragment="pageHead">
     <title>판매자 관리</title>
+
+    <link rel="stylesheet" href="/admin/vendor/select2/css/select2.min.css">
+    <link rel="stylesheet" href="/admin/css/infomanagement.css">
+
 </th:block>
 
 <th:block layout:fragment="pageContent">
@@ -28,82 +32,171 @@
                     <h4 class="card-title">판매자 관리</h4>
                 </div>
                 <div class="card-body">
-                    <p>판매자 관리 패널입니다.</p>
+                    <p>체크박스와 하단의 버튼을 통해 계정 활성화 상태를 바꾸거나 요소를 클릭하여 변경할 수 있습니다.</p>
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped my-4" style="min-width: 480px; width: 150%;">
+                        <table id="example2" class="display" style="width:100%">
                             <thead>
-
                             <tr>
                                 <th>
                                     <div class="custom-control custom-checkbox pl-4">
-                                        <input type="checkbox">
+                                        <input type="checkbox" id="checkAll">
                                     </div>
                                 </th>
-                                <th class="text-center text-dark">
-                                    상품 ID<br>
-                                    <small class="text-muted">&lt;576px</small>
-                                </th>
-                                <th class="text-center text-dark">
-                                    판매자 ID<br>
-                                    <small class="text-muted">≥576px</small>
-                                </th>
-                                <th class="text-center text-dark">
-                                    상품명<br>
-                                    <small class="text-muted">≥768px</small>
-                                </th>
-                                <th class="text-center text-dark">
-                                    상품 설명<br>
-                                    <small class="text-muted">≥992px</small>
-                                </th>
-                                <th class="text-center text-dark">
-                                    상품 가격<br>
-                                    <small class="text-muted">≥1200px</small>
-                                </th>
-                                <th class="text-center text-dark">
-                                    할인율<br>
-                                    <small class="text-muted">≥1200px</small>
-                                </th>
-                                <th class="text-center text-dark">
-                                    해쉬태그<br>
-                                    <small class="text-muted">≥1200px</small>
-                                </th>
-                                <th class="text-center text-dark">
-                                    상태<br>
-                                    <small class="text-muted">≥1200px</small>
-                                </th>
-                                <th class="text-center text-dark">
-                                    카테고리<br>
-                                    <small class="text-muted">≥1200px</small>
+                                <th class="text-center text-dark" th:each="columnName : ${columnName}">
+                                    [[${columnName}]]
                                 </th>
                             </tr>
-
                             </thead>
                             <tbody>
-
-                            <tr>
-                                <th style="width: 5%;">
+                            <tr th:each="seller : ${sellerList}">
+                                <td>
                                     <div class="custom-control custom-checkbox pl-4">
-                                        <input type="checkbox">
+                                        <input type="checkbox" class="check_id" th:id="${seller.sellerId}">
                                     </div>
-                                </th>
-                                <td>ㅎㅎㅎㅎ</td>
-                                <td>하하하하하하하하하하하하</td>
-                                <td>720px</td>
-                                <td>960px</td>
-                                <td>1140px</td>
-                                <td>1140px</td>
-                                <td>1140px</td>
-                                <td>1140px</td>
-                                <td>1140px</td>
+                                </td>
+                                <td>[[${seller.sellerId}]]</td>
+                                <td><a href="" data-toggle="modal" data-target="#sellerInfo" th:onclick="nameUpdate([[${seller.sellerId}]], [[${seller.sellerName}]])">[[${seller.sellerName}]]</a></td>
+                                <td><a href="" data-toggle="modal" data-target="#sellerInfo" th:onclick="birthUpdate([[${seller.sellerId}]], [[${seller.sellerName}]])" th:text="${#dates.format(seller.sellerBirth, 'yyyy-MM-dd')}"></a></td>
+                                <td><a href="" data-toggle="modal" data-target="#sellerInfo" th:onclick="emailUpdate([[${seller.sellerId}]], [[${seller.sellerName}]])">[[${seller.sellerEmail}]]</a></td>
+                                <td><a href="" data-toggle="modal" data-target="#sellerInfo" th:onclick="addressUpdate([[${seller.sellerId}]], [[${seller.sellerName}]])">[[${seller.sellerAddress}]]</a></td>
+                                <td class="text-center"><a href="" data-toggle="modal" data-target="#sellerInfo" th:onclick="phoneNumUpdate([[${seller.sellerId}]], [[${seller.sellerName}]])">[[${seller.sellerPhoneNum}]]</a></td>
+                                <td class="text-center"><a href="" data-toggle="modal" data-target="#sellerInfo" th:onclick="bNumUpdate([[${seller.sellerId}]], [[${seller.sellerName}]])">[[${seller.sellerBnum}]]</a></td>
+                                <td class="text-center">[[${seller.sellerActivation}]]</td>
+                                <td class="text-center">[[${seller.sellerLastLogin}]]</td>
                             </tr>
 
                             </tbody>
+                            <tfoot>
+                            <tr>
+                                <th>
+                                    <div class="custom-control custom-checkbox pl-4">
+
+                                    </div>
+                                </th>
+                                <th class="text-center text-dark" th:each="columnName : ${columnName}">
+                                    [[${columnName}]]
+                                </th>
+                            </tr>
+                            </tfoot>
                         </table>
+
+                        <div class="bootstrap-modal" style="float: right; display: ruby;">
+                            <!-- Anchor trigger modal -->
+                            <button class="btn btn-rounded btn-primary" data-toggle="modal" data-target="#activate">계정 활성화 변경</button>
+                            <!-- 계정 활성화 바꾸는 모달 -->
+                            <form name="Afrm" method="post" th:action="@{/admin/seller/ActivationUpdate}" th:object="${activation}">
+                                <div class="modal fade" id='activate'>
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">계정 활성화 변경</h5>
+                                                <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body" id="ActivateModal">
+
+                                                <!-- 셀렉트 박스 -->
+                                                <div class="row">
+                                                    <div class="col-xl-6" style="flex: 0 0 100%; max-width: 100%;">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <div class="mb-4">
+                                                                    <h4 class="card-title">선택된 사용자의 계정 활성화 상태가 변경됩니다.</h4>
+                                                                    <div id="ActivationInput1"></div>
+                                                                </div>
+
+                                                                <select class="disabling-options" th:field="*{activationUpdate}">
+                                                                    <option value="1">정상</option>
+                                                                    <option value="0">정지</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- 셀렉트 박스 끝 -->
+                                                <input type="hidden" id="ActivationInput2" th:field="*{activationId}">
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-primary" onclick="ActivationUpdate()">저장</button>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <!-- 판매자 정보를 바꾸는 모달 -->
+                            <form name="infoFrm" method="post" action="" th:object="${sellerInfo}">
+                                <div class="modal fade" id='sellerInfo'>
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="sellerInfoTitle"></h5>
+                                                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                                            </div>
+                                            <div class="modal-body">
+
+                                                <div class="row">
+                                                    <div class="col-xl-6" style="flex: 0 0 100%; max-width: 100%;">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <div class="mb-4">
+                                                                    <h4 class="card-title" id="sellerInfoContent"></h4>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <h6 id="sellerInfoUser"></h6>
+                                                                    <input type="text" id="infoInput1" class="form-control input-default infoInput" th:field="*{name}" autocomplete="off">
+                                                                    <input type="date" id="infoInput2" class="form-control input-default infoInput" th:field="*{birth}">
+                                                                    <input type="text" id="infoInput3" class="form-control input-default infoInput" th:field="*{email}" autocomplete="off">
+
+                                                                    <div id="addressId1" class="divFlex">
+                                                                        <input type="text" class="form-control input-default marginBaby infoInput" id="sample6_postcode" placeholder="우편번호">
+                                                                        <input type="button" class="btn btn-primary marginBaby infoInput" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br id="addressBr1">
+                                                                    </div>
+                                                                        <input type="text" class="form-control input-default infoInput" id="sample6_address" placeholder="주소"><br id="addressBr2">
+                                                                    <div id="addressId2" class="divFlex">
+                                                                        <input type="text" class="form-control input-default infoInput" id="sample6_detailAddress" placeholder="상세주소">
+                                                                        <input type="text" class="form-control input-default infoInput" id="sample6_extraAddress" placeholder="참고항목">
+                                                                    </div>
+
+                                                                    <input type="hidden" id="addressForm" th:field="*{address}">
+                                                                    <input type="hidden" id="addressForm1">
+                                                                    <input type="text" id="infoInput4" class="form-control input-default infoInput" th:field="*{phoneNum}" autocomplete="off">
+                                                                    <input type="text" id="infoInput5" class="form-control input-default infoInput" th:field="*{bNum}" autocomplete="off">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <input type="hidden" id="sellerInfoInput1" th:field="*{check}">
+                                                <input type="hidden" id="sellerInfoInput2" th:field="*{id}">
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" id="saveBtn" class="btn btn-primary" onclick="sellerInfoUpdate()">저장</button>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+</th:block>
+
+<th:block layout:fragment="bottomScriptAdd">
+
+    <script src="/admin/js/sellermanagement.js"></script>
+    <script src="/admin/vendor/select2/js/select2.full.min.js"></script>
+    <script src="/admin/js/plugins-init/select2-init.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 </th:block>
 

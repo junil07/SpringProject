@@ -5,7 +5,10 @@ import com.example.demo.admin.repository.BuyerRepository1;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -77,6 +80,84 @@ public class BuyerServiceImple implements BuyerService {
 
         return flag;
 
+    }
+
+    @Transactional
+    @Override
+    public boolean buyerNameUpdate(String buyerId, String buyerName) {
+        boolean flag = false;
+        Buyer buyer = buyerRepository1.findById(buyerId).orElse(null);
+
+        if (buyer != null) {
+            buyer.setBuyerName(buyerName);
+            flag = true;
+        }
+
+        return flag;
+    }
+
+    @Transactional
+    @Override
+    public boolean buyerBirthUpdate(String buyerId, String buyerBirth) {
+        boolean flag = false;
+        Buyer buyer = buyerRepository1.findById(buyerId).orElse(null);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+
+        try {
+            date = formatter.parse(buyerBirth);
+        } catch (ParseException e) {
+            e.printStackTrace();;
+        }
+
+        if (buyer != null) {
+            buyer.setBuyerBirth(date);
+            flag = true;
+        }
+
+        return flag;
+    }
+
+    @Transactional
+    @Override
+    public boolean buyerEmailUpdate(String buyerId, String buyerEmail) {
+        boolean flag = false;
+        Buyer buyer = buyerRepository1.findById(buyerId).orElse(null);
+
+        if (buyer != null) {
+            buyer.setBuyerEmail(buyerEmail);
+            flag = true;
+        }
+
+        return flag;
+    }
+
+    @Transactional
+    @Override
+    public boolean buyerAddrUpdate(String buyerId, String buyerAddr) {
+        boolean flag = false;
+        Buyer buyer = buyerRepository1.findById(buyerId).orElse(null);
+
+        if (buyer != null) {
+            buyer.setBuyerAddress(buyerAddr);
+            flag = true;
+        }
+
+        return flag;
+    }
+
+    @Transactional
+    @Override
+    public boolean buyerPhoneUpdate(String buyerId, String buyerPhone) {
+        boolean flag = false;
+        Buyer buyer = buyerRepository1.findById(buyerId).orElse(null);
+
+        if (buyer != null) {
+            buyer.setBuyerPhoneNum(buyerPhone);
+            flag = true;
+        }
+
+        return flag;
     }
 
 }

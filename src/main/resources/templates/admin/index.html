@@ -2,7 +2,7 @@
 <html layout:decorate="~{layout/admin/index}">
 
 	<th:block layout:fragment="pageHead">
-		<title th:text="${test}"></title>
+		<title>메인 페이지</title>
 	</th:block>
 
 	<th:block layout:fragment="pageContent">
@@ -10,13 +10,11 @@
 			<div class="col-sm-6 p-md-0">
 				<div class="welcome-text">
 					<h4>관리자 [[${adminName}]]님 반갑습니다.</h4>
-					<p class="mb-0">Your business dashboard template</p>
 				</div>
 			</div>
 			<div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
 				<ol class="breadcrumb">
-					<li class="breadcrumb-item"><a href="javascript:void(0)">App</a></li>
-					<li class="breadcrumb-item active"><a href="javascript:void(0)">Profile</a></li>
+					<li class="breadcrumb-item active"><a href="javascript:void(0)">Main</a></li>
 				</ol>
 			</div>
 		</div>

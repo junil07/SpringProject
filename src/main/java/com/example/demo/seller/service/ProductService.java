@@ -24,7 +24,7 @@ public class ProductService implements SellerService_ {
 
     @Override
     public List<Product_detail> getProductDetail(String productId) {
-        return product_detailRepository.findByProductId_ProductId(productId);
+        return product_detailRepository.findByProduct_ProductId(productId);
     }
 
 

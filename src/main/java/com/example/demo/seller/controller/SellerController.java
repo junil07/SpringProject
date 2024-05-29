@@ -1,10 +1,9 @@
 package com.example.demo.seller.controller;
 
-import com.example.demo.seller.domain.Seller;
+import com.example.demo.admin.Entity.Seller;
 import com.example.demo.seller.service.OrderitemService;
 import com.example.demo.seller.service.ProductService;
 import com.example.demo.seller.service.SellerService;
-import io.swagger.models.auth.In;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,9 +16,9 @@ import java.util.Map;
 @RequestMapping("/seller")
 public class SellerController {
 
-	private final OrderitemService orderitemService;
-	private final SellerService sellerService;
-	private final ProductService productService;
+	private OrderitemService orderitemService;
+	private SellerService sellerService;
+	private ProductService productService;
 //	OrderitemService orderitemService
 	public SellerController(OrderitemService orderitemService,
 							SellerService sellerService,
@@ -38,8 +37,8 @@ public class SellerController {
 		model.addAttribute("price", price);
 		Map<String, Integer> buyer = orderitemService.findDisBuyer();
 		model.addAttribute("buyer", buyer);
-		Map<String, Integer> product = orderitemService.countsellproduct();
-		model.addAttribute("product", product);
+//		Map<String, Integer> product = orderitemService.countsellproduct();
+//		model.addAttribute("product", product);
 		List<Seller> sellers = sellerService.getAllSellers();
 		model.addAttribute("sellers", sellers);
 		return "seller/index";
