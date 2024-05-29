@@ -88,6 +88,7 @@ public class ProductService implements SellerService_ {
     public String generateUniqueId(String seller, String id) {
         //중복방지 예외처리 할 것
         return seller + id;
+
     }
 
 

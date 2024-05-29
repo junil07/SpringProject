@@ -10,23 +10,26 @@ import lombok.Setter;
 public class Orderitem {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer ORDERITEM_ID;
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="ORDERITEM_ID")
+    private Integer orderitemId;
+    @Column(name="ORDERITEM_PSTATUS")
+    private String orderitemPstatus;
+    @Column(name="ORDERITEM_DSTATUS")
+    private String orderitemDstatus;
+    @Column(name="ORDERITEM_PCOUNT")
+    private int orderitemPcount;
+    @Column(name="ORDERITEM_PRICE")
+    private int orderitemPrice;
 
     // Order_list 엔티티와의 매핑
-    @ManyToOne
-    @JoinColumn(name = "ORDER_LIST_ID", referencedColumnName = "ORDER_LIST_ID")
+    @ManyToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "ORDER_LIST_ID", referencedColumnName = "order_list_Id")
     private Order_list order_list;
 
     // Product 엔티티와의 매핑
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "PRODUCT_ID", referencedColumnName = "productId")
-    private Product productid;
-
-    private String ORDERITEM_PSTATUS;
-    private String ORDERITEM_DSTATUS;
-    private int ORDERITEM_PCOUNT;
-    private int ORDERITEM_PRICE;
-
+    private Product productId;
 }
 
