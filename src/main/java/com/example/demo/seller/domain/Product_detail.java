@@ -1,6 +1,5 @@
 package com.example.demo.seller.domain;
 
-import com.example.demo.buyer.entity.Category;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

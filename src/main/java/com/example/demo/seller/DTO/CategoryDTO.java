@@ -1,23 +1,26 @@
-package com.example.demo.buyer.entity;
-
-import jakarta.persistence.*;
+package com.example.demo.seller.DTO;
 
 import java.util.List;
 
-@Entity
-@Table(name = "Category")
-public class Category {
+public class CategoryDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long categoryId;
     private String categoryName;
     private int categoryDef;
     private Long categoryParentId;
+    private List<CategoryDTO> children;
 
+    // 기본 생성자
+    public CategoryDTO() {
+    }
 
-    @Transient
-    private List<Category> children;
+    // 생성자
+    public CategoryDTO(Long categoryId, String categoryName, int categoryDef, Long categoryParentId) {
+        this.categoryId = categoryId;
+        this.categoryName = categoryName;
+        this.categoryDef = categoryDef;
+        this.categoryParentId = categoryParentId;
+    }
 
     // getters and setters
     public Long getCategoryId() {
@@ -52,14 +55,11 @@ public class Category {
         this.categoryParentId = categoryParentId;
     }
 
-    public List<Category> getChildren() {
+    public List<CategoryDTO> getChildren() {
         return children;
     }
 
-    public void setChildren(List<Category> children) {
+    public void setChildren(List<CategoryDTO> children) {
         this.children = children;
     }
-
 }
-
-

@@ -1,39 +1,57 @@
 package com.example.demo.seller.repository;
 
-import com.example.demo.buyer.DTO.ProductOrderSummaryDTO;
-import com.example.demo.seller.domain.Orderitem;
-import org.apache.ibatis.annotations.Param;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import com.example.demo.seller.domain.Orderitem;
 
 @Repository
-public interface OrderitemRepository extends JpaRepository<Orderitem, Integer> {
+public interface OrderitemRepository extends JpaRepository<Orderitem, Long> {
 
-    @Query("SELECT ol.ORDER_LIST_DATE, SUM(o.ORDERITEM_PRICE)\n" +
+    @Query("SELECT o.order_list.order_list_Date, COUNT(o.order_list.order_list_Id)\n" +
             "FROM Orderitem o \n" +
             "JOIN o.order_list ol \n" +
-            "JOIN o.productid p \n" +
-            "GROUP BY ol.ORDER_LIST_DATE\n")
-    List<Object[]> findTotalPricePerDate();
-
-    @Query("SELECT ol.ORDER_LIST_DATE, COUNT(DISTINCT ol.BUYER_LIST_ID)\n" +
-            "FROM Orderitem o \n" +
-            "JOIN o.order_list ol \n" +
-            "JOIN o.productid p \n" +
-            "GROUP BY ol.ORDER_LIST_DATE\n")
-    List<Object[]> findBuyerDate();
-
-    @Query("SELECT o.order_list.ORDER_LIST_ID, COUNT(o.order_list.ORDER_LIST_ID)\n" +
-            "FROM Orderitem o \n" +
-            "JOIN o.order_list ol \n" +
-            "JOIN o.productid p \n" +
-            "GROUP BY o.order_list.ORDER_LIST_ID\n")
+            "JOIN o.productId p \n" +
+            "JOIN p.seller s \n" +
+//            "WHERE s.id = 'seller01' \n" +
+            "GROUP BY o.order_list.order_list_Date")
     List<Object[]> findCountDate();
 
-//    @Query("SELECT o.product.id, COUNT(o.product.id) FROM Orderitem o JOIN o.product p GROUP BY o.product.id")
-//    List<Object[]> findsellProduct();
+    @Query("SELECT ol.order_list_Date, COUNT(DISTINCT ol.buyer)\n" +
+            "FROM Orderitem o \n" +
+            "JOIN o.order_list ol \n" +
+            "JOIN o.productId p \n" +
+            "JOIN p.seller s \n" +
+//            "WHERE s.id = 'seller01' \n" +
+            "GROUP BY ol.order_list_Date")
+    List<Object[]> findBuyerDate();
 
+    @Query("SELECT ol.order_list_Date, SUM(o.orderitemPrice)\n" +
+            "FROM Orderitem o \n" +
+            "JOIN o.order_list ol \n" +
+            "JOIN o.productId p \n" +
+            "JOIN p.seller s \n" +
+//            "WHERE s.id = 'seller01' \n" +
+            "GROUP BY ol.order_list_Date")
+    List<Object[]> findTotalPricePerDate();
+
+    //제품 판매 비율 원형그래프
+    @Query("SELECT o.productId.id, COUNT(o.productId.id) " +
+            "FROM Orderitem o " +
+            "JOIN o.productId p " +
+            "JOIN p.seller s \n" +
+//            "WHERE s.id = 'seller01' \n" +
+            "GROUP BY o.productId.id")
+    List<Object[]> findsellProduct();
+
+    @Query("SELECT o " +
+            "FROM Orderitem o " +
+            "JOIN o.productId p " +
+            "JOIN o.order_list ol " +
+            "JOIN ol.buyer b " +
+            "WHERE o.orderitemPstatus LIKE '결제전'")
+    List<Object[]> findoutstanding();
 }
