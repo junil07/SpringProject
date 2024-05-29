@@ -18,13 +18,13 @@ public class CustomQueryRepository {
                         "p.productId, " +
                         "p.productName, " +
                         "p.productPrice, " +
-                        "SUM(oi.ORDERITEM_PCOUNT) AS total_count, " +
+                        "SUM(oi.orderitemPcount) AS total_count, " +
                         "pi.productImageName, " +
                         "pi.productImageExtension, " +
                         "pd.productDetailMaker " +
                         "FROM " +
                         "Orderitem oi " +
-                        "JOIN oi.productid p " +
+                        "JOIN oi.product p " +
                         "LEFT JOIN ProductImage pi ON p.productId = pi.product.productId " +
                         "LEFT JOIN Product_detail pd ON p.productId = pd.product.productId " +
                         "GROUP BY " +

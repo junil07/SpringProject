@@ -30,7 +30,8 @@ public class SecurityConfig {
                         authorizeRequests
                                 .requestMatchers("/admin/login", "/admin/logout", "/admin/.vscode/**"
                                         , "/admin/css/**", "/admin/icons/**", "/admin/images/**"
-                                        , "/admin/js/**", "/admin/logincss/**", "/admin/vendor/**", "/login").permitAll()
+                                        , "/admin/js/**", "/admin/logincss/**", "/admin/vendor/**", "/login", "/seller/**", "/buyer/**"
+                                        , "/assets/**", "/css/**", "/demo/**", "/images/**", "/js/**", "/plugins/**","/buyer/detail").permitAll()
                                 .requestMatchers("admin/main").hasRole(Role.ADMIN.name())
                                 .anyRequest().authenticated()
                 )

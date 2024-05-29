@@ -100,25 +100,25 @@
                                         });
                                     </script>
 
-                                    <div style="width:145px; float:left;">
-                                        <select id="category" class="form-select">
-                                            <option value="">==미선택==</option>
-                                            <th:block th:each="category : ${category}" th:if="${category.categoryDef == 0}">
-                                                <option th:value="${category.categoryId}" th:text="${category.categoryName}" th:field=""></option>
-                                            </th:block>
-                                        </select>
-                                    </div>
-                                    <div style="width:145px; float:left;">
-                                        <select id="subCategory" class="form-select">
-                                            <option value="">==미선택==</option>
-                                        </select>
-                                    </div>
-                                    <div style="width:145px; float:left;">
-                                        <select id="subSubCategory" class="form-select">
-                                            <option value="">==미선택==</option>
-                                        </select>
-                                    </div>
-                                </div>
+<!--                                    <div style="width:145px; float:left;">-->
+<!--                                        <select id="category" class="form-select">-->
+<!--                                            <option value="">==미선택==</option>-->
+<!--                                            <th:block th:each="category : ${category}" th:if="${category.categoryDef == 0}">-->
+<!--                                                <option th:value="${category.categoryId}" th:text="${category.categoryName}" th:field=""></option>-->
+<!--                                            </th:block>-->
+<!--                                        </select>-->
+<!--                                    </div>-->
+<!--                                    <div style="width:145px; float:left;">-->
+<!--                                        <select id="subCategory" class="form-select">-->
+<!--                                            <option value="">==미선택==</option>-->
+<!--                                        </select>-->
+<!--                                    </div>-->
+<!--                                    <div style="width:145px; float:left;">-->
+<!--                                        <select id="subSubCategory" class="form-select">-->
+<!--                                            <option value="">==미선택==</option>-->
+<!--                                        </select>-->
+<!--                                    </div>-->
+<!--                                </div>-->
                                 <button type="button">Save Product</button>
                             </div>
                         </div>

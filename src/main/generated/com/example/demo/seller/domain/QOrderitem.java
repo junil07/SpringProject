@@ -22,19 +22,21 @@ public class QOrderitem extends EntityPathBase<Orderitem> {
 
     public static final QOrderitem orderitem = new QOrderitem("orderitem");
 
-    public final QOrder_list order_list;
+    public final DatePath<java.time.LocalDate> orderitemDate = createDate("orderitemDate", java.time.LocalDate.class);
 
-    public final StringPath ORDERITEM_DSTATUS = createString("ORDERITEM_DSTATUS");
+    public final StringPath orderitemDstatus = createString("orderitemDstatus");
 
-    public final NumberPath<Integer> ORDERITEM_ID = createNumber("ORDERITEM_ID", Integer.class);
+    public final NumberPath<Integer> orderitemId = createNumber("orderitemId", Integer.class);
 
-    public final NumberPath<Integer> ORDERITEM_PCOUNT = createNumber("ORDERITEM_PCOUNT", Integer.class);
+    public final NumberPath<Integer> orderitemPcount = createNumber("orderitemPcount", Integer.class);
 
-    public final NumberPath<Integer> ORDERITEM_PRICE = createNumber("ORDERITEM_PRICE", Integer.class);
+    public final NumberPath<Integer> orderitemPrice = createNumber("orderitemPrice", Integer.class);
 
-    public final StringPath ORDERITEM_PSTATUS = createString("ORDERITEM_PSTATUS");
+    public final StringPath orderitemPstatus = createString("orderitemPstatus");
 
-    public final QProduct productid;
+    public final QOrderlist orderlist;
+
+    public final QProduct product;
 
     public QOrderitem(String variable) {
         this(Orderitem.class, forVariable(variable), INITS);
@@ -54,8 +56,8 @@ public class QOrderitem extends EntityPathBase<Orderitem> {
 
     public QOrderitem(Class<? extends Orderitem> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.order_list = inits.isInitialized("order_list") ? new QOrder_list(forProperty("order_list"), inits.get("order_list")) : null;
-        this.productid = inits.isInitialized("productid") ? new QProduct(forProperty("productid"), inits.get("productid")) : null;
+        this.orderlist = inits.isInitialized("orderlist") ? new QOrderlist(forProperty("orderlist"), inits.get("orderlist")) : null;
+        this.product = inits.isInitialized("product") ? new QProduct(forProperty("product"), inits.get("product")) : null;
     }
 
 }

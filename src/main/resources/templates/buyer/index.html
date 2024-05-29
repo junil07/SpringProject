@@ -289,7 +289,7 @@
             </form>
             <div th:each="productSummaryList: ${productSummaryList}" class="col-lg-3 col-md-6 mb-4">
                 <div class="card h-100">
-                    <a href="javascript:void(0);" class="product-list-item" th:data-productId="${productSummaryList.productId}">
+                    <a href="javascript:void(0);" class="product-list-item" th:data-product-id="${productSummaryList.productId}">
                         <img class="card-img-top" th:src="@{'/assets/image/' + ${productSummaryList.productImageName} + ${productSummaryList.productImageExtension}}" alt="shoes">
                         <div class="card-body">
                             <!-- 상품명 -->
@@ -314,14 +314,14 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         /*
-        function submitForm(productId) {
-            console.log(productId);
+        function submitForm(product) {
+            console.log(product);
             $('#productForm').submit();
         }
         */
         $(document).ready(function() {
             $("a.product-list-item").on("click", function() {
-                var this_val = $(this).data("productid");
+                var this_val = $(this).data("product-id");
                 $("#productId").val(this_val);
                 $("#productForm").submit();
             });

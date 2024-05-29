@@ -1,6 +1,6 @@
 package com.example.demo.buyer.controller;
 
-import com.example.demo.buyer.DTO.ProductViewDto;
+import com.example.demo.buyer.entity.ProductView;
 import com.example.demo.buyer.entity.Category;
 import com.example.demo.buyer.repository.ProductViewRepository;
 import com.example.demo.buyer.service.CategoryService;
@@ -44,7 +44,7 @@ public class BuyerController {
 	public String detail(Model model, @RequestParam("productId") String productId){
 		System.out.print(productId);
 		List<Category> categories = categoryService.getRows();
-		List<ProductViewDto> productDetail = productViewRepository.findByProductId(productId);
+		List<ProductView> productDetail = productViewRepository.findByProductId(productId);
 		List<String> productSize = productSizeimple.getRowParamOne(productId);
 		model.addAttribute("categories", categories);
 		model.addAttribute("productDetail", productDetail);

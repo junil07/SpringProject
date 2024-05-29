@@ -1,9 +1,9 @@
 package com.example.demo.seller.domain;
 
-import java.util.Locale.Category;
 
 import com.example.demo.admin.Entity.Seller;
 
+import com.example.demo.buyer.entity.Category;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

@@ -30,7 +30,7 @@ public class CmController {
 	public String ordersearch(Model model) {
 		List<Orderitem> orderitem = orderitemService.getOrderitemList();
 		// 최근 날짜순으로 불러오기
-		orderitem.sort(Comparator.comparing(o -> o.getOrder_list().getOrder_list_Date(), Comparator.reverseOrder()));
+		orderitem.sort(Comparator.comparing(o -> o.getOrderlist().getOrderlistDate(), Comparator.reverseOrder()));
 		model.addAttribute("orderitem", orderitem);
 		return "/seller/sm/ordersearch";
 	}
@@ -43,7 +43,7 @@ public class CmController {
 		// "결제전" 상태의 항목만 필터링
 		List<Orderitem> filteredOrderItems = orderitem.stream()
 				.filter(o -> "결제전".equals(o.getOrderitemPstatus()))
-				.sorted(Comparator.comparing(o -> o.getOrder_list().getOrder_list_Date(), Comparator.reverseOrder()))
+				.sorted(Comparator.comparing(o -> o.getOrderlist().getOrderlistDate(), Comparator.reverseOrder()))
 				.collect(Collectors.toList());
 
 		model.addAttribute("orderitem", filteredOrderItems);
@@ -76,7 +76,7 @@ public class CmController {
 		// "결제전" 상태의 항목만 필터링
 		List<Orderitem> filteredOrderItems = orderitem.stream()
 				.filter(o -> !"환불".equals(o.getOrderitemPstatus()) && !"배송완료".equals(o.getOrderitemDstatus()))
-				.sorted(Comparator.comparing(o -> o.getOrder_list().getOrder_list_Date(), Comparator.reverseOrder()))
+				.sorted(Comparator.comparing(o -> o.getOrderlist().getOrderlistDate(), Comparator.reverseOrder()))
 				.collect(Collectors.toList());
 
 		model.addAttribute("orderitem", filteredOrderItems);
