@@ -1,8 +1,6 @@
 <html layout:decorate="~{_layout/seller/index}">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <th:block layout:fragment="pageContent">
 	<main id="main" class="main">
-
 		<section class="section dashboard">
 			<div class="row">
 				<div class="col-lg-12">
@@ -296,7 +294,6 @@
         });
         /*]]>*/
 	</script>
-
 	<script th:inline="javascript">
 		/*결제금액 그래프 출력*/
           /*<![CDATA[*/
@@ -338,29 +335,38 @@
           /*]]>*/
 	</script>
 	<script th:inline="javascript">
+		//제품 그래프 출력
+		/*<![CDATA[*/
+        var productData = /*[[${product}]]*/ {};
 
-	</script>
-	<script th:inline="javascript">
-		var labels = /*[[${labels}]]*/ [];
-        var values = /*[[${values}]]*/ [];
-
-        // Chart.js를 사용하여 그래프를 그림
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'doughnut',
+        // Draw Pie Chart
+        var ctx = document.getElementById('orderproduct').getContext('2d');
+        var orderproduct = new Chart(ctx, {
+            type: 'pie',
             data: {
-                labels: labels,
+                labels: Object.keys(productData),
                 datasets: [{
-                    data: values,
-                    backgroundColor: ['red', 'blue', 'yellow'] // 색상은 예시
+                    data: Object.values(productData),
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.7)',
+                        'rgba(54, 162, 235, 0.7)',
+                        'rgba(255, 206, 86, 0.7)',
+                        'rgba(75, 192, 192, 0.7)',
+                        'rgba(153, 102, 255, 0.7)',
+                        'rgba(255, 159, 64, 0.7)'
+                    ]
                 }]
             },
             options: {
-                // 도넛 차트로 설정
-                cutoutPercentage: 50,
-                // 기타 옵션들 설정 가능
+                responsive: true,
+                aspectRatio: 1,
+                maintainAspectRatio: false
             }
         });
+        const canvas = document.getElementById('orderproduct');
+            canvas.style.height = '458px';
+              new Chart(ctx, config);
+        /*]]>*/
 	</script>
 
 	<style>
@@ -368,7 +374,6 @@
           input[type="radio"] {
             display: none;
           }
-
         input[type="radio"]:checked + label {
            background-color: skyblue;
         }
@@ -382,5 +387,6 @@
             height: 420px !important;
         }
 	</style>
+
 </th:block>
 </html>

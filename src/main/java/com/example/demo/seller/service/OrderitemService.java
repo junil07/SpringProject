@@ -1,9 +1,11 @@
 package com.example.demo.seller.service;
 
+import com.example.demo.seller.domain.Orderitem;
 import com.example.demo.seller.repository.OrderitemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,16 +20,6 @@ public class OrderitemService {
         this.orderitemRepository = orderitemRepository;
     }
 
-    public Map<String, Integer> getTotalPricePerDate() {
-        List<Object[]> resultsPrice = orderitemRepository.findTotalPricePerDate();
-        Map<String, Integer> price = new HashMap<>();
-        for (Object[] result : resultsPrice) {
-            String date = result[0].toString();
-            Integer totalPrice = ((Number) result[1]).intValue();
-            price.put(date, totalPrice);
-        }
-        return price;
-    }
 
     public Map<String, Integer> findDisBuyer(){
         List<Object[]> resultsBuyer = orderitemRepository.findBuyerDate();
@@ -50,14 +42,33 @@ public class OrderitemService {
         return count;
     }
 
+    public Map<String, Integer> getTotalPricePerDate() {
+        List<Object[]> resultsPrice = orderitemRepository.findTotalPricePerDate();
+        Map<String, Integer> price = new HashMap<>();
+        for (Object[] result : resultsPrice) {
+            String date = result[0].toString();
+            Integer totalPrice = ((Number) result[1]).intValue();
+            price.put(date, totalPrice);
+        }
+        return price;
+    }
+
     public Map<String, Integer> countsellproduct(){
         List<Object[]> resultssellproduct = orderitemRepository.findsellProduct();
-        Map<String, Integer> buyer = new HashMap<>();
+        Map<String, Integer> product = new HashMap<>();
         for(Object[] result: resultssellproduct){
             String date = result[0].toString();
             Integer sellproduct = ((Number) result[1]).intValue();
-            buyer.put(date, sellproduct);
+            product.put(date, sellproduct);
         }
-        return buyer;
+        return product;
+    }
+
+    public List<Orderitem> getOrderitemList() {
+        return orderitemRepository.findAll();
+    }
+
+    public List<Object[]> findOutstandingOrders() {
+        return orderitemRepository.findoutstanding();
     }
 }

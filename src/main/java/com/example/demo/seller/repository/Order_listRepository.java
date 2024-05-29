@@ -12,4 +12,5 @@ public interface Order_listRepository extends JpaRepository<Order_list, Integer>
 
     @Query("SELECT o FROM Order_list o LEFT JOIN FETCH o.buyer")
     List<Order_list> findAllWithBuyer();
+
 }
