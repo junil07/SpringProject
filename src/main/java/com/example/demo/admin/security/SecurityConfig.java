@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.server.authentication.HttpStatusServerEntryPoint;
 
 @Configuration
 @EnableWebSecurity
@@ -21,7 +23,9 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http,
+                                           CustomAuthenticationEntryPoint customAuthenticationEntryPoint,
+                                           CustomAccessDeniedHandler customAccessDeniedHandler) throws Exception {
 
         http
                 .csrf(AbstractHttpConfigurer::disable)
@@ -31,7 +35,8 @@ public class SecurityConfig {
                                 .requestMatchers("/admin/login", "/admin/logout", "/admin/.vscode/**"
                                         , "/admin/css/**", "/admin/icons/**", "/admin/images/**"
                                         , "/admin/js/**", "/admin/logincss/**", "/admin/vendor/**", "/login", "/seller/**", "/buyer/**"
-                                        , "/assets/**", "/css/**", "/demo/**", "/images/**", "/js/**", "/plugins/**","/buyer/detail").permitAll()
+                                        , "/assets/**", "/css/**", "/demo/**", "/images/**", "/js/**", "/plugins/**","/buyer/detail"
+                                        , "/error/**").permitAll()
                                 .requestMatchers("admin/main").hasRole(Role.ADMIN.name())
                                 .anyRequest().authenticated()
                 )
@@ -46,6 +51,10 @@ public class SecurityConfig {
                                 .logoutUrl("/admin/logout")
                                 .logoutSuccessUrl("/admin/login"))
                 .userDetailsService(myUserDetailsService)
+                .exceptionHandling((exceptionHandling) ->
+                        exceptionHandling
+                                .authenticationEntryPoint(customAuthenticationEntryPoint)
+                                .accessDeniedHandler(customAccessDeniedHandler))
         ;
         return http.build();
     }
