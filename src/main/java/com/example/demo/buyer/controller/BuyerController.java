@@ -1,14 +1,16 @@
 package com.example.demo.buyer.controller;
 
+import com.example.demo.buyer.DTO.ProductViewDto;
 import com.example.demo.buyer.entity.Category;
-import com.example.demo.buyer.entity.CategoryPath;
-import com.example.demo.buyer.service.CategoryPathServiceImple;
+import com.example.demo.buyer.repository.ProductViewRepository;
 import com.example.demo.buyer.service.CategoryService;
+import com.example.demo.buyer.service.CustomProductService;
+import com.example.demo.buyer.service.ProductSizeimple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Map;
@@ -19,11 +21,34 @@ public class BuyerController {
 	@Autowired
 	private CategoryService categoryService;
 
-	@RequestMapping("buyer/{subPath}")
+	@Autowired
+	private CustomProductService customProductService;
+
+	@Autowired
+	private ProductViewRepository productViewRepository;
+
+	@Autowired
+	private ProductSizeimple productSizeimple;
+
+	@RequestMapping("buyer/index")
 	public String main
-			(@PathVariable("subPath") String subPath, Model model) {
+			(Model model) {
 		List<Category> categories = categoryService.getRows();
+		List<Map<String, Object>> productSummaryList = customProductService.getProductSummary();
 		model.addAttribute("categories", categories);
-		return "buyer/"+subPath;
+		model.addAttribute("productSummaryList", productSummaryList);
+		return "buyer/index";
+	}
+
+	@RequestMapping("buyer/detail")
+	public String detail(Model model, @RequestParam("productId") String productId){
+		System.out.print(productId);
+		List<Category> categories = categoryService.getRows();
+		List<ProductViewDto> productDetail = productViewRepository.findByProductId(productId);
+		List<String> productSize = productSizeimple.getRowParamOne(productId);
+		model.addAttribute("categories", categories);
+		model.addAttribute("productDetail", productDetail);
+		model.addAttribute("productSize", productSize);
+		return "buyer/product_detail";
 	}
 }

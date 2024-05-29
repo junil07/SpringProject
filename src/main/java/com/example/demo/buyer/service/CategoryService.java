@@ -31,4 +31,9 @@ public class CategoryService implements BuyerService {
 
         return categoriesByParentId.get(0L);
     }
+
+    @Override
+    public List getRowParamOne(String productId) {
+        return null;
+    }
 }

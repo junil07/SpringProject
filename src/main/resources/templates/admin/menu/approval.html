@@ -7,6 +7,16 @@
 
     <th:block layout:fragment="pageHead">
         <title>상품 등록 승인</title>
+
+        <style>
+
+            .table-responsive {
+                height: 100% !important;
+                overflow: auto !important;
+            }
+
+        </style>
+
     </th:block>
 
     <th:block layout:fragment="pageContent">
@@ -31,7 +41,7 @@
                         <h4 class="card-title">상품 등록 승인</h4>
                     </div>
                     <div class="card-body">
-                        <p>판매자가 등록한 상품 승인 대기 내역입니다.</p>
+                        <p>상품 승인 대기 내역입니다.</p>
                         <div class="table-responsive">
                             <table class="table table-bordered table-striped my-4" style="min-width: 480px; width: 150%;">
                                 <thead>
@@ -39,74 +49,45 @@
                                 <tr>
                                     <th>
                                         <div class="custom-control custom-checkbox pl-4">
-                                            <input type="checkbox">
+                                            <input type="checkbox" id="checkBoss">
                                         </div>
                                     </th>
-                                    <th class="text-center text-dark">
-                                        상품 ID<br>
-                                        <small class="text-muted">&lt;576px</small>
-                                    </th>
-                                    <th class="text-center text-dark">
-                                        판매자 ID<br>
-                                        <small class="text-muted">≥576px</small>
-                                    </th>
-                                    <th class="text-center text-dark">
-                                        상품명<br>
-                                        <small class="text-muted">≥768px</small>
-                                    </th>
-                                    <th class="text-center text-dark">
-                                        상품 설명<br>
-                                        <small class="text-muted">≥992px</small>
-                                    </th>
-                                    <th class="text-center text-dark">
-                                        상품 가격<br>
-                                        <small class="text-muted">≥1200px</small>
-                                    </th>
-                                    <th class="text-center text-dark">
-                                        할인율<br>
-                                        <small class="text-muted">≥1200px</small>
-                                    </th>
-                                    <th class="text-center text-dark">
-                                        해쉬태그<br>
-                                        <small class="text-muted">≥1200px</small>
-                                    </th>
-                                    <th class="text-center text-dark">
-                                        상태<br>
-                                        <small class="text-muted">≥1200px</small>
-                                    </th>
-                                    <th class="text-center text-dark">
-                                        카테고리<br>
-                                        <small class="text-muted">≥1200px</small>
+                                    <th class="text-center text-dark" th:each="columnName : ${columnName}">
+                                        [[${columnName}]]
                                     </th>
                                 </tr>
 
                                 </thead>
                                 <tbody>
 
-                                <tr>
-                                    <th style="width: 5%;">
-                                        <div class="custom-control custom-checkbox pl-4">
-                                            <input type="checkbox">
-                                        </div>
-                                    </th>
-                                    <td>ㅎㅎㅎㅎ</td>
-                                    <td>하하하하하하하하하하하하</td>
-                                    <td>720px</td>
-                                    <td>960px</td>
-                                    <td>1140px</td>
-                                    <td>1140px</td>
-                                    <td>1140px</td>
-                                    <td>1140px</td>
-                                    <td>1140px</td>
-                                </tr>
-
+                                    <tr th:each="product : ${productList}">
+                                        <th style="width: 5%;">
+                                            <div class="custom-control custom-checkbox pl-4">
+                                                <input type="checkbox" class="checkBaby">
+                                            </div>
+                                        </th>
+                                        <td>[[${product.productId}]]</td>
+                                        <td>[[${product.seller.sellerId}]]</td>
+                                        <td>[[${product.productName}]]</td>
+                                        <td>[[${product.productPrice}]]</td>
+                                        <td>[[${product.productDiscount}]]</td>
+                                        <td>[[${product.productHashtag}]]</td>
+                                        <td>[[${product.category}]]</td>
+                                    </tr>
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="card-footer">
+                            <button type="button" class="btn btn-secondary" style="float: right;">승인</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </th:block>
+
+    <th:block layout:fragment="bottomScriptAdd">
+        <script src="/admin/js/approval.js"></script>
     </th:block>
 
 </html>

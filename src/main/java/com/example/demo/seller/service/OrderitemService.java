@@ -1,5 +1,6 @@
 package com.example.demo.seller.service;
 
+import com.example.demo.buyer.DTO.ProductOrderSummaryDTO;
 import com.example.demo.seller.repository.OrderitemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,7 @@ import java.util.Map;
 @Service
 public class OrderitemService {
 
-    private final OrderitemRepository orderitemRepository;
+    private OrderitemRepository orderitemRepository;
 
     @Autowired
     public OrderitemService(OrderitemRepository orderitemRepository) {
@@ -60,4 +61,5 @@ public class OrderitemService {
 //        }
 //        return buyer;
 //    }
+
 }

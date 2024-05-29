@@ -7,6 +7,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@Table(name = "orderitem")
 public class Orderitem {
 
     @Id
@@ -19,8 +20,8 @@ public class Orderitem {
     private Order_list order_list;
 
     // Product 엔티티와의 매핑
-    @ManyToOne
-    @JoinColumn(name = "PRODUCT_ID", referencedColumnName = "productid")
+    @ManyToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "PRODUCT_ID", referencedColumnName = "productId")
     private Product productid;
 
     private String ORDERITEM_PSTATUS;

@@ -1,0 +1,68 @@
+a:hover {
+    background : #d0d6fa;
+    cursor : pointer;
+}
+
+table.dataTable tr.selected {
+    color: #BDBDC7;
+}
+
+.divFlex {
+    display: flex;
+}
+
+.hide {
+    display: none;
+}
+
+.marginBaby {
+    margin-bottom: 1.275rem;
+}
+
+.display.dataTable th:first-child {
+    position: sticky;
+    left: 0;
+    background-color: white !important;
+}
+
+.display.dataTable th:nth-child(2) {
+    position: sticky;
+    left: 0;
+    background-color: white !important;
+}
+
+.display.dataTable th:nth-child(3) {
+    position: sticky;
+    left: 0;
+    background-color: white !important;
+}
+
+.display.dataTable td:first-child {
+    position: sticky;
+    left: 0;
+    background-color: white !important;
+}
+
+.display.dataTable td:nth-child(2) {
+    position: sticky;
+    left: 0;
+    background-color: white !important;
+}
+
+.display.dataTable td:nth-child(3) {
+    position: sticky;
+    left: 0;
+    background-color: white !important;
+}
+
+#example2 {
+   width: 150% !important;
+}
+
+.dataTables_scrollHead {
+    overflow-x: auto;
+}
+
+.dataTables_scrollFoot {
+    overflow-x: auto;
+}

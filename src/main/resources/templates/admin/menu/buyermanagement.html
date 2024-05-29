@@ -4,20 +4,9 @@
 <th:block layout:fragment="pageHead">
     <title>구매자 관리</title>
 
-    <link rel="stylesheet" href="./vendor/select2/css/select2.min.css">
+    <link rel="stylesheet" href="/admin/vendor/select2/css/select2.min.css">
+    <link rel="stylesheet" href="/admin/css/infomanagement.css">
 
-    <style>
-
-        a:hover {
-            background : #d0d6fa;
-            cursor : pointer;
-        }
-
-        table.dataTable tr.selected {
-            color: #BDBDC7;
-        }
-
-    </style>
 </th:block>
 
 <th:block layout:fragment="pageContent">
@@ -41,13 +30,12 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">구매자 관리<br><small>
-                        계정 활성화 여부와 등급은 변경할 수 있습니다.
-                    </small></h4>
+                    <h4 class="card-title">구매자 관리</h4>
                 </div>
                 <div class="card-body">
+                    <p>체크박스와 하단의 버튼을 통해 등급, 계정 상태를 변경하거나 요소를 클릭하여 변경할 수 있습니다.</p>
                     <div class="table-responsive">
-                        <table id="example2" class="display" style="width:100%">
+                        <table id="example2" class="display" style="width:150%">
                             <thead>
                             <tr>
                                 <th>
@@ -68,11 +56,11 @@
                                     </div>
                                 </td>
                                 <td>[[${buyer.buyerId}]]</td>
-                                <td>[[${buyer.buyerName}]]</td>
-                                <td>[[${buyer.buyerBirth}]]</td>
-                                <td>[[${buyer.buyerEmail}]]</td>
-                                <td>[[${buyer.buyerAddress}]]</td>
-                                <td class="text-center">[[${buyer.buyerPhoneNum}]]</td>
+                                <td><a href="" data-toggle="modal" data-target="#buyerInfo" th:onclick="nameUpdate([[${buyer.buyerId}]], [[${buyer.buyerName}]])">[[${buyer.buyerName}]]</a></td>
+                                <td><a href="" data-toggle="modal" data-target="#buyerInfo" th:onclick="birthUpdate([[${buyer.buyerId}]], [[${buyer.buyerName}]])" th:text="${#dates.format(buyer.buyerBirth, 'yyyy-MM-dd')}"></a></td>
+                                <td><a href="" data-toggle="modal" data-target="#buyerInfo" th:onclick="emailUpdate([[${buyer.buyerId}]], [[${buyer.buyerName}]])">[[${buyer.buyerEmail}]]</a></td>
+                                <td><a href="" data-toggle="modal" data-target="#buyerInfo" th:onclick="addressUpdate([[${buyer.buyerId}]], [[${buyer.buyerName}]])">[[${buyer.buyerAddress}]]</a></td>
+                                <td class="text-center"><a href="" data-toggle="modal" data-target="#buyerInfo" th:onclick="phoneNumUpdate([[${buyer.buyerId}]], [[${buyer.buyerName}]])">[[${buyer.buyerPhoneNum}]]</a></td>
                                 <td class="text-center">[[${buyer.buyerActivation}]]</td>
                                 <td class="text-center">[[${buyer.buyerLastLogin}]]</td>
                                 <td class="text-center">[[${buyer.buyerGrade}]]</td>
@@ -93,10 +81,10 @@
                             </tfoot>
                         </table>
                         <div class="bootstrap-modal" style="float: right; display: ruby;">
-                            <!-- Anchor trigger modal -->
+                            <!-- 계정 활성화 변경 모달 -->
                             <button class="btn btn-rounded btn-primary" data-toggle="modal" data-target="#activate">계정 활성화 변경</button>
                             <!-- Modal -->
-                            <form name="Afrm" method="post" th:action="@{/admin/ActivationUpdate}" th:object="${activation}">
+                            <form name="Afrm" method="post" th:action="@{/admin/buyer/ActivationUpdate}" th:object="${activation}">
                                 <div class="modal fade" id='activate'>
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
@@ -141,7 +129,7 @@
                             <!-- Anchor trigger modal -->
                             <button class="btn btn-rounded btn-primary" data-toggle="modal" data-target="#grade">등급 변경</button>
                             <!-- Modal -->
-                            <form name="Gfrm" method="post" th:action="@{/admin/GradeUpdate}" th:object="${grade}">
+                            <form name="Gfrm" method="post" th:action="@{/admin/buyer/GradeUpdate}" th:object="${grade}">
                                 <div class="modal fade" id='grade'>
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
@@ -183,6 +171,64 @@
                                     </div>
                                 </div>
                             </form>
+
+                            <!-- 구매자 정보를 바꾸는 모달 -->
+                            <form name="infoFrm" method="post" action="" th:object="${buyerInfo}">
+                                <div class="modal fade" id='buyerInfo'>
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="buyerInfoTitle"></h5>
+                                                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                                            </div>
+                                            <div class="modal-body">
+
+                                                <div class="row">
+                                                    <div class="col-xl-6" style="flex: 0 0 100%; max-width: 100%;">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <div class="mb-4">
+                                                                    <h4 class="card-title" id="buyerInfoContent"></h4>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <h6 id="buyerInfoUser"></h6>
+                                                                    <input type="text" id="infoInput1" class="form-control input-default infoInput" th:field="*{name}" autocomplete="off">
+                                                                    <input type="date" id="infoInput2" class="form-control input-default infoInput" th:field="*{birth}">
+                                                                    <input type="text" id="infoInput3" class="form-control input-default infoInput" th:field="*{email}" autocomplete="off">
+
+                                                                    <div id="addressId1" class="divFlex">
+                                                                        <input type="text" class="form-control input-default marginBaby infoInput" id="sample6_postcode" placeholder="우편번호">
+                                                                        <input type="button" class="btn btn-primary marginBaby infoInput" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br id="addressBr1">
+                                                                    </div>
+                                                                    <input type="text" class="form-control input-default infoInput" id="sample6_address" placeholder="주소"><br id="addressBr2">
+                                                                    <div id="addressId2" class="divFlex">
+                                                                        <input type="text" class="form-control input-default infoInput" id="sample6_detailAddress" placeholder="상세주소">
+                                                                        <input type="text" class="form-control input-default infoInput" id="sample6_extraAddress" placeholder="참고항목">
+                                                                    </div>
+
+                                                                    <input type="hidden" id="addressForm" th:field="*{address}">
+                                                                    <input type="hidden" id="addressForm1">
+                                                                    <input type="text" id="infoInput4" class="form-control input-default infoInput" th:field="*{phoneNum}" autocomplete="off">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <input type="hidden" id="buyerInfoInput1" th:field="*{check}">
+                                                <input type="hidden" id="buyerInfoInput2" th:field="*{id}">
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" id="saveBtn" class="btn btn-primary" onclick="buyerInfoUpdate()">저장</button>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+
                         </div>
                     </div>
                 </div>
@@ -193,99 +239,11 @@
 </th:block>
 
 <th:block layout:fragment="bottomScriptAdd">
-    <script>
 
-        var idList = [];
-        var checkboxes = document.querySelectorAll('.check_id');
-        var checkAllBox = document.getElementById('checkAll');
-
-        function addList(text) {
-            console.log(text + "확인용");
-            if (idList.includes(text)) {
-                console.log(text + "있습니다");
-            } else {
-                idList.push(text);
-                console.log(text + "추가됨");
-            }
-        }
-
-        function removeList(text) {
-            var index = idList.indexOf(text);
-
-            if (index !== -1) {
-                idList.splice(index, 1);
-                console.log("제거됨");
-            } else {
-                console.log("원래 없음");
-            }
-        }
-
-        function updateCheck(event) {
-            var checkbox = event.target;
-            if (checkbox.checked) {
-                console.log(checkbox.id);
-                addList(checkbox.id);
-                var result = idList.join("/");
-                document.getElementById('GradeInput1').textContent = result;
-                document.getElementById('GradeInput2').value = result;
-                document.getElementById('ActivationInput1').textContent = result;
-                document.getElementById('ActivationInput2').value = result;
-                console.log(idList);
-            } else {
-                console.log("hell nah");
-                removeList(checkbox.id);
-                var result = idList.join("/");
-                document.getElementById('GradeInput1').textContent = result;
-                document.getElementById('GradeInput2').value = result;
-                document.getElementById('ActivationInput1').textContent = result;
-                document.getElementById('ActivationInput2').value = result;
-                console.log(idList);
-            }
-        }
-
-        checkboxes.forEach(function(checkbox) {
-            checkbox.addEventListener('change', updateCheck);
-        });
-
-        checkAllBox.addEventListener('change', function(event) {
-            var isChecked = event.target.checked;
-            checkboxes.forEach(function(checkbox) {
-                checkbox.checked = isChecked;
-                checkbox.dispatchEvent(new Event('change'));
-            });
-        });
-
-        function GradeUpdate() {
-            var isChecked = false;
-            checkboxes.forEach(function(checkbox) {
-                if (checkbox.checked) {
-                    isChecked = true;
-                }
-            });
-
-            if(!isChecked) {
-                alert("사용자를 선택해주세요");
-            } else {
-                if (confirm("변경하시겠습니까?")) {
-                    document.Gfrm.submit();
-                } else {
-
-                }
-            }
-        }
-
-        function ActivationUpdate() {
-            if (confirm("변경하시겠습니까?")) {
-                document.Afrm.submit();
-            } else {
-
-            }
-        }
-
-    </script>
-
-    <script src="./vendor/select2/js/select2.full.min.js"></script>
-    <script src="./js/plugins-init/select2-init.js"></script>
+    <script src="/admin/js/buyermanagement.js"></script>
+    <script src="/admin/vendor/select2/js/select2.full.min.js"></script>
+    <script src="/admin/js/plugins-init/select2-init.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 </th:block>
 
