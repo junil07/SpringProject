@@ -16,4 +16,10 @@ public class SellerService {
     public List<Seller> getAllSellers() {
         return sellerRepository.findAll();
     }
+
+    //다인 수정
+
+    public Seller getSeller(String seller) {
+        return sellerRepository.findBySellerId(seller);
+    }
 }

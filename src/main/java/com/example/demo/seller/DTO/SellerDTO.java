@@ -1,19 +1,15 @@
-package com.example.demo.seller.domain;
+package com.example.demo.seller.DTO;
 
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
 
-@Entity
 @Getter
 @Setter
-public class Seller {
+public class SellerDTO {
 
-    @Id
     private String sellerId;
-
     private String sellerPassword;
     private LocalDate sellerBirth;
     private String sellerAddress;
@@ -25,13 +21,13 @@ public class Seller {
     private String sellerLastlogin;
 
     // 기본 생성자
-    public Seller() {
+    public SellerDTO() {
     }
 
     // 모든 필드를 초기화하는 생성자
-    public Seller(String sellerId, String sellerPassword, LocalDate sellerBirth, String sellerAddress,
-                  String sellerPhonenum, String sellerBnum, String sellerEmail, String sellerName,
-                  int sellerActivation, String sellerLastlogin) {
+    public SellerDTO(String sellerId, String sellerPassword, LocalDate sellerBirth, String sellerAddress,
+                     String sellerPhonenum, String sellerBnum, String sellerEmail, String sellerName,
+                     int sellerActivation, String sellerLastlogin) {
         this.sellerId = sellerId;
         this.sellerPassword = sellerPassword;
         this.sellerBirth = sellerBirth;
@@ -43,6 +39,8 @@ public class Seller {
         this.sellerActivation = sellerActivation;
         this.sellerLastlogin = sellerLastlogin;
     }
+
+    // Getter와 Setter는 Lombok이 자동으로 생성합니다.
 
     public String getSellerId() {
         return sellerId;
@@ -124,3 +122,4 @@ public class Seller {
         this.sellerLastlogin = sellerLastlogin;
     }
 }
+

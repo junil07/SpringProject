@@ -1,66 +1,37 @@
-package com.example.demo.seller.domain;
+package com.example.demo.seller.DTO;
 
-import com.example.demo.buyer.entity.Category;
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+public class ProductDTO {
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.UUID;
-
-@Entity
-@Getter
-@Setter
-@Table(name = "product")
-public class Product {
-
-    @Id
     private String productId;
-
-    @Column(name = "PRODUCT_NAME")
     private String productName;
-    @Column(name = "PRODUCT_EXPLAIN")
     private String productExplain;
-    @Column(name = "PRODUCT_PRICE")
     private int productPrice;
-    @Column(name = "PRODUCT_DISCOUNT")
     private int productDiscount;
-    @Column(name = "PRODUCT_HASHTAG")
     private String productHashtag;
-    @Column(name = "product_activation")
     private int productActivation;
-
-    @ManyToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "SELLER_ID", referencedColumnName = "sellerId")
-    private Seller seller;
-
-    @ManyToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "CATEGORY_ID", referencedColumnName = "categoryId")
-    private Category category;
+    private String sellerId; // 판매자 ID
+    private Long categoryId; // 카테고리 ID
 
     // 기본 생성자
-    public Product() {
-        //this.productId = UUID.randomUUID().toString(); // UUID를 사용해 고유한 ID 생성
+    public ProductDTO() {
     }
 
-    // 모든 필드를 초기화하는 생성자
-    public Product(String productId, Seller seller, String productName, String productExplain,
-                   int productPrice, int productDiscount, String productHashtag, Category category,
-                   int productActivation) {
+    // 생성자
+    public ProductDTO(String productId, String productName, String productExplain,
+                      int productPrice, int productDiscount, String productHashtag,
+                      int productActivation, String sellerId, Long categoryId) {
         this.productId = productId;
-        this.seller = seller;
         this.productName = productName;
         this.productExplain = productExplain;
         this.productPrice = productPrice;
         this.productDiscount = productDiscount;
         this.productHashtag = productHashtag;
-        this.category = category;
         this.productActivation = productActivation;
-
-
+        this.sellerId = sellerId;
+        this.categoryId = categoryId;
     }
 
+    // 게터와 세터 메서드
     public String getProductId() {
         return productId;
     }
@@ -117,21 +88,20 @@ public class Product {
         this.productActivation = productActivation;
     }
 
-    public Seller getSeller() {
-        return seller;
+    public String getSellerId() {
+        return sellerId;
     }
 
-    public void setSeller(Seller seller) {
-        this.seller = seller;
+    public void setSellerId(String sellerId) {
+        this.sellerId = sellerId;
     }
 
-    public Category getCategory() {
-        return category;
+    public Long getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
-
-
 }
+
