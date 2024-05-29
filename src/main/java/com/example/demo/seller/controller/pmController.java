@@ -63,6 +63,8 @@ public class pmController {
 		model.addAttribute("category", categories);
 		Product product = productService.getProduct(productId);
 		model.addAttribute("product", product);
+		System.out.println("-----------------------------------------");
+		System.out.println(product);
 		return "/seller/pm/product_detail"; // Thymeleaf 템플릿의 경로
 	}
 
@@ -88,7 +90,7 @@ public class pmController {
 	public String saveProduct(@ModelAttribute("productDTO") ProductDTO productDTO) {
 		productService.addProduct(productDTO);
 		System.out.println("에엥");
-		return "/inquiry";
+		return "/seller/pm/inquiry";
 	}
 
 

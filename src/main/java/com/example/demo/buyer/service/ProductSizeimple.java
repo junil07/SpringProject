@@ -1,6 +1,6 @@
 package com.example.demo.buyer.service;
 
-import com.example.demo.buyer.DTO.ProductViewDto;
+import com.example.demo.buyer.entity.ProductView;
 import com.example.demo.buyer.repository.ProductViewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,17 +21,22 @@ public class ProductSizeimple implements BuyerService{
     }
 
     @Override
+    public List getSubCategories(Long parentId) {
+        return List.of();
+    }
+
+    @Override
     public List getRows() {
         return null;
     }
 
     @Override
     public List<String> getRowParamOne(String productId) {
-        List<ProductViewDto> productViewDtos = productViewRepository.findProductDetailSizeByProductId(productId);
+        List<ProductView> productViews = productViewRepository.findProductDetailSizeByProductId(productId);
         List<String> sizes = new ArrayList<>();
 
         // ProductViewDto 리스트를 순회하면서 각 객체에서 숫자를 추출하여 리스트에 추가
-        for (ProductViewDto dto : productViewDtos) {
+        for (ProductView dto : productViews) {
             // ProductViewDto에서 숫자를 추출하는 코드를 작성해야 함
             String sizeString = dto.getProductDetailSize(); // 예시일 뿐, 실제로는 getProductDetailSize 메서드가 존재하지 않을 수 있음
 

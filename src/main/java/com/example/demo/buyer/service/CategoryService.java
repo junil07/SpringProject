@@ -25,6 +25,7 @@ public class CategoryService implements BuyerService {
         return categoryRepository.findByCategoryParentId(parentId);
     }
 
+
    public Category getCategory(Long category) {
         return categoryRepository.findByCategoryId(category);
     }

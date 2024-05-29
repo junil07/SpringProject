@@ -12,4 +12,5 @@ public interface BuyerService {
     public List getRows();
 
     public List getRowParamOne(String productId);
+
 }

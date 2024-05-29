@@ -1,4 +1,4 @@
-package com.example.demo.buyer.DTO;
+package com.example.demo.buyer.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -6,7 +6,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "product_view")
-public class ProductViewDto {
+public class ProductView {
     @Id
     private String productId;
     private String sellerId;
