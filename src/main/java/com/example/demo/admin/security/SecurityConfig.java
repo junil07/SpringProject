@@ -14,39 +14,76 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private MyUserDetailsServiceImple myUserDetailsService;
+    private AdminUserDetailsServiceImple adminUserDetailsService;
+    private UserUserDetailsServiceImple userUserDetailsService;
 
-    public SecurityConfig(MyUserDetailsServiceImple myUserDetailsService) {
-        this.myUserDetailsService = myUserDetailsService;
+    public SecurityConfig(AdminUserDetailsServiceImple adminUserDetailsService, UserUserDetailsServiceImple userUserDetailsService) {
+        this.adminUserDetailsService = adminUserDetailsService;
+        this.userUserDetailsService = userUserDetailsService;
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain adminFilterChain(HttpSecurity http,
+                                                CustomAuthenticationEntryPoint customAuthenticationEntryPoint,
+                                                CustomAccessDeniedHandler customAccessDeniedHandler) throws Exception {
 
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .headers(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorizeRequests) ->
                         authorizeRequests
-                                .requestMatchers("/admin/login", "/admin/logout", "/admin/.vscode/**"
-                                        , "/admin/css/**", "/admin/icons/**", "/admin/images/**"
-                                        , "/admin/js/**", "/admin/logincss/**", "/admin/vendor/**", "/login", "/seller/**", "/buyer/**"
-                                        , "/assets/**", "/css/**", "/demo/**", "/images/**", "/js/**", "/plugins/**","/buyer/detail").permitAll()
+                                .requestMatchers("/admin/.vscode/**", "/admin/css/**", "/admin/icons/**", "/admin/images/**"
+                                        , "/admin/js/**", "/admin/logincss/**", "/admin/vendor/**", "/assets/**", "/css/**"
+                                        , "/demo/**", "/images/**", "/js/**", "/plugins/**"
+                                        , "/admin/login", "/admin/logout", "/admin/tetetest", "/seller/**"
+                                        , "/error", "/error/**", "/custom_error/**", "/errorpage/**").permitAll()
                                 .requestMatchers("admin/main").hasRole(Role.ADMIN.name())
-                                .anyRequest().authenticated()
-                )
+                                .requestMatchers("admin/buyermanagement").hasRole(Role.BUYER.name())
+                                .anyRequest().authenticated())
                 .formLogin((formLogin) ->
                         formLogin
                                 .loginPage("/admin/login")
-                                .usernameParameter("adminId")
                                 .loginProcessingUrl("/admin/loginProc")
+                                .usernameParameter("adminId")
                                 .defaultSuccessUrl("/admin/main", true))
                 .logout((logoutConfig) ->
                         logoutConfig
                                 .logoutUrl("/admin/logout")
                                 .logoutSuccessUrl("/admin/login"))
-                .userDetailsService(myUserDetailsService)
+                .userDetailsService(adminUserDetailsService)
+                .exceptionHandling((exceptionHandling) ->
+                        exceptionHandling
+                                .authenticationEntryPoint(customAuthenticationEntryPoint)
+                                .accessDeniedHandler(customAccessDeniedHandler))
         ;
+        return http.build();
+    }
+
+    @Bean
+    public SecurityFilterChain buyerFilterChain(HttpSecurity http,
+                                                CustomAuthenticationEntryPoint customAuthenticationEntryPoint,
+                                                CustomAccessDeniedHandler customAccessDeniedHandler) throws Exception {
+        http
+                .csrf(AbstractHttpConfigurer::disable)
+                .headers(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(authorizeRequests ->
+                        authorizeRequests
+                                .requestMatchers("/buyer/css/**", "/buyer/js/**", "/buyer/images/**"
+                                , "/buyer/**", "/buyer/detail").permitAll()
+                                .requestMatchers("/buyer/detail").hasRole(Role.BUYER.name())
+                                .anyRequest().authenticated())
+                .formLogin(formLogin ->
+                        formLogin
+                                .loginPage("/seller/login")
+                                .loginProcessingUrl("/buyer/loginProc")
+                                .usernameParameter("buyerId")
+                                .passwordParameter("buyerPwd")
+                                .defaultSuccessUrl("/buyer/main", true))
+                .logout(logout ->
+                        logout
+                                .logoutUrl("/logout")
+                                .logoutSuccessUrl("/login"))
+                .userDetailsService(userUserDetailsService);
         return http.build();
     }
 

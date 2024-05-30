@@ -36,7 +36,7 @@ public class AdminController {
 	public String index(Principal principal, Model model) {
 		User user = (User) ((Authentication) principal).getPrincipal();
 		String adminName = adminService.findName(user.getUsername());
-
+		System.out.println(user.getAuthorities() + " 여기 이름!!");
 		model.addAttribute("adminName", adminName);
 
 		return "admin/index";
@@ -72,5 +72,11 @@ public class AdminController {
 		model.addAttribute("columnName", columnName);
 
 		return "admin/menu/approval";
+	}
+
+	@RequestMapping("tetetest")
+	public String test() {
+		System.out.println("testtest");
+		return "error/401";
 	}
 }

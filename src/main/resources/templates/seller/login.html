@@ -38,15 +38,17 @@
                                     <div class="center-wrap">
                                         <div class="section text-center">
                                             <h4 class="mb-4 pb-3">Log In</h4>
-                                            <div class="form-group">
-                                                <span class="iconify input-icon" data-icon="mdi:account" data-inline="false"></span>
-                                                <input type="text" name="userid" class="form-style" placeholder="Your ID" id="userid" autocomplete="off">
-                                            </div>
-                                            <div class="form-group mt-2">
-                                                <span class="iconify input-icon" data-icon="mdi:lock" data-inline="false"></span>
-                                                <input type="password" name="userpass" class="form-style" placeholder="Your Password" id="userpass" autocomplete="off">
-                                            </div>
-                                            <a href="#" class="btn mt-4">Submit</a>
+                                            <form name="buyerFrm" action="/buyer/loginProc" method="post">
+                                                <div class="form-group">
+                                                    <span class="iconify input-icon" data-icon="mdi:account" data-inline="false"></span>
+                                                    <input type="text" name="buyerId" class="form-style" placeholder="Your ID" id="userid" autocomplete="off">
+                                                </div>
+                                                <div class="form-group mt-2">
+                                                    <span class="iconify input-icon" data-icon="mdi:lock" data-inline="false"></span>
+                                                    <input type="password" name="buyerPwd" class="form-style" placeholder="Your Password" id="userpwd" autocomplete="off">
+                                                </div>
+                                                <a href="#" class="btn mt-4" onclick="buyerLogin()">Submit</a>
+                                            </form>
                                             <p class="mb-0 mt-4 text-center"><a href="#0" class="link">Forgot your password?</a></p>
                                             <p class="mb-0 mt-4 text-center"><a href="signup" class="link">make account?</a></p>
                                         </div>
@@ -56,15 +58,17 @@
                                     <div class="center-wrap">
                                         <div class="section text-center">
                                             <h4 class="mb-4 pb-3">Log In</h4>
-                                            <div class="form-group">
-                                                <span class="iconify input-icon" data-icon="mdi:account" data-inline="false"></span>
-                                                <input type="text" name="sellerid" class="form-style" placeholder="Your ID" id="sellerid" autocomplete="off">
-                                            </div>
-                                            <div class="form-group mt-2">
-                                                <span class="iconify input-icon" data-icon="mdi:lock" data-inline="false"></span>
-                                                <input type="password" name="sellerpass" class="form-style" placeholder="Your Password" id="sellerpass" autocomplete="off">
-                                            </div>
-                                            <a href="#" class="btn mt-4">Submit</a>
+                                            <form name="sellerFrm" method="post">
+                                                <div class="form-group">
+                                                    <span class="iconify input-icon" data-icon="mdi:account" data-inline="false"></span>
+                                                    <input type="text" name="sellerId" class="form-style" placeholder="Your ID" id="sellerid" autocomplete="off">
+                                                </div>
+                                                <div class="form-group mt-2">
+                                                    <span class="iconify input-icon" data-icon="mdi:lock" data-inline="false"></span>
+                                                    <input type="password" name="sellerPwd" class="form-style" placeholder="Your Password" id="sellerpass" autocomplete="off">
+                                                </div>
+                                                <a href="#" class="btn mt-4" onclick="sellerLogin()">Submit</a>
+                                            </form>
                                             <p class="mb-0 mt-4 text-center"><a href="#0" class="link">Forgot your password?</a></p>
                                             <p class="mb-0 mt-4 text-center"><a href="signup" class="link">make account?</a></p>
                                         </div>
@@ -78,5 +82,18 @@
         </div>
     </div>
 </main>
+
+<script>
+
+    function buyerLogin() {
+        document.buyerFrm.submit();
+    }
+
+    function sellerLogin() {
+        document.sellerFrm.submit();
+    }
+
+</script>
+
 </body>
 </html>

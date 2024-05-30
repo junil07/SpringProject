@@ -138,6 +138,8 @@ public class UserManageController {
         }
         List<Seller> sellerList = sellerService.getSellerList();
 
+        boolean flag = buyerService.authenticate("11", "11");
+
         model.addAttribute("columnName", columnName);
         model.addAttribute("sellerList", sellerList);
         model.addAttribute("activation", activation);
