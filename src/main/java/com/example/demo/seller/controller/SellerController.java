@@ -1,6 +1,8 @@
 package com.example.demo.seller.controller;
 
 import com.example.demo.admin.Entity.Seller;
+import com.example.demo.buyer.DTO.BuyerDTO;
+import com.example.demo.seller.DTO.SellerDTO;
 import com.example.demo.seller.service.OrderitemService;
 import com.example.demo.seller.service.ProductService;
 import com.example.demo.seller.service.SellerService;
@@ -19,13 +21,17 @@ public class SellerController {
 	private OrderitemService orderitemService;
 	private SellerService sellerService;
 	private ProductService productService;
+	private BuyerDTO buyerDTO;
+	private SellerDTO sellerDTO;
 //	OrderitemService orderitemService
-	public SellerController(OrderitemService orderitemService,
-							SellerService sellerService,
-							ProductService productService){
+	public SellerController(OrderitemService orderitemService, SellerService sellerService,
+							ProductService productService, BuyerDTO buyerDTO
+							,SellerDTO sellerDTO){
 		this.orderitemService = orderitemService;
 		this.sellerService = sellerService;
 		this.productService = productService;
+		this.buyerDTO = buyerDTO;
+		this.sellerDTO = sellerDTO;
 	}
 
 	//메인 페이지 메핑
@@ -47,7 +53,16 @@ public class SellerController {
 	//로그인 페이지 메핑
 	@RequestMapping("login")
 	public String login(Model model) {
+		model.addAttribute("buyerDTO", buyerDTO);
+		model.addAttribute("sellerDTO", sellerDTO);
 		return "seller/login";
+	}
+
+	// ㄹㅇ 로그인
+	@RequestMapping("reallogin")
+	public String realLogin(Model model, SellerDTO sellerDTO) {
+		model.addAttribute("sellerDTO", sellerDTO);
+		return "seller/reallogin";
 	}
 
 	//회원가입 페이지 메핑

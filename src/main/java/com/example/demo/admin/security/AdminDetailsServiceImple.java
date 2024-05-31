@@ -8,20 +8,17 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AdminUserDetailsServiceImple implements AdminUserDetailsService {
+public class AdminDetailsServiceImple implements AdminDetailsService {
 
     private AdminRepository adminRepository;
 
-    public AdminUserDetailsServiceImple(AdminRepository adminRepository) {
+    public AdminDetailsServiceImple(AdminRepository adminRepository) {
         this.adminRepository = adminRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        System.out.println("loadUserByUsername 첫 번째 호출");
-        System.out.println("username : " + username);
         Admin admin = adminRepository.findByadminId(username).orElseThrow(() -> new UsernameNotFoundException("없는 회원입니다"));
-        System.out.println("loadUserByUsername 두 번째 호출");
         return User.builder().username(admin.getAdminId()).password(admin.getAdminPassword()).roles(Role.ADMIN.name()).build();
     }
 }

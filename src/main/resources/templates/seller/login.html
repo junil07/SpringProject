@@ -38,18 +38,19 @@
                                     <div class="center-wrap">
                                         <div class="section text-center">
                                             <h4 class="mb-4 pb-3">Log In</h4>
-                                            <form name="buyerFrm" action="/buyer/loginProc" method="post">
                                                 <div class="form-group">
                                                     <span class="iconify input-icon" data-icon="mdi:account" data-inline="false"></span>
-                                                    <input type="text" name="buyerId" class="form-style" placeholder="Your ID" id="userid" autocomplete="off">
+                                                    <input type="text" class="form-style" placeholder="Your ID" id="buyerId" autocomplete="off">
                                                 </div>
                                                 <div class="form-group mt-2">
                                                     <span class="iconify input-icon" data-icon="mdi:lock" data-inline="false"></span>
-                                                    <input type="password" name="buyerPwd" class="form-style" placeholder="Your Password" id="userpwd" autocomplete="off">
+                                                    <input type="password" class="form-style" placeholder="Your Password" id="buyerPwd" autocomplete="off">
+                                                </div>
+                                                <div th:if="${param.error}" id="error1">
+                                                    아이디 혹은 비밀번호를 잘못 입력하셨습니다.
                                                 </div>
                                                 <a href="#" class="btn mt-4" onclick="buyerLogin()">Submit</a>
-                                            </form>
-                                            <p class="mb-0 mt-4 text-center"><a href="#0" class="link">Forgot your password?</a></p>
+                                            <p class="mb-0 mt-4 text-center"><a href="#" class="link">Forgot your password?</a></p>
                                             <p class="mb-0 mt-4 text-center"><a href="signup" class="link">make account?</a></p>
                                         </div>
                                     </div>
@@ -58,17 +59,18 @@
                                     <div class="center-wrap">
                                         <div class="section text-center">
                                             <h4 class="mb-4 pb-3">Log In</h4>
-                                            <form name="sellerFrm" method="post">
                                                 <div class="form-group">
                                                     <span class="iconify input-icon" data-icon="mdi:account" data-inline="false"></span>
-                                                    <input type="text" name="sellerId" class="form-style" placeholder="Your ID" id="sellerid" autocomplete="off">
+                                                    <input type="text" class="form-style" placeholder="Your ID" id="sellerId" autocomplete="off">
                                                 </div>
                                                 <div class="form-group mt-2">
                                                     <span class="iconify input-icon" data-icon="mdi:lock" data-inline="false"></span>
-                                                    <input type="password" name="sellerPwd" class="form-style" placeholder="Your Password" id="sellerpass" autocomplete="off">
+                                                    <input type="password" class="form-style" placeholder="Your Password" id="sellerPwd" autocomplete="off">
+                                                </div>
+                                                <div th:if="${param.error1}" id="error2">
+                                                    아이디 혹은 비밀번호를 잘못 입력하셨습니다.
                                                 </div>
                                                 <a href="#" class="btn mt-4" onclick="sellerLogin()">Submit</a>
-                                            </form>
                                             <p class="mb-0 mt-4 text-center"><a href="#0" class="link">Forgot your password?</a></p>
                                             <p class="mb-0 mt-4 text-center"><a href="signup" class="link">make account?</a></p>
                                         </div>
@@ -83,17 +85,17 @@
     </div>
 </main>
 
-<script>
+<form name="buyerFrm" action="/buyer/reallogin" method="post" th:object="${buyerDTO}">
+    <input type="hidden" name="buyerId" id="buyer1" th:field="*{buyerId}">
+    <input type="hidden" name="buyerPwd" id="buyer2" th:field="*{buyerPassword}">
+</form>
 
-    function buyerLogin() {
-        document.buyerFrm.submit();
-    }
+<form name="sellerFrm" action="/seller/reallogin" method="post" th:object="${sellerDTO}">
+    <input type="hidden" name="sellerId" id="seller1" th:field="*{sellerId}">
+    <input type="hidden" name="sellerPwd" id="seller2" th:field="*{sellerPassword}">
+</form>
 
-    function sellerLogin() {
-        document.sellerFrm.submit();
-    }
-
-</script>
+<script src="/js/userLogin.js"></script>
 
 </body>
 </html>

@@ -1,11 +1,13 @@
 package com.example.demo.buyer.controller;
 
+import com.example.demo.buyer.DTO.BuyerDTO;
 import com.example.demo.buyer.entity.ProductView;
 import com.example.demo.buyer.entity.Category;
 import com.example.demo.buyer.repository.ProductViewRepository;
 import com.example.demo.buyer.service.CategoryService;
 import com.example.demo.buyer.service.CustomProductService;
 import com.example.demo.buyer.service.ProductSizeimple;
+import com.example.demo.seller.DTO.SellerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +32,12 @@ public class BuyerController {
 	@Autowired
 	private ProductSizeimple productSizeimple;
 
+	@Autowired
+	private BuyerDTO buyerDTO;
+
+	@Autowired
+	private SellerDTO sellerDTO;
+
 	@RequestMapping("buyer/index")
 	public String main
 			(Model model) {
@@ -50,5 +58,20 @@ public class BuyerController {
 		model.addAttribute("productDetail", productDetail);
 		model.addAttribute("productSize", productSize);
 		return "buyer/product_detail";
+	}
+
+	// 로그인 페이지로 이동
+	@RequestMapping("/buyer/login")
+	public String buyerLogin(Model model) {
+		model.addAttribute("buyerDTO", buyerDTO);
+		model.addAttribute("sellerDTO", sellerDTO);
+		return "seller/login";
+	}
+
+	// ㄹㅇ 로그인
+	@RequestMapping("/buyer/reallogin")
+	public String buyerRealLogin(BuyerDTO buyerDTO, Model model) {
+		model.addAttribute("buyerDTO", buyerDTO);
+		return "buyer/reallogin";
 	}
 }

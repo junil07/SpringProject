@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>헬로</title>
+</head>
+<body>
+    <h1>ㄹㅇ구매자로그인</h1>
+
+    <form name="buyerFrm" action="/buyer/loginProc" method="post">
+        <input type="hidden" name="buyerId" id="buyer1" value="1">
+        <input type="hidden" name="buyerPwd" id="buyer2" value="12">
+        <button type="submit">테스트</button>
+    </form>
+
+    <div th:object="${buyerDTO}">
+        <h1>[[${buyerDTO.getBuyerId}]]</h1>
+        <h1>[[${buyerDTO.getBuyerPassword}]]</h1>
+    </div>
+
+    <script>
+
+    </script>
+
+</body>
+</html>
