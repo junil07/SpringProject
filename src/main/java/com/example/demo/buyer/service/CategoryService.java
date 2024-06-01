@@ -46,7 +46,7 @@ public class CategoryService implements BuyerService {
     }
 
     @Override
-    public List getRowParamOne(String productId) {
+    public List getRowParamOne(Integer productId) {
         return null;
     }
 }

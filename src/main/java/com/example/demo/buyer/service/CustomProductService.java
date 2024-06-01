@@ -2,6 +2,7 @@ package com.example.demo.buyer.service;
 
 import com.example.demo.buyer.repository.CustomQueryRepository;
 import com.example.demo.seller.repository.ProductRepository;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class CustomProductService {
         List<Map<String, Object>> productSummaryList = new ArrayList<>();
         for (Object[] row : productList) {
             Map<String, Object> productSummary = new HashMap<>();
-            productSummary.put("productId", ((String) row[0])); // 제품 ID
+            productSummary.put("productId", ((Number) row[0])); // 제품 ID
             productSummary.put("productName", (String) row[1]); // 제품 이름
             productSummary.put("productPrice", ((Number) row[2]).intValue()); // 제품 가격
             productSummary.put("totalCount", ((Number) row[3]).intValue()); // 총 수량

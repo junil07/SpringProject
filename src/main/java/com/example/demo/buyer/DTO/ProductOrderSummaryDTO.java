@@ -1,15 +1,17 @@
 package com.example.demo.buyer.DTO;
 
 public class ProductOrderSummaryDTO {
-    private String productId;
+    private Integer productId;
+    private String productCode;
     private String productName;
     private int productPrice;
     private int totalCount;
     private String productImageName;
     private String productImageExtension;
 
-    public ProductOrderSummaryDTO(String productId, String productName, int productPrice, int totalCount, String productImageName, String productImageExtension) {
+    public ProductOrderSummaryDTO(Integer productId, String productCode,String productName, int productPrice, int totalCount, String productImageName, String productImageExtension) {
         this.productId = productId;
+        this.productCode = productCode;
         this.productName = productName;
         this.productPrice = productPrice;
         this.totalCount = totalCount;
@@ -18,13 +20,17 @@ public class ProductOrderSummaryDTO {
     }
 
     // Getters and setters
-    public String getProductId() {
+    public Integer getProductId() {
         return productId;
     }
 
-    public void setProductId(String productId) {
+    public void setProductId(Integer productId) {
         this.productId = productId;
     }
+
+    public String getProductCode(){return productCode;}
+
+    public void setProductCode(String productCode){this.productCode = productCode;}
 
     public String getProductName() {
         return productName;

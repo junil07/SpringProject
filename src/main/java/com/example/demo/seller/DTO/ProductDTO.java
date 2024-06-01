@@ -47,7 +47,6 @@ public class ProductDTO {
     }
 
     public void setProductId(long productId) {
-
         this.productId = productId;
     }
 

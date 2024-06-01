@@ -16,6 +16,7 @@ public class CustomQueryRepository {
         return entityManager.createQuery(
                 "SELECT " +
                         "p.productId, " +
+                        "p.productCode, " +
                         "p.productName, " +
                         "p.productPrice, " +
                         "SUM(oi.orderitemPcount) AS total_count, " +

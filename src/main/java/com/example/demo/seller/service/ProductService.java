@@ -159,15 +159,12 @@ public class ProductService{
 
     public String generateUniqueId(String seller, String id) {
         //중복방지 예외처리 할 것
-
         seller = "xx";
         return seller + id;
     }
-
     public String reId(String pkId, String seller) {
         int firstCnt = seller.length();
         String reId = pkId.substring(firstCnt);
-
         return reId;
     }
 

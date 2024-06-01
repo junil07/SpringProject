@@ -18,7 +18,6 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long productId;
 
-
     @Column(name = "PRODUCT_CODE")
     private String productCode;
     @Column(name = "PRODUCT_NAME")
@@ -64,7 +63,6 @@ public class Product {
 
 
     }
-
     public long getProductId() {
         return productId;
     }

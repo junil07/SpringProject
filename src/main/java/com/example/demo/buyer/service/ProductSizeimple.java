@@ -31,7 +31,7 @@ public class ProductSizeimple implements BuyerService{
     }
 
     @Override
-    public List<String> getRowParamOne(String productId) {
+    public List<String> getRowParamOne(Integer productId) {
         List<ProductView> productViews = productViewRepository.findProductDetailSizeByProductId(productId);
         List<String> sizes = new ArrayList<>();
 

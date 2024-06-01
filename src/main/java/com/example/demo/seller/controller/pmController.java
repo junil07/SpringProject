@@ -78,11 +78,9 @@ public class pmController {
 		List<Category> categories = categoryService.getAll();
 		model.addAttribute("category", categories);
 		//이미지
-
 		ProductImage productImage = productImageService.productImageRoute(product);
 		model.addAttribute("productImage", productImage);
 		model.addAttribute("productImageRoute", "/assets/image/pMain/" + productImage.getProductImageSname() + productImage.getProductImageExtension());
-
 
 		// 저장된 카테고리 불러오기
 		Category subSubCategory = product.getCategory();
