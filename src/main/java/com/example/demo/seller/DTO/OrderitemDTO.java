@@ -1,44 +1,31 @@
-package com.example.demo.seller.domain;
-
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+package com.example.demo.seller.DTO;
 
 import java.time.LocalDate;
 
-@Entity
-@Getter
-@Setter
-@Table(name = "orderitem")
-public class Orderitem {
+public class OrderitemDTO {
 
-    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="ORDERITEM_ID")
     private Integer orderitemId;
-    @Column(name="ORDERITEM_PSTATUS")
     private String orderitemPstatus;
-    @Column(name="ORDERITEM_DSTATUS")
     private String orderitemDstatus;
-    @Column(name="ORDERITEM_PCOUNT")
     private int orderitemPcount;
-    @Column(name="ORDERITEM_PRICE")
     private int orderitemPrice;
-    @Column(name="ORDERITEM_DATE")
     private LocalDate orderitemDate;
-    @Column(name="ORDERITEM_CASE")
     private String orderitemCase;
 
+    public OrderitemDTO(){
 
-    // Order_list 엔티티와의 매핑
-    @ManyToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "ORDERLIST_ID", referencedColumnName = "ORDERLIST_ID")
-    private Orderlist orderlist;
+    }
 
-    // Product 엔티티와의 매핑
-    @ManyToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "PRODUCT_ID", referencedColumnName = "productId")
-    private Product product;
+    public OrderitemDTO(Integer orderitemId, String orderitemPstatus, String orderitemDstatus,
+                        int orderitemPcount, int orderitemPrice, LocalDate orderitemDate, String orderitemCase){
+        this.orderitemId = orderitemId;
+        this.orderitemPstatus = orderitemPstatus;
+        this.orderitemDstatus = orderitemDstatus;
+        this.orderitemPcount = orderitemPcount;
+        this.orderitemPrice = orderitemPrice;
+        this.orderitemDate = orderitemDate;
+        this.orderitemCase = orderitemCase;
+    }
 
     public Integer getOrderitemId() {
         return orderitemId;
@@ -80,28 +67,12 @@ public class Orderitem {
         this.orderitemPrice = orderitemPrice;
     }
 
-    public Orderlist getOrderlist() {
-        return orderlist;
-    }
-
-    public void setOrderlist(Orderlist orderlist) {
-        this.orderlist = orderlist;
-    }
-
     public LocalDate getOrderitemDate() {
         return orderitemDate;
     }
 
     public void setOrderitemDate(LocalDate orderitemDate) {
         this.orderitemDate = orderitemDate;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
     }
 
     public String getOrderitemCase() {
@@ -112,4 +83,3 @@ public class Orderitem {
         this.orderitemCase = orderitemCase;
     }
 }
-
