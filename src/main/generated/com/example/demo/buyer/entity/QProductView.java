@@ -49,7 +49,7 @@ public class QProductView extends EntityPathBase<ProductView> {
 
     public final StringPath productHashtag = createString("productHashtag");
 
-    public final StringPath productId = createString("productId");
+    public final NumberPath<Integer> productId = createNumber("productId", Integer.class);
 
     public final StringPath productImageExtension = createString("productImageExtension");
 

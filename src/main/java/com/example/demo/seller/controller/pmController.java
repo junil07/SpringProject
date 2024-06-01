@@ -3,13 +3,16 @@ package com.example.demo.seller.controller;
 import com.example.demo.buyer.entity.Category;
 import com.example.demo.buyer.service.CategoryService;
 import com.example.demo.seller.DTO.ProductDTO;
+import com.example.demo.seller.DTO.ProductDetailDTO;
 import com.example.demo.seller.domain.Product;
+import com.example.demo.seller.domain.ProductImage;
 import com.example.demo.seller.domain.Product_detail;
 import com.example.demo.seller.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -32,7 +35,7 @@ public class pmController {
 	public String inquiry(Model model) {
 		List<Product> product = productService.getProductList();
 		model.addAttribute("product", product);
-	    return "/seller/pm/inquiry";
+		return "/seller/pm/inquiry";
 	}
 
 	//상품 등록
@@ -41,6 +44,7 @@ public class pmController {
 		List<Category> categories = categoryService.getAll();
 		model.addAttribute("category", categories);
 		model.addAttribute("productDTO", new ProductDTO());
+		model.addAttribute("productDetailDTO", new ProductDetailDTO());
 		return "/seller/pm/registration";
 	}
 	//연관상품 등록
@@ -56,15 +60,30 @@ public class pmController {
 
 	//상품 상세페이지 이동
 	@GetMapping("/{productId}")
-	public String getProductDetail(@PathVariable("productId") String productId, Model model) {
-		List<Product_detail> productDetail = productService.getProductDetail(productId);
-		model.addAttribute("productDetail", productDetail);
+	public String getProductDetail(@PathVariable("productId") Integer productId, Model model) {
+		//상품
+		Product product = productService.getProduct(productId);
+		ProductDTO productDTO = productService.getProductDTO(product);
+		model.addAttribute("productDTO", productDTO);
+		//상품 상세
+		Product_detail productDetail = productService.getProductDetail(product);
+		ProductDetailDTO productDetailDTO = productService.getProductDetailDTO(productDetail);
+		//카테고리
+		model.addAttribute("productDetailDTO", productDetailDTO);
 		List<Category> categories = categoryService.getAll();
 		model.addAttribute("category", categories);
-		Product product = productService.getProduct(productId);
-		model.addAttribute("product", product);
-		System.out.println("-----------------------------------------");
-		System.out.println(product);
+		//이미지
+		//ProductImage productImage = productImageService.productImageRoute(product);
+//		model.addAttribute("productImage", productImage);
+//		model.addAttribute("productImageRoute", "/assets/image/pMain/" + productImage.getProductImageSname() + productImage.getProductImageExtension());
+
+		// 저장된 카테고리 불러오기
+		Category subSubCategory = product.getCategory();
+		model.addAttribute("ssubSubCategory", subSubCategory);
+		Category subCategory = categoryService.getCategory(subSubCategory.getCategoryParentId());
+		model.addAttribute("ssubCategory", subCategory);
+		Category sCategory = categoryService.getCategory(subCategory.getCategoryParentId());
+		model.addAttribute("sCategory", sCategory);
 		return "/seller/pm/product_detail"; // Thymeleaf 템플릿의 경로
 	}
 
@@ -87,12 +106,26 @@ public class pmController {
 	}
 
 	@PostMapping("/products")
-	public String saveProduct(@ModelAttribute("productDTO") ProductDTO productDTO) {
+	public String saveProduct(@ModelAttribute("productDTO") ProductDTO productDTO,
+							  @ModelAttribute("productDetailDTO") ProductDetailDTO productDetailDTO,
+							  @RequestParam("file") MultipartFile file) {
 		productService.addProduct(productDTO);
-		System.out.println("에엥");
-		return "/seller/pm/inquiry";
+		productService.addProductDetail(productDetailDTO);
+		//productImageService.addProductImage(file, productDTO);
+
+		return "redirect:/seller/pm/inquiry"; // 파일 업로드 성공 시 리다이렉트할 뷰 이름
 	}
 
+	@PostMapping("/productsUpdate")
+	public String updateProduct(@ModelAttribute("productDTO") ProductDTO productDTO,
+								@ModelAttribute("productDetailDTO") ProductDetailDTO productDetailDTO,
+								@RequestParam("file") MultipartFile file) {
+		productService.addProduct(productDTO);
+		productService.addProductDetail(productDetailDTO);
+		//productImageService.addProductImage(file, productDTO);
+
+		return "redirect:/seller/pm/{productId}"; // 파일 업로드 성공 시 리다이렉트할 뷰 이름
+	}
 
 
 

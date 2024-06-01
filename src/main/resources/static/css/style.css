@@ -295,7 +295,7 @@ ol, ul {
 }
 .form-control:focus {
   box-shadow: none;
-  border: 1px solid #dc3545;
+  border: 1px solid black;
 }
 
 hr {
