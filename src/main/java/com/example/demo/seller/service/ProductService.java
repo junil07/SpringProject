@@ -16,7 +16,7 @@ import com.example.demo.seller.repository.Product_detailRepository;
 import jakarta.transaction.Transactional;
 
 @Service
-public class ProductService implements SellerService_ {
+public class ProductService{
 
     private final ProductRepository productRepository;
 
@@ -31,7 +31,7 @@ public class ProductService implements SellerService_ {
     @Autowired
     private CategoryService categoryService;
 
-    @Override
+//    @Override
     public List<Product> getProductList() {
         return productRepository.findAll();
     }
@@ -60,7 +60,16 @@ public class ProductService implements SellerService_ {
         return product_detailRepository.findByProduct(product);
     }
 
-    @Override
+    //상품상세 DTO 변환
+    public ProductDetailDTO getProductDetailDTO(Product_detail productDetail) {
+        return CToDProductDetail(productDetail);
+    }
+
+    public Product_detail getProductDetail(Product product) {
+        return product_detailRepository.findByProduct(product);
+    }
+
+//    @Override
     @Transactional
     public void addProduct(ProductDTO productDTO) {
         Product product = CToEProduct(productDTO);
@@ -70,7 +79,6 @@ public class ProductService implements SellerService_ {
     @Transactional
     public void addProductDetail(ProductDetailDTO productDetailDTO) {
         Product_detail productDetail = CToEProductDetail(productDetailDTO);
-        System.out.println("!!!!!!!!!????????????/" + productDetail.getProductDetailId());
         product_detailRepository.save(productDetail);
     }
 
@@ -125,14 +133,12 @@ public class ProductService implements SellerService_ {
         productDetail.setProductDetailAs(productDetailDTO.getProductDetailAs());
         productDetail.setProductDetailStandard(productDetailDTO.getProductDetailStandard());
         productDetail.setProduct(getProduct(productDetailDTO.getProductId()));
-
         return productDetail;
     }
 
     private ProductDetailDTO CToDProductDetail(Product_detail productDetail) {
         ProductDetailDTO productDetailDTO = new ProductDetailDTO();
-
-        // DTO로부터 데이터를 엔티티로 변환하여 설정함
+        // DTO로부터 데이터를 엔티티로 변환하여 설정
         productDetailDTO.setProductDetailMate(productDetail.getProductDetailMate());
         productDetailDTO.setProductDetailColor(productDetail.getProductDetailColor());
         productDetailDTO.setProductDetailHeight(productDetail.getProductDetailHeight());

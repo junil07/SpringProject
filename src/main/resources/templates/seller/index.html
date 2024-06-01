@@ -336,39 +336,42 @@
           /*]]>*/
 	</script>
 	<script th:inline="javascript">
-		//제품 그래프 출력
-		/*<![CDATA[*/
-        var productData = /*[[${product}]]*/ {};
+		document.addEventListener('DOMContentLoaded', function () {
+            const productData = /*[[${product}]]*/ {};
+            const ctx4 = document.getElementById('orderproduct').getContext('2d');
 
-        // Draw Pie Chart
-        var ctx = document.getElementById('orderproduct').getContext('2d');
-        var orderproduct = new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: Object.keys(productData),
-                datasets: [{
-                    data: Object.values(productData),
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.7)',
-                        'rgba(54, 162, 235, 0.7)',
-                        'rgba(255, 206, 86, 0.7)',
-                        'rgba(75, 192, 192, 0.7)',
-                        'rgba(153, 102, 255, 0.7)',
-                        'rgba(255, 159, 64, 0.7)'
-                    ]
-                }]
-            },
-            options: {
-                responsive: true,
-                aspectRatio: 1,
-                maintainAspectRatio: false
+            // 동적으로 색상을 생성하는 함수
+            function dynamicColors() {
+                var r = Math.floor(Math.random() * 256);
+                var g = Math.floor(Math.random() * 256);
+                var b = Math.floor(Math.random() * 256);
+                return 'rgba(' + r + ', ' + g + ', ' + b + ', 0.7)';
             }
-        });
-        const canvas = document.getElementById('orderproduct');
+
+            // 전체 데이터를 사용하여 그래프 설정
+            const productConfig = {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(productData), // 전체 데이터의 라벨을 사용
+                    datasets: [{
+                        data: Object.values(productData),
+                        backgroundColor: Object.keys(productData).map(label => dynamicColors())
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    aspectRatio: 1,
+                    maintainAspectRatio: false
+                }
+            };
+
+            // 차트 생성
+            const canvas = document.getElementById('orderproduct');
             canvas.style.height = '458px';
-              new Chart(ctx, config);
-        /*]]>*/
+            new Chart(ctx4, productConfig);
+        });
 	</script>
+
 
 	<style>
 		/* 라디오 버튼 숨기기 */

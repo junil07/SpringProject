@@ -26,6 +26,8 @@ public class pmController {
 	@Autowired
 	private ProductImageService productImageService;
 	@Autowired
+	private ProductImageService productImageService;
+	@Autowired
 	private CategoryService categoryService;
 
 	public pmController() {
@@ -38,7 +40,7 @@ public class pmController {
 	public String inquiry(Model model) {
 		List<Product> product = productService.getProductList();
 		model.addAttribute("product", product);
-	    return "/seller/pm/inquiry";
+		return "/seller/pm/inquiry";
 	}
 
 	//상품 등록
@@ -76,9 +78,11 @@ public class pmController {
 		List<Category> categories = categoryService.getAll();
 		model.addAttribute("category", categories);
 		//이미지
+
 		ProductImage productImage = productImageService.productImageRoute(product);
 		model.addAttribute("productImage", productImage);
 		model.addAttribute("productImageRoute", "/assets/image/pMain/" + productImage.getProductImageSname() + productImage.getProductImageExtension());
+
 
 		// 저장된 카테고리 불러오기
 		Category subSubCategory = product.getCategory();
@@ -118,7 +122,6 @@ public class pmController {
 		productDetailDTO.setProductId(product.getProductId());
 		productService.addProductDetail(productDetailDTO);
 		productImageService.addProductImage(file, productDTO);
-
 		return "redirect:/seller/pm/inquiry"; // 파일 업로드 성공 시 리다이렉트할 뷰 이름
 	}
 
