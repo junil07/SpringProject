@@ -15,8 +15,11 @@ import lombok.Setter;
 public class Product {
 
     @Id
-    private String productId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long productId;
 
+    @Column(name = "PRODUCT_CODE")
+    private String productCode;
     @Column(name = "PRODUCT_NAME")
     private String productName;
     @Column(name = "PRODUCT_EXPLAIN")
@@ -44,10 +47,11 @@ public class Product {
     }
 
     // 모든 필드를 초기화하는 생성자
-    public Product(String productId, Seller seller, String productName, String productExplain,
+    public Product(long productId, String productCode, Seller seller, String productName, String productExplain,
                    int productPrice, int productDiscount, String productHashtag, Category category,
                    int productActivation) {
         this.productId = productId;
+        this.productCode = productCode;
         this.seller = seller;
         this.productName = productName;
         this.productExplain = productExplain;
@@ -60,12 +64,18 @@ public class Product {
 
     }
 
-    public String getProductId() {
+    public long getProductId() {
         return productId;
     }
 
-    public void setProductId(String productId) {
-        this.productId = productId;
+    public void setProductId(long productId) { this.productId = productId; }
+
+    public String getproductCode() {
+        return productCode;
+    }
+
+    public void setproductCode(String productCode) {
+        this.productCode = productCode;
     }
 
     public String getProductName() {

@@ -10,7 +10,6 @@ import lombok.Setter;
 @Setter
 public class ProductImage {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String productImageSname;
 
     @ManyToOne

@@ -8,8 +8,6 @@ public interface SellerService_ {
 
     public List getProductList();
 
-    public List getProductDetail(String productId);
-
     public void addProduct(ProductDTO productDTO);
 
 
