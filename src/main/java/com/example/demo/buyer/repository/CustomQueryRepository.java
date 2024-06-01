@@ -24,9 +24,9 @@ public class CustomQueryRepository {
                         "pd.productDetailMaker " +
                         "FROM " +
                         "Orderitem oi " +
-                        "JOIN oi.product p " +
-                        "LEFT JOIN ProductImage pi ON p.productId = pi.product.productId " +
-                        "LEFT JOIN Product_detail pd ON p.productId = pd.product.productId " +
+                        "JOIN oi.productId p " +
+                        "LEFT JOIN ProductImage pi ON p.productId = pi.productId.productId " +
+                        "LEFT JOIN Product_detail pd ON p.productId = pd.productId.productId " +
                         "GROUP BY " +
                         "p.productId, p.productName, p.productPrice, pi.productImageName, pi.productImageExtension, pd.productDetailMaker " +
                         "ORDER BY " +

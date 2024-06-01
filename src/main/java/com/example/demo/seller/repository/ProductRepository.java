@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, String> {
-    Product findByProductId(String productId);
+public interface ProductRepository extends JpaRepository<Product, Long> {
+    Product findByProductId(Long productId);
+    Product findByProductCode(String productCode);
 }

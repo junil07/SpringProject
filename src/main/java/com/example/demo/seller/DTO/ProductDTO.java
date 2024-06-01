@@ -1,8 +1,14 @@
 package com.example.demo.seller.DTO;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class ProductDTO {
 
-    private String productId;
+    private long productId;
+    private String productCode;
     private String productName;
     private String productExplain;
     private int productPrice;
@@ -17,10 +23,11 @@ public class ProductDTO {
     }
 
     // 생성자
-    public ProductDTO(String productId, String productName, String productExplain,
+    public ProductDTO(long productId, String productCode, String productName, String productExplain,
                       int productPrice, int productDiscount, String productHashtag,
                       int productActivation, String sellerId, Long categoryId) {
         this.productId = productId;
+        this.productCode = productCode;
         this.productName = productName;
         this.productExplain = productExplain;
         this.productPrice = productPrice;
@@ -32,12 +39,22 @@ public class ProductDTO {
     }
 
     // 게터와 세터 메서드
-    public String getProductId() {
+
+
+    public long getProductId() {
         return productId;
     }
 
-    public void setProductId(String productId) {
+    public void setProductId(long productId) {
         this.productId = productId;
+    }
+
+    public String getProductCode() {
+        return productCode;
+    }
+
+    public void setProductCode(String productCode) {
+        this.productCode = productCode;
     }
 
     public String getProductName() {

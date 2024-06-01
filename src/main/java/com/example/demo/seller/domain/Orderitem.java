@@ -26,6 +26,9 @@ public class Orderitem {
     private int orderitemPrice;
     @Column(name="ORDERITEM_DATE")
     private LocalDate orderitemDate;
+    @Column(name="ORDERITEM_CASE")
+    private String orderitemCase;
+
 
     // Order_list 엔티티와의 매핑
     @ManyToOne(cascade = CascadeType.REMOVE)
@@ -99,6 +102,14 @@ public class Orderitem {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public String getOrderitemCase() {
+        return orderitemCase;
+    }
+
+    public void setOrderitemCase(String orderitemCase) {
+        this.orderitemCase = orderitemCase;
     }
 }
 
