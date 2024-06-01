@@ -132,7 +132,7 @@ public class ProductService implements SellerService_ {
     private ProductDetailDTO CToDProductDetail(Product_detail productDetail) {
         ProductDetailDTO productDetailDTO = new ProductDetailDTO();
 
-        // DTO로부터 데이터를 엔티티로 변환하여 설정
+        // DTO로부터 데이터를 엔티티로 변환하여 설정함
         productDetailDTO.setProductDetailMate(productDetail.getProductDetailMate());
         productDetailDTO.setProductDetailColor(productDetail.getProductDetailColor());
         productDetailDTO.setProductDetailHeight(productDetail.getProductDetailHeight());
