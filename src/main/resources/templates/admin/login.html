@@ -3,8 +3,10 @@
 <head>
 
     <meta charset="UTF-8">
+    <!-- 캐싱을 방지하는 meta 태그 지시어 -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Title</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/css/bootstrap.min.css">
@@ -17,14 +19,11 @@
 
     <script>
 
-        $(document).ready(function() {
-
-            var alertMessage = "[[${alert}]]";
-            if (alertMessage !== "") {
-                alert(alertMessage);
-                location.href = "/admin/main";
-            }
-        });
+        var alertMessage = "[[${alert}]]";
+        if (alertMessage !== "") {
+            alert(alertMessage);
+            location.href = "/admin/main";
+        }
 
     </script>
 
@@ -71,7 +70,16 @@
         </div>
     </div>
 
-
+    <script>
+        // 뒤로가기 눌러서 로그인 페이지 진입 시 페이지 새로고침
+        window.addEventListener('pageshow', function(event) {
+          // persisted 속성이 true이면 뒤로가기로 페이지에 진입한 것
+          if (event.persisted) {
+            // 새로고침
+            window.location.reload();
+          }
+        });
+    </script>
 
 </body>
 </html>

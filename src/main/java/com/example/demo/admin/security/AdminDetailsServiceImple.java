@@ -18,6 +18,7 @@ public class AdminDetailsServiceImple implements AdminDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        System.out.println("admin로그인과정호출");
         Admin admin = adminRepository.findByadminId(username).orElseThrow(() -> new UsernameNotFoundException("없는 회원입니다"));
         return User.builder().username(admin.getAdminId()).password(admin.getAdminPassword()).roles(Role.ADMIN.name()).build();
     }

@@ -54,7 +54,7 @@ public class AdminServiceImple implements AdminService {
         return "관리자 아이디 없음 오류";
     }
 
-    // 암호화 용도(평소에는 쓰지않음)
+    // admin 비밀번호 암호화 용도(평소에는 쓰지않음)
     public boolean authenticate(String username, String rawPassword) {
         Admin admin = adminRepository.findByadminId(username).orElseThrow(() -> new UsernameNotFoundException("없음"));
         if (admin != null) {

@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 캐싱을 방지하는 meta 태그 지시어 -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Login</title>
     <!-- 부트스트랩 CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
@@ -12,6 +16,19 @@
     <link rel="mask-icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-b4b4269c16397ad2f0f7a01bcdf513a1994f4c94b8af2f191c09eb0d601762b1.svg" color="#111">
     <!-- Iconify JavaScript 파일 -->
     <script src="https://code.iconify.design/2/2.1.2/iconify.min.js"></script>
+
+    <script>
+
+        var alertMessage = "[[${alert}]]";
+        if (alertMessage === "이미 구매자 로그인이 되어있습니다.") {
+            alert(alertMessage);
+            location.href = "/buyer/index";
+        } else if (alertMessage === "이미 판매자 로그인이 되어있습니다.") {
+            alert(alertMessage);
+            location.href = "/seller/index";
+        }
+
+    </script>
 
 </head>
 <body>
@@ -46,7 +63,7 @@
                                                     <span class="iconify input-icon" data-icon="mdi:lock" data-inline="false"></span>
                                                     <input type="password" class="form-style" placeholder="Your Password" id="buyerPwd" autocomplete="off">
                                                 </div>
-                                                <div th:if="${param.error}" id="error1">
+                                                <div th:if="${param.error1}" id="error1">
                                                     아이디 혹은 비밀번호를 잘못 입력하셨습니다.
                                                 </div>
                                                 <a href="#" class="btn mt-4" onclick="buyerLogin()">Submit</a>
@@ -67,7 +84,7 @@
                                                     <span class="iconify input-icon" data-icon="mdi:lock" data-inline="false"></span>
                                                     <input type="password" class="form-style" placeholder="Your Password" id="sellerPwd" autocomplete="off">
                                                 </div>
-                                                <div th:if="${param.error1}" id="error2">
+                                                <div th:if="${param.error2}" id="error2">
                                                     아이디 혹은 비밀번호를 잘못 입력하셨습니다.
                                                 </div>
                                                 <a href="#" class="btn mt-4" onclick="sellerLogin()">Submit</a>
@@ -84,6 +101,8 @@
         </div>
     </div>
 </main>
+
+<input id="checkTest" th:value="${checkTest}">
 
 <form name="buyerFrm" action="/buyer/reallogin" method="post" th:object="${buyerDTO}">
     <input type="hidden" name="buyerId" id="buyer1" th:field="*{buyerId}">

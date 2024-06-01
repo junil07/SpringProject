@@ -164,11 +164,14 @@ public class BuyerServiceImple implements BuyerService {
         return flag;
     }
 
-    public boolean authenticate(String username, String rawPassword) {
-        Buyer buyer = buyerRepository1.findBybuyerId(username).orElseThrow(() -> new UsernameNotFoundException("없음"));
-        if (buyer != null) {
-            buyer.setBuyerPassword(passwordEncoder.encode(rawPassword));
-            buyerRepository1.save(buyer);
+    // Buyer 비밀번호 전체 암호화 하는데 사용했음
+    public boolean authenticate() {
+        List<Buyer> buyerList = buyerRepository1.findAll();
+
+        for (Buyer test : buyerList) {
+            System.out.println(test.getBuyerId() + "\t\t" + test.getBuyerPassword());
+//            test.setBuyerPassword(passwordEncoder.encode(test.getBuyerPassword()));
+//            buyerRepository1.save(test);
         }
         return true;
     }

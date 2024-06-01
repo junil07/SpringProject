@@ -17,11 +17,14 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig {
 
     private AdminDetailsServiceImple adminDetailsService;
-    private BuyerDetailsServiceImple userDetailsService;
+    private BuyerDetailsServiceImple buyerDetailsService;
+    private SellerDetailsServiceImple sellerDetailsService;
 
-    public SecurityConfig(AdminDetailsServiceImple adminDetailsService, BuyerDetailsServiceImple userDetailsService) {
+    public SecurityConfig(AdminDetailsServiceImple adminDetailsService, BuyerDetailsServiceImple buyerDetailsService,
+                          SellerDetailsServiceImple sellerDetailsService) {
         this.adminDetailsService = adminDetailsService;
-        this.userDetailsService = userDetailsService;
+        this.buyerDetailsService = buyerDetailsService;
+        this.sellerDetailsService = sellerDetailsService;
     }
 
     @Bean
@@ -40,8 +43,7 @@ public class SecurityConfig {
                                         , "/admin/js/**", "/admin/logincss/**", "/admin/vendor/**"
                                         , "/admin/login", "/admin/logout", "/admin/tetetest"
                                         , "/error", "/error/**", "/errorpage/**").permitAll()
-                                .requestMatchers("admin/main").hasRole(Role.ADMIN.name())
-                                .requestMatchers("admin/buyermanagement").hasRole(Role.BUYER.name())
+                                .requestMatchers("/admin/**").hasRole(Role.ADMIN.name())
                                 .anyRequest().authenticated())
                 .formLogin((formLogin) ->
                         formLogin
@@ -86,15 +88,15 @@ public class SecurityConfig {
                         formLogin
                                 .loginPage("/buyer/reallogin")
                                 .loginProcessingUrl("/buyer/loginProc")
-                                .failureUrl("/seller/login?error")
+                                .failureUrl("/buyer/login?error1")
                                 .usernameParameter("buyerId")
                                 .passwordParameter("buyerPwd")
-                                .defaultSuccessUrl("/buyer/main", true))
+                                .defaultSuccessUrl("/buyer/index", true))
                 .logout(logout ->
                         logout
-                                .logoutUrl("/logout")
-                                .logoutSuccessUrl("/login"))
-                .userDetailsService(userDetailsService)
+                                .logoutUrl("/buyer/logout")
+                                .logoutSuccessUrl("/buyer/index"))
+                .userDetailsService(buyerDetailsService)
                 .exceptionHandling((exceptionHandling) ->
                         exceptionHandling
                                 .authenticationEntryPoint(customAuthenticationEntryPoint)
@@ -125,15 +127,15 @@ public class SecurityConfig {
                         formLogin
                                 .loginPage("/seller/reallogin")
                                 .loginProcessingUrl("/seller/loginProc")
-                                .failureUrl("/seller/login?error1")
+                                .failureUrl("/seller/login?error2")
                                 .usernameParameter("sellerId")
                                 .passwordParameter("sellerPwd")
                                 .defaultSuccessUrl("/seller/index", true))
                 .logout(logout ->
                         logout
-                                .logoutUrl("/logout")
-                                .logoutSuccessUrl("/login"))
-                .userDetailsService(userDetailsService)
+                                .logoutUrl("/seller/logout")
+                                .logoutSuccessUrl("/buyer/index"))
+                .userDetailsService(sellerDetailsService)
                 .exceptionHandling((exceptionHandling) ->
                         exceptionHandling
                                 .authenticationEntryPoint(customAuthenticationEntryPoint)
