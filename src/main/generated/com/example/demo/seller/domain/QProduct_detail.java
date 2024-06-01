@@ -64,7 +64,7 @@ public class QProduct_detail extends EntityPathBase<Product_detail> {
 
     public QProduct_detail(Class<? extends Product_detail> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.product = inits.isInitialized("product") ? new QProduct(forProperty("product"), inits.get("product")) : null;
+        this.product = inits.isInitialized("productId") ? new QProduct(forProperty("productId"), inits.get("productId")) : null;
     }
 
 }

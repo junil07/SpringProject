@@ -5,8 +5,8 @@ import com.example.demo.admin.service.BuyerServiceImple;
 import com.example.demo.admin.service.ProductServiceImple;
 import com.example.demo.seller.domain.Product;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
+//import org.springframework.security.core.Authentication;
+//import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,16 +31,16 @@ public class AdminController {
 		this.productService = productService;
 	}
 
-	// 메인 페이지
-	@RequestMapping("main")
-	public String index(Principal principal, Model model) {
-		User user = (User) ((Authentication) principal).getPrincipal();
-		String adminName = adminService.findName(user.getUsername());
-
-		model.addAttribute("adminName", adminName);
-
-		return "admin/index";
-	}
+//	// 메인 페이지
+//	@RequestMapping("main")
+//	public String index(Principal principal, Model model) {
+//		User user = (User) ((Authentication) principal).getPrincipal();
+//		String adminName = adminService.findName(user.getUsername());
+//
+//		model.addAttribute("adminName", adminName);
+//
+//		return "admin/index";
+//	}
 
 	// 로그인 페이지로 이동
 	@RequestMapping("login")
@@ -59,18 +59,18 @@ public class AdminController {
 		return page;
 	}
 
-	// 상품 등록 승인
-	@RequestMapping("approval")
-	public String approval(Principal principal, Model model) {
-		User user = (User) ((Authentication) principal).getPrincipal();
-		String adminName = adminService.findName(user.getUsername());
-		List<Product> productList = productService.getProductList(0);
-		String[] columnName = {"ID", "판매자 ID", "이름", "가격", "할인율", "해쉬태그", "카테고리"};
-
-		model.addAttribute("adminName", adminName);
-		model.addAttribute("productList", productList);
-		model.addAttribute("columnName", columnName);
-
-		return "admin/menu/approval";
-	}
+//	// 상품 등록 승인
+//	@RequestMapping("approval")
+//	public String approval(Principal principal, Model model) {
+//		User user = (User) ((Authentication) principal).getPrincipal();
+//		String adminName = adminService.findName(user.getUsername());
+//		List<Product> productList = productService.getProductList(0);
+//		String[] columnName = {"ID", "판매자 ID", "이름", "가격", "할인율", "해쉬태그", "카테고리"};
+//
+//		model.addAttribute("adminName", adminName);
+//		model.addAttribute("productList", productList);
+//		model.addAttribute("columnName", columnName);
+//
+//		return "admin/menu/approval";
+//	}
 }

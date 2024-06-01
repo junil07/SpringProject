@@ -16,7 +16,7 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer productId;
+    private long productId;
 
     @Column(name = "PRODUCT_CODE")
     private String productCode;
@@ -47,7 +47,7 @@ public class Product {
     }
 
     // 모든 필드를 초기화하는 생성자
-    public Product(int productId, String productCode, Seller seller, String productName, String productExplain,
+    public Product(long productId, String productCode, Seller seller, String productName, String productExplain,
                    int productPrice, int productDiscount, String productHashtag, Category category,
                    int productActivation) {
         this.productId = productId;
@@ -63,12 +63,11 @@ public class Product {
 
 
     }
-
-    public Integer getProductId() {
+    public long getProductId() {
         return productId;
     }
 
-    public void setProductId(Integer productId) { this.productId = productId; }
+    public void setProductId(long productId) { this.productId = productId; }
 
     public String getproductCode() {
         return productCode;
@@ -141,7 +140,6 @@ public class Product {
     public void setCategory(Category category) {
         this.category = category;
     }
-
 
 }
 

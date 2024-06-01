@@ -7,6 +7,7 @@ import com.example.demo.seller.DTO.ProductDetailDTO;
 import com.example.demo.seller.domain.Product;
 import com.example.demo.seller.domain.ProductImage;
 import com.example.demo.seller.domain.Product_detail;
+import com.example.demo.seller.service.ProductImageService;
 import com.example.demo.seller.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +23,10 @@ public class pmController {
 
 	@Autowired
 	private ProductService productService;
+	@Autowired
+	private ProductImageService productImageService;
+	@Autowired
+	private ProductImageService productImageService;
 	@Autowired
 	private CategoryService categoryService;
 
@@ -73,9 +78,9 @@ public class pmController {
 		List<Category> categories = categoryService.getAll();
 		model.addAttribute("category", categories);
 		//이미지
-		//ProductImage productImage = productImageService.productImageRoute(product);
-//		model.addAttribute("productImage", productImage);
-//		model.addAttribute("productImageRoute", "/assets/image/pMain/" + productImage.getProductImageSname() + productImage.getProductImageExtension());
+		ProductImage productImage = productImageService.productImageRoute(product);
+		model.addAttribute("productImage", productImage);
+		model.addAttribute("productImageRoute", "/assets/image/pMain/" + productImage.getProductImageSname() + productImage.getProductImageExtension());
 
 		// 저장된 카테고리 불러오기
 		Category subSubCategory = product.getCategory();
@@ -110,19 +115,21 @@ public class pmController {
 							  @ModelAttribute("productDetailDTO") ProductDetailDTO productDetailDTO,
 							  @RequestParam("file") MultipartFile file) {
 		productService.addProduct(productDTO);
+		Product product = productService.getProductPK(productDTO.getProductCode());
+		productDTO.setProductId(product.getProductId());
+		productDetailDTO.setProductId(product.getProductId());
 		productService.addProductDetail(productDetailDTO);
-		//productImageService.addProductImage(file, productDTO);
-
+		productImageService.addProductImage(file, productDTO);
 		return "redirect:/seller/pm/inquiry"; // 파일 업로드 성공 시 리다이렉트할 뷰 이름
 	}
 
 	@PostMapping("/productsUpdate")
 	public String updateProduct(@ModelAttribute("productDTO") ProductDTO productDTO,
-								@ModelAttribute("productDetailDTO") ProductDetailDTO productDetailDTO,
-								@RequestParam("file") MultipartFile file) {
+							  @ModelAttribute("productDetailDTO") ProductDetailDTO productDetailDTO,
+							  @RequestParam("file") MultipartFile file) {
 		productService.addProduct(productDTO);
 		productService.addProductDetail(productDetailDTO);
-		//productImageService.addProductImage(file, productDTO);
+		productImageService.addProductImage(file, productDTO);
 
 		return "redirect:/seller/pm/{productId}"; // 파일 업로드 성공 시 리다이렉트할 뷰 이름
 	}

@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class ProductDTO {
 
-    private int productId;
+    private long productId;
     private String productCode;
     private String productName;
     private String productExplain;
@@ -23,7 +23,7 @@ public class ProductDTO {
     }
 
     // 생성자
-    public ProductDTO(int productId, String productCode, String productName, String productExplain,
+    public ProductDTO(long productId, String productCode, String productName, String productExplain,
                       int productPrice, int productDiscount, String productHashtag,
                       int productActivation, String sellerId, Long categoryId) {
         this.productId = productId;
@@ -41,11 +41,12 @@ public class ProductDTO {
     // 게터와 세터 메서드
 
 
-    public int getProductId() {
+
+    public long getProductId() {
         return productId;
     }
 
-    public void setProductId(int productId) {
+    public void setProductId(long productId) {
         this.productId = productId;
     }
 

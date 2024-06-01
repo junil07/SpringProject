@@ -16,7 +16,7 @@ import com.example.demo.seller.repository.Product_detailRepository;
 import jakarta.transaction.Transactional;
 
 @Service
-public class ProductService {
+public class ProductService{
 
     private final ProductRepository productRepository;
 
@@ -31,13 +31,19 @@ public class ProductService {
     @Autowired
     private CategoryService categoryService;
 
+//    @Override
     public List<Product> getProductList() {
         return productRepository.findAll();
     }
 
     //상품 하나 조회
-    public Product getProduct(Integer productId) {
+    public Product getProduct(long productId) {
         return productRepository.findByProductId(productId);
+    }
+
+    //상품 등록할때 pk 조회
+    public Product getProductPK(String productCode) {
+        return productRepository.findByProductCode(productCode);
     }
 
     //상품 DTO 변환
@@ -54,6 +60,16 @@ public class ProductService {
         return product_detailRepository.findByProduct(product);
     }
 
+    //상품상세 DTO 변환
+    public ProductDetailDTO getProductDetailDTO(Product_detail productDetail) {
+        return CToDProductDetail(productDetail);
+    }
+
+    public Product_detail getProductDetail(Product product) {
+        return product_detailRepository.findByProduct(product);
+    }
+
+//    @Override
     @Transactional
     public void addProduct(ProductDTO productDTO) {
         Product product = CToEProduct(productDTO);
@@ -116,15 +132,12 @@ public class ProductService {
         productDetail.setProductDetailWarning(productDetailDTO.getProductDetailWarning());
         productDetail.setProductDetailAs(productDetailDTO.getProductDetailAs());
         productDetail.setProductDetailStandard(productDetailDTO.getProductDetailStandard());
-
         productDetail.setProduct(getProduct(productDetailDTO.getProductId()));
-
         return productDetail;
     }
 
     private ProductDetailDTO CToDProductDetail(Product_detail productDetail) {
         ProductDetailDTO productDetailDTO = new ProductDetailDTO();
-
         // DTO로부터 데이터를 엔티티로 변환하여 설정
         productDetailDTO.setProductDetailMate(productDetail.getProductDetailMate());
         productDetailDTO.setProductDetailColor(productDetail.getProductDetailColor());
@@ -146,15 +159,12 @@ public class ProductService {
 
     public String generateUniqueId(String seller, String id) {
         //중복방지 예외처리 할 것
-
         seller = "xx";
         return seller + id;
     }
-
     public String reId(String pkId, String seller) {
         int firstCnt = seller.length();
         String reId = pkId.substring(firstCnt);
-
         return reId;
     }
 

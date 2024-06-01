@@ -31,8 +31,8 @@ dependencies {
 	implementation 'mysql:mysql-connector-java:8.0.32'                       // 최신 버전 사용
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
 	// 시큐리티
-	implementation 'org.springframework.boot:spring-boot-starter-security:3.3.0'
-	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+//	implementation 'org.springframework.boot:spring-boot-starter-security:3.3.0'
+//	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 
 	// Spring Data JDBC 의존성
 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'

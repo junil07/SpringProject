@@ -22,6 +22,8 @@ public class QOrderitem extends EntityPathBase<Orderitem> {
 
     public static final QOrderitem orderitem = new QOrderitem("orderitem");
 
+    public final StringPath orderitemCase = createString("orderitemCase");
+
     public final DatePath<java.time.LocalDate> orderitemDate = createDate("orderitemDate", java.time.LocalDate.class);
 
     public final StringPath orderitemDstatus = createString("orderitemDstatus");
@@ -57,7 +59,7 @@ public class QOrderitem extends EntityPathBase<Orderitem> {
     public QOrderitem(Class<? extends Orderitem> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.orderlist = inits.isInitialized("orderlist") ? new QOrderlist(forProperty("orderlist"), inits.get("orderlist")) : null;
-        this.product = inits.isInitialized("product") ? new QProduct(forProperty("product"), inits.get("product")) : null;
+        this.product = inits.isInitialized("productId") ? new QProduct(forProperty("productId"), inits.get("productId")) : null;
     }
 
 }

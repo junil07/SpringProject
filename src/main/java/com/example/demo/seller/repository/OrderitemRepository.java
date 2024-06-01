@@ -1,15 +1,20 @@
 package com.example.demo.seller.repository;
 
 import java.util.List;
+import java.util.Optional;
 
+
+import com.example.demo.seller.DTO.OrderitemDTO;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.seller.domain.Orderitem;
 
 @Repository
-public interface OrderitemRepository extends JpaRepository<Orderitem, Long> {
+public interface OrderitemRepository extends JpaRepository<Orderitem, Integer> {
 
     @Query("SELECT o.orderlist.orderlistDate, COUNT(o.orderlist.orderlistId)\n" +
             "FROM Orderitem o \n" +
@@ -54,4 +59,6 @@ public interface OrderitemRepository extends JpaRepository<Orderitem, Long> {
             "JOIN ol.buyer b " +
             "WHERE o.orderitemPstatus LIKE '결제전'")
     List<Object[]> findoutstanding();
+
+
 }
