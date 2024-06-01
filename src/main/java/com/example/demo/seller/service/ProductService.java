@@ -60,15 +60,6 @@ public class ProductService{
         return product_detailRepository.findByProduct(product);
     }
 
-    //상품상세 DTO 변환
-    public ProductDetailDTO getProductDetailDTO(Product_detail productDetail) {
-        return CToDProductDetail(productDetail);
-    }
-
-    public Product_detail getProductDetail(Product product) {
-        return product_detailRepository.findByProduct(product);
-    }
-
 //    @Override
     @Transactional
     public void addProduct(ProductDTO productDTO) {

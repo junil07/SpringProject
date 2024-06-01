@@ -26,8 +26,6 @@ public class pmController {
 	@Autowired
 	private ProductImageService productImageService;
 	@Autowired
-	private ProductImageService productImageService;
-	@Autowired
 	private CategoryService categoryService;
 
 	public pmController() {

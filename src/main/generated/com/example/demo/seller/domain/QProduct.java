@@ -20,7 +20,7 @@ public class QProduct extends EntityPathBase<Product> {
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
-    public static final QProduct product = new QProduct("productId");
+    public static final QProduct product = new QProduct("product");
 
     public final com.example.demo.buyer.entity.QCategory category;
 
@@ -34,7 +34,7 @@ public class QProduct extends EntityPathBase<Product> {
 
     public final StringPath productHashtag = createString("productHashtag");
 
-    public final NumberPath<Integer> productId = createNumber("productId", Integer.class);
+    public final NumberPath<Long> productId = createNumber("productId", Long.class);
 
     public final StringPath productName = createString("productName");
 
