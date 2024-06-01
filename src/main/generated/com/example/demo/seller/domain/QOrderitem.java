@@ -22,6 +22,8 @@ public class QOrderitem extends EntityPathBase<Orderitem> {
 
     public static final QOrderitem orderitem = new QOrderitem("orderitem");
 
+    public final StringPath orderitemCase = createString("orderitemCase");
+
     public final DatePath<java.time.LocalDate> orderitemDate = createDate("orderitemDate", java.time.LocalDate.class);
 
     public final StringPath orderitemDstatus = createString("orderitemDstatus");

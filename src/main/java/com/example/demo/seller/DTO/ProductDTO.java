@@ -41,11 +41,13 @@ public class ProductDTO {
     // 게터와 세터 메서드
 
 
+
     public long getProductId() {
         return productId;
     }
 
     public void setProductId(long productId) {
+
         this.productId = productId;
     }
 

@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html layout:decorate="~{_layout/seller/index}">
 <!--
 <th:block layout:fragment="pageHead">
@@ -9,7 +8,7 @@
 	<main id="main" class="main">
 		<section>
 			<div class="container-fluid px-4">
-				<h1 class="mt-4">취소관리</h1>
+				<h1 class="mt-4">반품관리</h1>
 				<ol class="breadcrumb mb-4">
 					<li class="breadcrumb-item"><a href="index">Dashboard</a></li>
 					<li class="breadcrumb-item active">Tables</li>
@@ -22,18 +21,25 @@
 								<div class="col-xxl-12 col-md-12">
 									<div class="card info-card sales-card">
 										<div class="card-body">
-											<h5 class="card-title border-bottom fw-bold" style="padding-top: 10px;">
-												취소진행중/완료 주문건을 확인해주세요.
-											</h5>
-											<section class="col-lg-12 d-flex">
+											<div class="border-bottom">
+												<h5 class="card-title fw-bold" style="padding-top: 10px; margin-bottom:0px;">
+													구매자가 요청한 반품 주문건에 대해 완료/거부처리를 진행하실 수 있습니다.
+												</h5>
+												<ul class="mb-3" style="list-style-type:disc;">
+													<li class="mb-1">판매자께서 직접 반품접수 하고자 하신다면 배송현황 관리 메뉴에서 처리해주세요.</li>
+													<li class="mb-1">반품요청 사유가 구매자 귀책인 경우 반품배송비가 자동 청구되고 판매자 귀책인 경우 청구되지 않습니다.</li>
+													<li class="mb-1">수거완료 후 +3영업일 이내 반품처리를 진행하지 않으시면 페널티가 부과되오니 주의해 주세요.</li>
+												</ul>
+											</div>
+											<section class="col-lg-12 d-flex mt-3">
 												<div class="col-xxl-3 col-md-3 d-flex">
 													<div class="col-xxl-2 col-md-2 card-icon rounded-circle d-flex align-items-center justify-content-center">
-														<i class="bi bi-cart"></i>
+														<i class="bi bi-bag-x"></i>
 													</div>
 													<ul class="col-xxl-8 col-md-8 list-group border-0 mt-1">
 														<li class="list-group-item border-0">
-															<div>취소요청</div>
-															<h5 class="fw-bold" th:text="${cancelcount.size()} + '건'"></h5>
+															<div>반품요청</div>
+															<h5 class="fw-bold" th:text="${returncount.size()} + '건'"></h5>
 														</li>
 													</ul>
 												</div>
@@ -43,7 +49,29 @@
 													</div>
 													<ul class="col-xxl-8 col-md-8 list-group border-0 mt-1">
 														<li class="list-group-item border-0">
-															<div>취소완료(최근 3일)</div>
+															<div>반품수거중</div>
+															<h5 class="fw-bold" th:text="${returningcount.size()} + '건'"></h5>
+														</li>
+													</ul>
+												</div>
+												<div class="col-xxl-3 col-md-3 d-flex">
+													<div class="col-xxl-2 col-md-2 card-icon rounded-circle d-flex align-items-center justify-content-center">
+														<i class="bi bi-box2"></i>
+													</div>
+													<ul class="col-xxl-8 col-md-8 list-group border-0 mt-1">
+														<li class="list-group-item border-0">
+															<div>반품수거완료</div>
+															<h5 class="fw-bold" th:text="${returnsucesscount.size()} + '건'"></h5>
+														</li>
+													</ul>
+												</div>
+												<div class="col-xxl-3 col-md-3 d-flex">
+													<div class="col-xxl-2 col-md-2 card-icon rounded-circle d-flex align-items-center justify-content-center">
+														<i class="bi bi-clock-history"></i>
+													</div>
+													<ul class="col-xxl-8 col-md-8 list-group border-0 mt-1">
+														<li class="list-group-item border-0">
+															<div>반품완료(최근3일)</div>
 															<h5 class="fw-bold" th:text="${threecount.size()} + '건'"></h5>
 														</li>
 													</ul>
@@ -86,8 +114,9 @@
 					<div class="card-header">
 						<div class="fas fa-table me-1">목록 (총<span id="itemCountSpan" th:text="${orderitem.size()}"></span> 개)</div>
 						<div class="d-flex mt-2 mb-2">
-							<button type="button" class="btn btn-info btn-sm btn-no-radius" id="approval">취소 승인처리</button>
-							<button type="button" class="btn btn-info btn-sm btn-no-radius" id="withdrawal" style="margin-left:5px;">취소 거부(철회)처리</button>
+							<button type="button" class="btn btn-info btn-sm btn-no-radius" id="preturn">반품처리</button>
+							<button type="button" class="btn btn-info btn-sm btn-no-radius" id="returnsucess" style="margin-left:5px;">반품 완료처리</button>
+							<button type="button" class="btn btn-info btn-sm btn-no-radius" id="returncancel" style="margin-left:5px;">반품 거부(철회)처리</button>
 						</div>
 					</div>
 					<div class="card-body">
@@ -99,22 +128,23 @@
 								<th>제품ID</th>
 								<th>제품명</th>
 								<th>제품가격</th>
-								<th>취소요청일</th>
-								<th>결제상태</th>
-								<th>배송상태</th>
-								<th>취소확인</th>
+								<th>주문일</th>
+								<th>주문상태</th>
+								<th>반품요청일</th>
+								<th>반품처리상태</th>
 							</tr>
 							</thead>
 							<tbody>
+							<!--반품요청, 반품지연, 반품승인, 반품-->
 							<tr th:each="o, stat : ${orderitem}" id="orderlist" class="orderitem-row" th:data-orderitem-id="${o.orderitemId}">
 								<td class="text-center"><input type="checkbox" class="row-checkbox"></td>
 								<td th:text="${o.orderlist.orderlistId}"></td>
 								<td th:text="${o.product.productId}"></td>
 								<td th:text="${o.product.productName}"></td>
 								<td th:text="${o.product.productPrice}"></td>
-								<td th:text="${o.orderitemDate}"></td>
-								<td th:text="${o.orderitemPstatus}"></td>
+								<td th:text="${o.orderlist.orderlistDate}"></td>
 								<td th:text="${o.orderitemDstatus}"></td>
+								<td th:text="${o.orderitemDate}"></td>
 								<td th:text="${o.orderitemCase}"></td>
 							</tr>
 							</tbody>
@@ -182,7 +212,7 @@
 
 				// 초기 데이터에서 날짜 범위에 맞는 행 필터링 및 추가
 				initialRows.forEach(function(row) {
-					var orderDateElement = row.querySelector('td:nth-child(6)');
+					var orderDateElement = row.querySelector('td:nth-child(8)');
 
 					if (orderDateElement) {
 						var orderDate = orderDateElement.textContent;
@@ -268,42 +298,43 @@
         });
 	</script>
 
-	<!--취소 승인처리-->
+	<!-- 반품 처리-->
 	<script>
-		document.getElementById('approval').addEventListener('click', function() {
+		document.getElementById('preturn').addEventListener('click', function() {
 			var checkedRows = document.querySelectorAll('.row-checkbox:checked');
 			var data = [];
-			var hasCancelledOrder = false;
+			var hasReturnOrder = false;
 
 			checkedRows.forEach(function(rowCheckbox) {
 				var row = rowCheckbox.closest('tr');
 				var orderitemId = row.querySelector('td:nth-child(2)').textContent;
 				var status = row.querySelector('td:nth-child(9)').textContent;
 
-				if (status === '취소승인') {
-					hasCancelledOrder = true;
+				if (status !== '반품요청') {
+					hasReturnOrder = true;
 				} else {
 					data.push({ "orderitemId": orderitemId });
+					console.log(data);
 				}
 			});
 
-			if (hasCancelledOrder) {
-				alert('이미 취소 승인된 항목이 있습니다.');
+			if (hasReturnOrder) {
+				alert('이미 반품 승인된 항목이 있습니다.');
 				return;
 			}
 
 			// AJAX로 데이터를 서버로 전송
 			var xhr = new XMLHttpRequest();
-			xhr.open('POST', '/seller/cm/cancel', true);
+			xhr.open('POST', '/seller/cm/preturn', true);
 			xhr.setRequestHeader('Content-Type', 'application/json');
-			xhr.setRequestHeader('Action-Type', 'cancel');
+			xhr.setRequestHeader('Action-Type', 'preturn');
 			xhr.onreadystatechange = function() {
 				if (xhr.readyState === XMLHttpRequest.DONE) {
 					if (xhr.status === 200) {
 						console.log('전송성공');
 						console.log(data);
 						// 데이터 전송 성공 후 테이블 업데이트
-						updateTable(checkedRows, '취소승인');
+<!--						updateTable(checkedRows, '반품수거중');-->
 					} else {
 						console.error('Failed to send data');
 					}
@@ -312,69 +343,8 @@
 			xhr.send(JSON.stringify(data));
 		});
 
-		function updateTable(checkedRows, statusText) {
-			checkedRows.forEach(function(rowCheckbox) {
-				var row = rowCheckbox.closest('tr');
-				row.querySelector('td:nth-child(9)').textContent = statusText;
-				rowCheckbox.checked = false;
-			});
 
-			// 테이블을 다시 초기화
-			var dataTable = new simpleDatatables.DataTable('#datatablesSimple', {
-				searchable: true,
-				pagination: true
-			});
-
-			console.log('테이블 업데이트 완료');
-		}
 	</script>
-	<!-- 취소거부(철회)처리-->
-	<script>
-		document.getElementById('withdrawal').addEventListener('click', function() {
-			var checkedRows = document.querySelectorAll('.row-checkbox:checked');
-			var data = [];
-
-			checkedRows.forEach(function(rowCheckbox) {
-				var row = rowCheckbox.closest('tr');
-				var orderitemId = row.querySelector('td:nth-child(2)').textContent;
-				data.push({ "orderitemId": orderitemId });
-			});
-
-			// AJAX로 데이터를 서버로 전송
-			var xhr = new XMLHttpRequest();
-			xhr.open('POST', '/seller/cm/cancel', true);
-			xhr.setRequestHeader('Content-Type', 'application/json');
-			xhr.setRequestHeader('Action-Type', 'withdraw');
-			xhr.onreadystatechange = function() {
-				if (xhr.readyState === XMLHttpRequest.DONE) {
-					if (xhr.status === 200) {
-						console.log('전송성공');
-						console.log(data);
-						updateTable(checkedRows);
-					} else {
-						console.error('Failed to send data');
-					}
-				}
-			};
-			xhr.send(JSON.stringify(data));
-		});
-		function updateTable(checkedRows) {
-			checkedRows.forEach(function(rowCheckbox) {
-				var row = rowCheckbox.closest('tr');
-				row.parentNode.removeChild(row);
-			});
-
-			// 테이블을 다시 초기화
-			var dataTable = new simpleDatatables.DataTable('#datatablesSimple', {
-				searchable: true,
-				pagination: true
-			});
-
-			console.log('테이블 업데이트 완료');
-		}
-	</script>
-
-
 	<style>
 		input[type="radio"] {
             display: none;
@@ -388,3 +358,5 @@
 	</style>
 </th:block>
 </html>
+
+

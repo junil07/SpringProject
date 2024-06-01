@@ -1,48 +1,344 @@
+<!DOCTYPE html>
+<html layout:decorate="~{_layout/seller/index}">
+<!--
+<th:block layout:fragment="pageHead">
+	<title th:text="${pageName}"></title>
+</th:block>
+-->
+<th:block layout:fragment="pageContent">
+    <main id="main" class="main">
+        <section>
+            <div class="container-fluid px-4">
+                <h1 class="mt-4">취소관리</h1>
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item"><a href="index">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Tables</li>
+                </ol>
+                <section class="section dashboard">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <!-- Sales Card -->
+                                <div class="col-xxl-12 col-md-12">
+                                    <div class="card info-card sales-card">
+                                        <div class="card-body">
+                                            <h5 class="card-title border-bottom fw-bold" style="padding-top: 10px;">
+                                                취소진행중/완료 주문건을 확인해주세요.
+                                            </h5>
+                                            <section class="col-lg-12 d-flex">
+                                                <div class="col-xxl-3 col-md-3 d-flex">
+                                                    <div class="col-xxl-2 col-md-2 card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                                        <i class="bi bi-cart"></i>
+                                                    </div>
+                                                    <ul class="col-xxl-8 col-md-8 list-group border-0 mt-1">
+                                                        <li class="list-group-item border-0">
+                                                            <div>취소요청</div>
+                                                            <h5 class="fw-bold" th:text="${cancelcount.size()} + '건'"></h5>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="col-xxl-3 col-md-3 d-flex">
+                                                    <div class="col-xxl-2 col-md-2 card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                                        <i class="bi bi-truck"></i>
+                                                    </div>
+                                                    <ul class="col-xxl-8 col-md-8 list-group border-0 mt-1">
+                                                        <li class="list-group-item border-0">
+                                                            <div>취소완료(최근 3일)</div>
+                                                            <h5 class="fw-bold" th:text="${threecount.size()} + '건'"></h5>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </section>
+                                        </div>
+                                    </div>
+                                </div><!-- End Sales Card -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <div class="card mb-4 d-flex">
+                    <div class="card-body border-bottom">조회기간</div>
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <div style="margin-right:10px;">
+                                <input type="radio" id="now" name="now" value="1">
+                                <label class="btn btn-info btn-sm btn-no-radius" for="now" onclick="printValue('1')">오늘</label>
+                                <input type="radio" id="week" name="week" value="2">
+                                <label class="btn btn-info btn-sm btn-no-radius" for="week" onclick="printValue('2')">1주일</label>
+                                <input type="radio" id="1month" name="1month" value="3">
+                                <label class="btn btn-info btn-sm btn-no-radius" for="1month" onclick="printValue('3')">1개월</label>
+                                <input type="radio" id="3month" name="3month" value="4">
+                                <label class="btn btn-info btn-sm btn-no-radius" for="3month" onclick="printValue('4')">3개월</label>
+                            </div>
+                            <label for="lastdate" class="d-flex align-items-center">
+                                <input type="date" id="lastdate" max="2040-12-31" min="2010-01-01">
+                            </label>
+                            <label for="nowdate" class="d-flex align-items-center"> ~
+                                <input type="date" id="nowdate" max="2040-12-31" min="2010-01-01">
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <button type="button" class="btn" id="search">검색</button>
+                    </div>
+                </div>
+                <div class="card mb-4" id="listtable">
+                    <div class="card-header">
+                        <div class="fas fa-table me-1">목록 (총<span id="itemCountSpan" th:text="${orderitem.size()}"></span> 개)</div>
+                        <div class="d-flex mt-2 mb-2">
+                            <button type="button" class="btn btn-info btn-sm btn-no-radius" id="approval">취소 승인처리</button>
+                            <button type="button" class="btn btn-info btn-sm btn-no-radius" id="withdrawal" style="margin-left:5px;">취소 거부(철회)처리</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table id="datatablesSimple" class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th data-sortable="false" class="text-center"><input type="checkbox" id="allcheck"></th>
+                                <th>상품주문번호</th>
+                                <th>제품ID</th>
+                                <th>제품명</th>
+                                <th>제품가격</th>
+                                <th>취소요청일</th>
+                                <th>결제상태</th>
+                                <th>배송상태</th>
+                                <th>취소확인</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="o, stat : ${orderitem}" id="orderlist" class="orderitem-row" th:data-orderitem-id="${o.orderitemId}">
+                                <td class="text-center"><input type="checkbox" class="row-checkbox"></td>
+                                <td th:text="${o.orderlist.orderlistId}"></td>
+                                <td th:text="${o.product.productId}"></td>
+                                <td th:text="${o.product.productName}"></td>
+                                <td th:text="${o.product.productPrice}"></td>
+                                <td th:text="${o.orderitemDate}"></td>
+                                <td th:text="${o.orderitemPstatus}"></td>
+                                <td th:text="${o.orderitemDstatus}"></td>
+                                <td th:text="${o.orderitemCase}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main><!-- End #main -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+    const today = new Date();
+    const formattedToday = formatDate(today);
 
-<div id="product" style="display: block;">
-    <canvas id="orderproduct" ></canvas>
-</div>
-
-<script>
-    /*결제건수 그래프 출력*/
-    document.addEventListener('DOMContentLoaded', function () {
-    const ctx = document.getElementById('orderproduct').getContext('2d');
-    const data = /*[[${product}]]*/ {};
-
-    const config = {
-    type: 'pie', // 원형 그래프로 설정
-    data: {
-        labels: Object.keys(data),
-        datasets: [{
-            label: '총 결제 건수',
-            data: Object.values(data),
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.5)',
-                'rgba(54, 162, 235, 0.5)',
-                'rgba(255, 206, 86, 0.5)',
-                'rgba(75, 192, 192, 0.5)',
-                'rgba(153, 102, 255, 0.5)',
-                'rgba(255, 159, 64, 0.5)'
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false
+    var nowdateInput = document.getElementById('nowdate');
+    if (nowdateInput) {
+        nowdateInput.value = formattedToday;
+    } else {
+        console.error('The nowdate input element is not found.');
     }
-    };
-    const canvas = document.getElementById('orderproduct');
-    canvas.style.height = '440px';
-    new Chart(ctx, config);
+
+    var weekRadio = document.getElementById('week');
+    if (weekRadio && !weekRadio.checked) {
+        weekRadio.checked = true;
+        printValue('2');
+    } else {
+        console.error('The week radio input element is not found or already checked.');
+    }
+
+    var table;
+    var initialRows = Array.from(document.querySelectorAll('#datatablesSimple tbody tr')).map(function(row) {
+        return row.cloneNode(true); // 각 행을 복제하여 저장
     });
 
-</script>
+    function initTable() {
+        table = new simpleDatatables.DataTable('#datatablesSimple', {
+            searchable: true,
+            pagination: true
+        });
+
+        document.getElementById('allcheck').addEventListener('change', function() {
+            var checkboxes = document.querySelectorAll('.row-checkbox');
+            for (var checkbox of checkboxes) {
+                checkbox.checked = this.checked;
+            }
+        });
+    }
+
+    // 초기 테이블 데이터 저장
+    initTable();
+
+    document.getElementById('search').addEventListener('click', function() {
+        var startDate = document.getElementById('lastdate').value;
+        var endDate = document.getElementById('nowdate').value;
+
+        console.log(startDate);
+        console.log(endDate);
+
+        // 기존 테이블 데이터 초기화
+        table.destroy();
+        var tbody = document.querySelector('tbody');
+        tbody.innerHTML = '';
+
+        var itemCount = 0;
+
+        // 초기 데이터에서 날짜 범위에 맞는 행 필터링 및 추가
+        initialRows.forEach(function(row) {
+            var orderDateElement = row.querySelector('td:nth-child(6)');
+
+            if (orderDateElement) {
+                var orderDate = orderDateElement.textContent;
+                if (orderDate >= startDate && orderDate <= endDate) {
+                    tbody.appendChild(row.cloneNode(true)); // 복제된 행을 추가
+                    itemCount++;
+                }
+            }
+        });
+
+        // 새로운 데이터로 테이블 재초기화
+        initTable();
+
+        var itemCountSpan = document.getElementById('itemCountSpan');
+        if (itemCountSpan) {
+            itemCountSpan.textContent = itemCount;
+        } else {
+            console.error('The itemCountSpan element is not found.');
+        }
+    });
+});
+
+// 날짜 형식을 'YYYY-MM-DD'로 변환하는 함수
+function formatDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
+// 날짜 선택에 따라 값을 설정하는 함수
+function printValue(selectedValue) {
+    const currentDate = new Date();
+    let year, month, day, formattedDate;
+
+    if (selectedValue === '1') {
+        year = currentDate.getFullYear();
+        month = String(currentDate.getMonth() + 1).padStart(2, '0');
+        day = String(currentDate.getDate()).padStart(2, '0');
+        formattedDate = `${year}-${month}-${day}`;
+    } else if (selectedValue === '2') {
+        currentDate.setDate(currentDate.getDate() - 7);
+        year = currentDate.getFullYear();
+        month = String(currentDate.getMonth() + 1).padStart(2, '0');
+        day = String(currentDate.getDate()).padStart(2, '0');
+        formattedDate = `${year}-${month}-${day}`;
+    } else if (selectedValue === '3') {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        year = currentDate.getFullYear();
+        month = String(currentDate.getMonth() + 1).padStart(2, '0');
+        day = String(currentDate.getDate()).padStart(2, '0');
+        formattedDate = `${year}-${month}-${day}`;
+    } else if (selectedValue === '4') {
+        currentDate.setMonth(currentDate.getMonth() - 3);
+        year = currentDate.getFullYear();
+        month = String(currentDate.getMonth() + 1).padStart(2, '0');
+        day = String(currentDate.getDate()).padStart(2, '0');
+        formattedDate = `${year}-${month}-${day}`;
+    }
+
+    const lastdateInput = document.getElementById('lastdate');
+    if (lastdateInput) {
+        lastdateInput.value = formattedDate;
+    } else {
+        console.error('The lastdate input element is not found.');
+    }
+
+    const radios = document.querySelectorAll('input[type="radio"]');
+    radios.forEach(function(radio) {
+        if (radio.value !== selectedValue) {
+            radio.checked = false;
+        }
+    });
+}
+
+    </script>
+    <!--모두 체크하기-->
+    <script>
+        document.getElementById('allcheck').addEventListener('change', function() {
+            var checkboxes = document.querySelectorAll('.row-checkbox');
+            for (var checkbox of checkboxes) {
+                checkbox.checked = this.checked;
+            }
+        });
+    </script>
+
+    <!--취소 승인처리-->
+    <script>
+        document.getElementById('approval').addEventListener('click', function() {
+            var checkedRows = document.querySelectorAll('.row-checkbox:checked');
+            var data = [];
+            var hasCancelledOrder = false;
+
+            checkedRows.forEach(function(rowCheckbox) {
+                var row = rowCheckbox.closest('tr');
+                var orderitemId = row.querySelector('td:nth-child(2)').textContent;
+                var status = row.querySelector('td:nth-child(9)').textContent;
+
+                if (status === '취소승인') {
+                    hasCancelledOrder = true;
+                } else {
+                    data.push({ "orderitemId": orderitemId });
+                }
+            });
+
+            if (hasCancelledOrder) {
+                alert('이미 취소 승인된 항목이 있습니다.');
+                return;
+            }
+
+            // AJAX로 데이터를 서버로 전송
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/seller/cm/cancel', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        console.log('전송성공');
+                        console.log(data);
+                        // 데이터 전송 성공 후 테이블 업데이트
+                        updateTable(checkedRows);
+                    } else {
+                        console.error('Failed to send data');
+                    }
+                }
+            };
+            xhr.send(JSON.stringify(data));
+        });
+
+        function updateTable(checkedRows) {
+            checkedRows.forEach(function(rowCheckbox) {
+                var row = rowCheckbox.closest('tr');
+                row.querySelector('td:nth-child(9)').textContent = '취소승인';
+                rowCheckbox.checked = false;
+            });
+
+            // 테이블을 다시 초기화
+            var dataTable = new simpleDatatables.DataTable('#datatablesSimple', {
+                searchable: true,
+                pagination: true
+            });
+
+            console.log('테이블 업데이트 완료');
+        }
+    </script>
+
+    <style>
+        input[type="radio"] {
+            display: none;
+        }
+        input[type="radio"]:checked + label {
+            background-color: rgb(13, 110, 253);
+        }
+        .btn {
+            border-radius: 0 !important;
+        }
+    </style>
+</th:block>
+</html>

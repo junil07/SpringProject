@@ -1,18 +1,21 @@
 package com.example.demo.seller.service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import com.example.demo.seller.DTO.OrderitemDTO;
+import org.hibernate.query.Order;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.seller.domain.Orderitem;
 import com.example.demo.seller.repository.OrderitemRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class OrderitemService {
-
+    private static final Logger logger = LoggerFactory.getLogger(OrderitemService.class);
     private final OrderitemRepository orderitemRepository;
 
     @Autowired
@@ -71,4 +74,44 @@ public class OrderitemService {
     public List<Object[]> findOutstandingOrders() {
         return orderitemRepository.findoutstanding();
     }
+
+    public void updateOrderitemCase(List<OrderitemDTO> orderItems) {
+        for (OrderitemDTO orderItemDTO : orderItems) {
+            Optional<Orderitem> optionalOrderitem = orderitemRepository.findById(orderItemDTO.getOrderitemId());
+            if (optionalOrderitem.isPresent()) {
+                Orderitem orderitem = optionalOrderitem.get();
+                orderitem.setOrderitemCase("취소승인"); // orderitemCase를 "취소 승인"으로 변경
+                orderitemRepository.save(orderitem);
+            } else {
+                throw new RuntimeException("Orderitem not found: " + orderItemDTO.getOrderitemId());
+            }
+        }
+    }
+
+    public void withdrawOrderitemCase(List<OrderitemDTO> orderItems){
+        for (OrderitemDTO orderItemDTO : orderItems) {
+            Optional<Orderitem> optionalOrderitem = orderitemRepository.findById(orderItemDTO.getOrderitemId());
+            if (optionalOrderitem.isPresent()) {
+                Orderitem orderitem = optionalOrderitem.get();
+                orderitem.setOrderitemCase("정상처리"); // orderitemCase를 "정상처리"으로 변경
+                orderitemRepository.save(orderitem);
+            } else {
+                throw new RuntimeException("Orderitem not found: " + orderItemDTO.getOrderitemId());
+            }
+        }
+    }
+
+    public void updatereutrnitemCase(List<OrderitemDTO> orderItems) {
+        for (OrderitemDTO orderItemDTO : orderItems) {
+            Optional<Orderitem> optionalOrderitem = orderitemRepository.findById(orderItemDTO.getOrderitemId());
+            if (optionalOrderitem.isPresent()) {
+                Orderitem orderitem = optionalOrderitem.get();
+                orderitem.setOrderitemCase("반품수거중"); // orderitemCase를 "반품수거중"으로 변경
+                orderitemRepository.save(orderitem);
+            } else {
+                throw new RuntimeException("Orderitem not found: " + orderItemDTO.getOrderitemId());
+            }
+        }
+    }
+
 }
