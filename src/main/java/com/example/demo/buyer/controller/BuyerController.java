@@ -99,4 +99,10 @@ public class BuyerController {
 		model.addAttribute("buyerDTO", buyerDTO);
 		return "buyer/reallogin";
 	}
+
+	// 구매자 회원가입
+	@RequestMapping("/buyer/signup")
+	public String signUp() {
+		return "/buyer/signup";
+	}
 }
