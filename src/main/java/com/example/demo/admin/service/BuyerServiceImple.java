@@ -164,6 +164,19 @@ public class BuyerServiceImple implements BuyerService {
         return flag;
     }
 
+    // Buyer 아이디 있는지 확인 있으면 1 없으면 0
+    @Override
+    public int idCheck(String buyerId) {
+        Buyer buyer = buyerRepository1.findBybuyerId(buyerId).orElse(null);
+        int check = 0;
+
+        if (buyer != null) {
+            check = 1;
+        }
+
+        return check;
+    }
+
     // Buyer 비밀번호 전체 암호화 하는데 사용했음
     public boolean authenticate() {
         List<Buyer> buyerList = buyerRepository1.findAll();

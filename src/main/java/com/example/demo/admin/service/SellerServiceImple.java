@@ -153,8 +153,8 @@ public class SellerServiceImple implements SellerService {
 
         for (Seller test : sellerList) {
             System.out.println(test.getSellerId() + "\t\t" + test.getSellerPassword());
-            test.setSellerPassword(passwordEncoder.encode(test.getSellerPassword()));
-            sellerRepository1.save(test);
+//            test.setSellerPassword(passwordEncoder.encode(test.getSellerPassword()));
+//            sellerRepository1.save(test);
         }
         return true;
     }

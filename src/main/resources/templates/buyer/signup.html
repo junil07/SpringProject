@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="utf-8">
-    <title>NewsBit - News Magazine Newspaper HTML Template</title>
+    <title>회원가입</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- 캐싱을 방지하는 meta 태그 지시어 -->
@@ -26,11 +26,38 @@
     <link rel="stylesheet" href="/plugins/slick-carousel/slick-theme.css">
     <!-- manin stylesheet -->
     <link rel="stylesheet" href="/css/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <style>
 
         .signup {
             margin-top: 400px;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        .borderRed {
+            border: 1px solid red;
+        }
+
+        #idDuplicate {
+            float: right;
+        }
+
+        .idAlert1, .pwdAlert1,
+        .pwdAlert2, .emailAlert1 {
+            color: red;
+        }
+
+        .idAlert2 {
+            color: green;
+        }
+
+        .focusRed:focus {
+            box-shadow: none;
+            border: 1px solid red !important;
         }
 
     </style>
@@ -43,58 +70,65 @@
         <div class="row align-items-center justify-content-center">
             <div class="col-lg-7">
                 <div class="signup">
-                    <div class="text-center"><a href="index.html"><img src="/images/logos/logo.png" alt="" class="img-fluid"></a></div>
+                    <div class="text-center"><a href="index.html"><img src="/assets/image/LOGO.png" alt="" class="img-fluid"></a></div>
                     <h3 class="mt-4">회원가입</h3>
                     <p class="mb-5"></p>
-                    <form action="#" class="signup-form row">
+                    <form action="#" class="signup-form row" method="post">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="f-name">아이디</label>
-                                <input type="text" class="form-control" id="f-name" name="f-name" placeholder="First name">
+                                <label for="buyerId">아이디</label>
+                                <div style="display: ruby-text;">
+                                    <input type="text" class="form-control" id="buyerId" name="buyerId" placeholder="아이디" style="width: 70%;">
+                                    <button class="btn btn-primary" id="idDuplicate" type="button">중복확인</button>
+                                </div>
+                                <label class="idAlert1 hide"><small>이미 존재하는 아이디입니다.</small></label>
+                                <label class="idAlert2 hide"><small>사용 가능한 아이디입니다.</small></label>
                             </div>
                         </div>
-                        <!--아이디, 비밀번호, 이름, 생일, 이메일, 주소, 전화번호-->
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="l-name">비밀번호</label>
-                                <input type="text" id="l-name" name="l-name" class="form-control" placeholder="Last Name">
+                                <label for="buyerPwd">비밀번호</label>
+                                <input type="password" id="buyerPwd" name="l-name" class="form-control" placeholder="비밀번호">
+                                <label class="pwdAlert1 hide"><small>공백이 존재합니다.</small></label>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="email-address">비밀번호 확인</label>
-                                <input type="email" class="form-control" name="email-address" id="email-address" placeholder="Enter a valid mail">
+                                <label for="buyerPwd1">비밀번호 확인</label>
+                                <input type="password" class="form-control" name="email-address" id="buyerPwd1" placeholder="비밀번호 확인">
+                                <label class="pwdAlert2 hide"><small>비밀번호가 일치하지 않습니다.</small></label>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="password-s">이름</label>
-                                <input type="password" class="form-control" id="password-s" name="password-s" placeholder="A strong password">
+                                <label for="buyerName">이름</label>
+                                <input type="text" class="form-control" id="buyerName" name="password-s" placeholder="이름">
                             </div>
                         </div><div class="col-md-12">
                             <div class="form-group">
-                                <label for="password-s">생일</label>
-                                <input type="password" class="form-control" id="password-a" name="password-s" placeholder="A strong password">
+                                <label for="buyerBirth">생년월일</label>
+                                <input type="date" class="form-control" id="buyerBirth" name="password-s" placeholder="생년월일">
                             </div>
                         </div><div class="col-md-12">
                             <div class="form-group">
-                                <label for="password-s">이메일</label>
-                                <input type="password" class="form-control" id="password-q" name="password-s" placeholder="A strong password">
+                                <label for="buyerEmail">이메일</label>
+                                <input type="email" class="form-control" id="buyerEmail" name="password-s" placeholder="이메일">
+                                <label class="emailAlert1 hide"><small>이메일 형식을 확인해주세요.</small></label>
                             </div>
                         </div><div class="col-md-12">
                             <div class="form-group">
-                                <label for="password-s">주소</label>
-                                <input type="password" class="form-control" id="password-w" name="password-s" placeholder="A strong password">
+                                <label for="buyerAddress">주소</label>
+                                <input type="text" class="form-control" id="buyerAddress" name="password-s" placeholder="주소">
                             </div>
                         </div><div class="col-md-12">
                             <div class="form-group">
-                                <label for="password-s">전화번호</label>
-                                <input type="password" class="form-control" id="password-h" name="password-s" placeholder="A strong password">
+                                <label for="buyerPhone">전화번호</label>
+                                <input type="text" class="form-control" id="buyerPhone" name="password-s" placeholder="전화번호">
                             </div>
                         </div>
                         <div class="col-md-12">
-                            <button class="btn btn-primary" type="submit">회원가입</button>
-                            <p class="mt-5 mb-0">이미 계정이 있나요?<a href="account.html">로그인</a></p>
+                            <button class="btn btn-primary" type="button" onclick="signUp()">회원가입</button>
+                            <p class="mt-5 mb-0">이미 계정이 있나요?<a href="/buyer/login"> 로그인</a></p>
                         </div>
                     </form>
                 </div>
@@ -116,19 +150,7 @@
 <script src="/plugins/google-map/gmap.js"></script>
 <!-- main js -->
 <script src="/js/custom.js"></script>
-
-<script>
-
-    // 뒤로가기 눌러서 로그인 페이지 진입 시 페이지 새로고침
-    window.addEventListener('pageshow', function(event) {
-      // persisted 속성이 true이면 뒤로가기로 페이지에 진입한 것
-      if (event.persisted) {
-        // 새로고침
-        window.location.reload();
-      }
-    });
-
-</script>
+<script src="/js/buyerRegister.js"></script>
 
 </body>
 </html>

@@ -1,5 +1,8 @@
 package com.example.demo.buyer.controller;
 
+import com.example.demo.admin.security.SecurityServiceImple;
+import com.example.demo.admin.service.BuyerService;
+import com.example.demo.buyer.DTO.BuyerDTO;
 import com.example.demo.buyer.entity.ProductView;
 import com.example.demo.buyer.entity.Category;
 import com.example.demo.buyer.entity.Review;
@@ -53,6 +56,9 @@ public class BuyerController {
 	@Autowired
 	private StockService stockService;
 
+	@Autowired
+	private BuyerService buyerService1;
+
 	@RequestMapping("buyer/index")
 	public String main
 			(Model model) {
@@ -92,9 +98,9 @@ public class BuyerController {
 			} else if (securityService.hasRole(user, "ROLE_SELLER")) {
 				alert = "이미 판매자 로그인이 되어있습니다.";
 			}
-			// System.out.println(user.getUsername());
-			// ㄴ 현재 유지되고 있는 세션의 아이디를 반환
-			// System.out.println(user.getAuthorities());
+			 System.out.println(user.getUsername());
+//			 ㄴ 현재 유지되고 있는 세션의 아이디를 반환
+			 System.out.println(user.getAuthorities());
 		}
 
 		model.addAttribute("alert", alert);
@@ -113,8 +119,18 @@ public class BuyerController {
 	}
 
 	// 구매자 회원가입
-	@RequestMapping("/buyer/signup")
+	@RequestMapping("/buyer/register")
 	public String signUp() {
 		return "/buyer/signup";
+	}
+
+	// ID 중복확인 - ajax용
+	@RequestMapping("/buyer/idCheck")
+	@ResponseBody
+	public int idDuplicate(@RequestBody String buyerId) {
+		System.out.println("일단 호출은 됨");
+		int idCheck = buyerService1.idCheck(buyerId);
+		System.out.println(buyerId + " buyerId");
+		return idCheck;
 	}
 }
