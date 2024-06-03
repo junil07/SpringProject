@@ -3,6 +3,8 @@ package com.example.demo.admin.service;
 import com.example.demo.admin.Entity.Buyer;
 import com.example.demo.admin.repository.BuyerRepository1;
 import jakarta.transaction.Transactional;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -15,9 +17,11 @@ import java.util.List;
 public class BuyerServiceImple implements BuyerService {
 
     private BuyerRepository1 buyerRepository1;
+    private PasswordEncoder passwordEncoder;
 
-    public BuyerServiceImple(BuyerRepository1 buyerRepository1) {
+    public BuyerServiceImple(BuyerRepository1 buyerRepository1, PasswordEncoder passwordEncoder) {
         this.buyerRepository1 = buyerRepository1;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -158,6 +162,18 @@ public class BuyerServiceImple implements BuyerService {
         }
 
         return flag;
+    }
+
+    // Buyer 비밀번호 전체 암호화 하는데 사용했음
+    public boolean authenticate() {
+        List<Buyer> buyerList = buyerRepository1.findAll();
+
+        for (Buyer test : buyerList) {
+            System.out.println(test.getBuyerId() + "\t\t" + test.getBuyerPassword());
+//            test.setBuyerPassword(passwordEncoder.encode(test.getBuyerPassword()));
+//            buyerRepository1.save(test);
+        }
+        return true;
     }
 
 }

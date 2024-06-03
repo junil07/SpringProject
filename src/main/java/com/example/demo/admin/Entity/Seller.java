@@ -11,7 +11,7 @@ import java.util.Set;
 public class Seller {
 
     @Id
-    //@Column(name = "SELLER_ID", length = 40, nullable = false)
+    @Column(name = "SELLER_ID", length = 40, nullable = false)
     private String sellerId;
 
     @Column(name = "SELLER_PASSWORD", length = 500, nullable = false)
@@ -42,7 +42,6 @@ public class Seller {
     @Column(name = "seller_lastlogin")
     @Temporal(TemporalType.TIMESTAMP)
     private Date sellerLastLogin;
-
 
     public String getSellerId() {
         return sellerId;

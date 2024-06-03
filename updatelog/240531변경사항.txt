@@ -1,0 +1,51 @@
+1. SecurityConfig에 빈 나누어서 적용 시키는거 성공
+
+----------------------------------------------------
+
+
+로그인 페이지 하나에 두 개의 폼이 있기에 SecurityConfig 설정이 난해한 이슈
+
+
+※ 해결책
+
+/seller/login.html -> 값 넘겨 주는 용도
+
+/seller/reallogin -> 리얼 로그인, SecurityConfig의 login페이지로 지정
+/buyer/reallogin -> 리얼 로그인, SecurityConfig의 login페이지로 지정
+
+인증 예외는 핸들링을 했기에 로그인 페이지로 이동하지는 않음.
+
+
+※ 실행과정
+
+ - 구매자 로그인
+/seller/login -> /buyer/reallogin -> /buyer/loginProc -> 인증 및 BUYER권한 획득 -> /buyer/index
+
+-  판매자 로그인
+/seller/login -> /seller/reallogin -> /seller/loginProc -> 인증 및 SELLER권한 획득 -> /seller/index
+
+
+※ 로그인 실패 시
+
+- 구매자
+/buyer/login?error 로 왔을 때 아이디 비밀번호 이슈 div보임
+
+- 판매자
+/seller/login?error1 로 왔을 때 아이디 비밀번호 이슈 div보임
+
+
+ㄹㅇ로그인 뒤로 가기에 안 남게 하기
+
+-----------------------------------------------------
+
+1. @Order(숫자)
+
+ - 이 애노테이션의 숫자가 낮은 필터체인은 우선적으로 적용된다
+
+2. .securityMatcher(new AntPathRequestMatcher("/admin/**"))
+
+ - /admin/**에 대한 요청이 들어왔을 때, 이 필터 체인이 적용되도록 함.
+
+3. .securityMatcher(new NegatedRequestMatcher(new AntPathRequestMatcher("/admin/**")))
+
+ - 반대로 /admin/**을 제외한 요청이 들어왔을 때, 이 필터 체인이 적용되도록 함.
