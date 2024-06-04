@@ -47,7 +47,8 @@
         }
 
         .idAlert1, .pwdAlert1,
-        .pwdAlert2, .emailAlert1 {
+        .pwdAlert2, .emailAlert1,
+        .nameAlert1, .phoneAlert1 {
             color: red;
         }
 
@@ -60,6 +61,10 @@
             border: 1px solid red !important;
         }
 
+        #buyerAddress {
+            cursor: pointer;
+        }
+
     </style>
 
 </head>
@@ -70,15 +75,15 @@
         <div class="row align-items-center justify-content-center">
             <div class="col-lg-7">
                 <div class="signup">
-                    <div class="text-center"><a href="index.html"><img src="/assets/image/LOGO.png" alt="" class="img-fluid"></a></div>
+                    <div class="text-center"><a href="/buyer/index"><img src="/assets/image/LOGO.png" alt="" class="img-fluid"></a></div>
                     <h3 class="mt-4">회원가입</h3>
                     <p class="mb-5"></p>
-                    <form action="#" class="signup-form row" method="post">
+                    <form action="/buyer/register" class="signup-form row" method="post" name="signUpFrm" th:object="${buyer}">
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="buyerId">아이디</label>
                                 <div style="display: ruby-text;">
-                                    <input type="text" class="form-control" id="buyerId" name="buyerId" placeholder="아이디" style="width: 70%;">
+                                    <input type="text" class="form-control" id="buyerId" th:field="*{buyerId}" placeholder="아이디" style="width: 70%;">
                                     <button class="btn btn-primary" id="idDuplicate" type="button">중복확인</button>
                                 </div>
                                 <label class="idAlert1 hide"><small>이미 존재하는 아이디입니다.</small></label>
@@ -88,7 +93,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="buyerPwd">비밀번호</label>
-                                <input type="password" id="buyerPwd" name="l-name" class="form-control" placeholder="비밀번호">
+                                <input type="password" id="buyerPwd" th:field="*{buyerPassword}" class="form-control" placeholder="비밀번호">
                                 <label class="pwdAlert1 hide"><small>공백이 존재합니다.</small></label>
                             </div>
                         </div>
@@ -102,30 +107,40 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="buyerName">이름</label>
-                                <input type="text" class="form-control" id="buyerName" name="password-s" placeholder="이름">
-                            </div>
-                        </div><div class="col-md-12">
-                            <div class="form-group">
-                                <label for="buyerBirth">생년월일</label>
-                                <input type="date" class="form-control" id="buyerBirth" name="password-s" placeholder="생년월일">
-                            </div>
-                        </div><div class="col-md-12">
-                            <div class="form-group">
-                                <label for="buyerEmail">이메일</label>
-                                <input type="email" class="form-control" id="buyerEmail" name="password-s" placeholder="이메일">
-                                <label class="emailAlert1 hide"><small>이메일 형식을 확인해주세요.</small></label>
-                            </div>
-                        </div><div class="col-md-12">
-                            <div class="form-group">
-                                <label for="buyerAddress">주소</label>
-                                <input type="text" class="form-control" id="buyerAddress" name="password-s" placeholder="주소">
-                            </div>
-                        </div><div class="col-md-12">
-                            <div class="form-group">
-                                <label for="buyerPhone">전화번호</label>
-                                <input type="text" class="form-control" id="buyerPhone" name="password-s" placeholder="전화번호">
+                                <input type="text" class="form-control" id="buyerName" th:field="*{buyerName}" placeholder="이름">
+                                <label class="nameAlert1 hide"><small>한글만 입력가능합니다.</small></label>
                             </div>
                         </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="buyerBirth">생년월일</label>
+                                <input type="date" class="form-control" id="buyerBirth" th:field="*{buyerBirth}" placeholder="생년월일">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="buyerEmail">이메일</label>
+                                <input type="email" class="form-control" id="buyerEmail" th:field="*{buyerEmail}" placeholder="이메일">
+                                <label class="emailAlert1 hide"><small>이메일 형식을 확인해주세요.</small></label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="buyerAddress"><a onclick="sample6_execDaumPostcode()">주소</a></label>
+                                <input type="text" class="form-control" id="buyerAddress" name="password-s" placeholder="주소" onclick="sample6_execDaumPostcode()" readonly>
+                                <input type="text" class="form-control" id="buyerAddress1" name="password-s" placeholder="상세주소" autocomplete="off">
+                                <input type="hidden" id="buyerAddress2" th:field="*{buyerAddress}">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="buyerPhone">전화번호</label>
+                                <input type="text" class="form-control" id="buyerPhone" th:field="*{buyerPhoneNum}" placeholder="전화번호">
+                                <label class="phoneAlert1 hide"><small>전화번호 형식을 확인해주세요.</small></label>
+                            </div>
+                        </div>
+                        <input type="hidden" value="1" th:field="*{buyerActivation}">
+                        <input type="hidden" value="1" th:field="*{buyerGrade}">
                         <div class="col-md-12">
                             <button class="btn btn-primary" type="button" onclick="signUp()">회원가입</button>
                             <p class="mt-5 mb-0">이미 계정이 있나요?<a href="/buyer/login"> 로그인</a></p>
@@ -137,6 +152,7 @@
     </div>
 </section>
 
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <!-- THEME JAVASCRIPT FILES
 ================================================== -->
 <!-- initialize jQuery Library -->
@@ -145,9 +161,6 @@
 <script src="/plugins/bootstrap/js/bootstrap.min.js"></script>
 <!-- Slick Slider -->
 <script src="/plugins/slick-carousel/slick.min.js"></script>
-<!-- Google Map -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC72vZw-6tGqFyRhhg5CkF2fqfILn2Tsw"></script>
-<script src="/plugins/google-map/gmap.js"></script>
 <!-- main js -->
 <script src="/js/custom.js"></script>
 <script src="/js/buyerRegister.js"></script>

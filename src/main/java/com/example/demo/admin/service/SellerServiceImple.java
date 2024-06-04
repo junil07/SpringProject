@@ -147,6 +147,18 @@ public class SellerServiceImple implements SellerService {
         return flag;
     }
 
+    @Override
+    public int idCheck(String sellerId) {
+        Seller seller = sellerRepository1.findBysellerId(sellerId).orElse(null);
+        int check = 0;
+
+        if (seller != null) {
+            check = 1;
+        }
+
+        return check;
+    }
+
     // Seller 비밀번호 전부 암호화 하는데 사용했음
     public boolean authenticate() {
         List<Seller> sellerList = sellerRepository1.findAll();

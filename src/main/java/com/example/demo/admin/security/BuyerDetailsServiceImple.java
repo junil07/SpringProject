@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 public class BuyerDetailsServiceImple implements BuyerDetailsService {
 
@@ -24,6 +26,8 @@ public class BuyerDetailsServiceImple implements BuyerDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         System.out.println("\n사용자 loadUserByUsername 호출됨!!\n");
         Buyer buyer = buyerRepository.findBybuyerId(username).orElseThrow(() -> new UsernameNotFoundException("없는 회원입니다"));
+        buyer.setBuyerLastLogin(new Date());
+        buyerRepository.save(buyer);
         return User.builder().username(buyer.getBuyerId()).password(buyer.getBuyerPassword()).roles(Role.BUYER.name()).build();
     }
 }

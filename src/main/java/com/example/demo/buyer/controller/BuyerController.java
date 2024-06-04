@@ -1,5 +1,6 @@
 package com.example.demo.buyer.controller;
 
+import com.example.demo.admin.Entity.Buyer;
 import com.example.demo.admin.security.SecurityServiceImple;
 import com.example.demo.admin.service.BuyerService;
 import com.example.demo.buyer.DTO.BuyerDTO;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -59,6 +61,9 @@ public class BuyerController {
 	@Autowired
 	private BuyerService buyerService1;
 
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
 	@RequestMapping("buyer/index")
 	public String main
 			(Model model) {
@@ -98,9 +103,11 @@ public class BuyerController {
 			} else if (securityService.hasRole(user, "ROLE_SELLER")) {
 				alert = "이미 판매자 로그인이 되어있습니다.";
 			}
-			 System.out.println(user.getUsername());
-//			 ㄴ 현재 유지되고 있는 세션의 아이디를 반환
-			 System.out.println(user.getAuthorities());
+			/*
+			System.out.println(user.getUsername());
+			ㄴ 현재 유지되고 있는 세션의 아이디를 반환
+			System.out.println(user.getAuthorities());
+			 */
 		}
 
 		model.addAttribute("alert", alert);
@@ -120,17 +127,25 @@ public class BuyerController {
 
 	// 구매자 회원가입
 	@RequestMapping("/buyer/register")
-	public String signUp() {
+	public String signUp(Model model) {
+		model.addAttribute("buyer", new Buyer());
 		return "/buyer/signup";
+	}
+
+	// 회원가입 진행시켜
+	@RequestMapping(value = "/buyer/register", method = RequestMethod.POST)
+	public String signUpProc(Buyer buyer) {
+		// 암호화
+		buyer.setBuyerPassword(passwordEncoder.encode(buyer.getBuyerPassword()));
+		buyerService1.register(buyer);
+		return "redirect:/buyer/login";
 	}
 
 	// ID 중복확인 - ajax용
 	@RequestMapping("/buyer/idCheck")
 	@ResponseBody
 	public int idDuplicate(@RequestBody String buyerId) {
-		System.out.println("일단 호출은 됨");
 		int idCheck = buyerService1.idCheck(buyerId);
-		System.out.println(buyerId + " buyerId");
 		return idCheck;
 	}
 }

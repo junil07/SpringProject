@@ -12,5 +12,6 @@ public interface SellerService {
     public boolean sellerAddrUpdate(String sellerId, String sellerAddress);
     public boolean sellerPhoneUpdate(String sellerId, String sellerPhone);
     public boolean sellerBNumUpdate(String sellerId, String sellerBNum);
+    public int idCheck(String sellerId);
 
 }

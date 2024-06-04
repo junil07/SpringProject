@@ -2,6 +2,7 @@ package com.example.demo.seller.controller;
 
 import com.example.demo.admin.Entity.Seller;
 import com.example.demo.admin.security.SecurityServiceImple;
+import com.example.demo.admin.service.SellerServiceImple;
 import com.example.demo.buyer.DTO.BuyerDTO;
 import com.example.demo.seller.DTO.OrderitemDTO;
 import com.example.demo.seller.DTO.SellerDTO;
@@ -18,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -33,6 +35,7 @@ public class SellerController {
 
 	private OrderitemService orderitemService;
 	private SellerService sellerService;
+	private SellerServiceImple sellerServiceImple;
 	private ProductService productService;
 	private BuyerDTO buyerDTO;
 	private SellerDTO sellerDTO;
@@ -40,13 +43,15 @@ public class SellerController {
 //	OrderitemService orderitemService
 	public SellerController(OrderitemService orderitemService, SellerService sellerService,
 							ProductService productService, BuyerDTO buyerDTO
-							,SellerDTO sellerDTO, SecurityServiceImple securityService){
+							,SellerDTO sellerDTO, SecurityServiceImple securityService,
+							SellerServiceImple sellerServiceImple){
 		this.orderitemService = orderitemService;
 		this.sellerService = sellerService;
 		this.productService = productService;
 		this.buyerDTO = buyerDTO;
 		this.sellerDTO = sellerDTO;
 		this.securityService = securityService;
+		this.sellerServiceImple = sellerServiceImple;
 	}
 
 	//메인 페이지 메핑
@@ -107,5 +112,13 @@ public class SellerController {
 	@RequestMapping("test")
 	public String test(Model model) {
 		return "seller/test";
+	}
+
+	// ID 중복확인 - ajax용
+	@RequestMapping("idCheck")
+	@ResponseBody
+	public int idDuplicate(@RequestBody String sellerId) {
+		int idCheck = sellerServiceImple.idCheck(sellerId);
+		return idCheck;
 	}
 }

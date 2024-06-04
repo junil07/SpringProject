@@ -177,6 +177,12 @@ public class BuyerServiceImple implements BuyerService {
         return check;
     }
 
+    @Transactional
+    @Override
+    public Buyer register(Buyer buyer) {
+        return buyerRepository1.save(buyer);
+    }
+
     // Buyer 비밀번호 전체 암호화 하는데 사용했음
     public boolean authenticate() {
         List<Buyer> buyerList = buyerRepository1.findAll();
