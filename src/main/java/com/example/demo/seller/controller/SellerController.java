@@ -14,12 +14,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -40,11 +38,12 @@ public class SellerController {
 	private BuyerDTO buyerDTO;
 	private SellerDTO sellerDTO;
 	private SecurityServiceImple securityService;
+	private PasswordEncoder passwordEncoder;
 //	OrderitemService orderitemService
 	public SellerController(OrderitemService orderitemService, SellerService sellerService,
 							ProductService productService, BuyerDTO buyerDTO
 							,SellerDTO sellerDTO, SecurityServiceImple securityService,
-							SellerServiceImple sellerServiceImple){
+							SellerServiceImple sellerServiceImple, PasswordEncoder passwordEncoder){
 		this.orderitemService = orderitemService;
 		this.sellerService = sellerService;
 		this.productService = productService;
@@ -52,6 +51,7 @@ public class SellerController {
 		this.sellerDTO = sellerDTO;
 		this.securityService = securityService;
 		this.sellerServiceImple = sellerServiceImple;
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	//메인 페이지 메핑
@@ -105,6 +105,7 @@ public class SellerController {
 	//회원가입 페이지 메핑
 	@RequestMapping("signup")
 	public String signup(Model model) {
+		model.addAttribute("seller", new Seller());
 		return "seller/signup";
 	}
 
@@ -112,6 +113,15 @@ public class SellerController {
 	@RequestMapping("test")
 	public String test(Model model) {
 		return "seller/test";
+	}
+
+	// 회원가입 진행
+	@RequestMapping(value = "signup", method = RequestMethod.POST)
+	public String signUpProc(Seller seller) {
+		seller.setSellerPassword(passwordEncoder.encode(seller.getSellerPassword()));
+		seller.setSellerActivation((short) 1);
+		sellerServiceImple.register(seller);
+		return "redirect:/seller/login";
 	}
 
 	// ID 중복확인 - ajax용

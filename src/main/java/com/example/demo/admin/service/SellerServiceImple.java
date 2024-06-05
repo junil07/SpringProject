@@ -159,6 +159,12 @@ public class SellerServiceImple implements SellerService {
         return check;
     }
 
+    @Transactional
+    @Override
+    public Seller register(Seller seller) {
+        return sellerRepository1.save(seller);
+    }
+
     // Seller 비밀번호 전부 암호화 하는데 사용했음
     public boolean authenticate() {
         List<Seller> sellerList = sellerRepository1.findAll();

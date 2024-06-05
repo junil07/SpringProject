@@ -6,6 +6,7 @@ var buyerBirth = document.getElementById('buyerBirth');
 var buyerEmail = document.getElementById('buyerEmail');
 var buyerAddress = document.getElementById('buyerAddress');
 var buyerPhone = document.getElementById('buyerPhone');
+var buyerPhone1 = document.getElementById('buyerPhone1');
 var idAlert1 = document.querySelector('.idAlert1');
 var idAlert2 = document.querySelector('.idAlert2');
 var pwdAlert1 = document.querySelector('.pwdAlert1');
@@ -14,8 +15,6 @@ var nameAlert1 = document.querySelector('.nameAlert1');
 var emailAlert1 = document.querySelector('.emailAlert1');
 var phoneAlert1 = document.querySelector('.phoneAlert1');
 var idCheck = 0;
-var pwdCheck = 0;
-var onlyNumbers = /^\d*$/; // 숫자만 확인하는 정규식
 var result1 = '';
 var result2 = '';
 var result3 = '';
@@ -82,14 +81,12 @@ $(function() {
                 contentType: "application/json; charset=UTF-8",
                 success : function(data) {
                     if ( data === 0 ) { // 중복아님
-                        console.log("중복 아님");
                         buyerId.classList.remove('borderRed');
                         buyerId.classList.remove('focusRed');
                         idAlert1.classList.add('hide');
                         idAlert2.classList.remove('hide');
                         idCheck = 1;
                     } else if ( data === 1 ) { // 중복
-                        console.log("중복이다");
                         buyerId.classList.add('borderRed');
                         buyerId.classList.add('focusRed');
                         idAlert1.classList.remove('hide');
@@ -147,7 +144,6 @@ buyerEmail.onkeyup = function() {
 
 // 주소지 설정
 function sample6_execDaumPostcode() {
-
 
     new daum.Postcode({
         oncomplete: function(data) {
@@ -220,11 +216,21 @@ buyerPhone.onkeyup = function() {
     }
 }
 
+// 전화번호 사이에 하이픈을 넣는 함수
+function phoneNumber(value) {
+  value = value.replace(/[^0-9]/g, "");
+  return value.replace(
+    /(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/,
+    "$1-$2-$3"
+  );
+}
+
 // 회원가입 버튼 눌렀을 시
 function signUp() {
 
     document.getElementById('buyerAddress2').value = "(" + result2 + ")" + " " + result3 + " "
                     + document.getElementById('buyerAddress1').value + " " + result1;
+    buyerPhone1.value = phoneNumber(buyerPhone.value);
 
     // 빈칸일 때
     if (buyerId.value.trim() === "") {
@@ -276,7 +282,7 @@ function signUp() {
         buyerPwd.focus();
         return;
     } else if (buyerPwd.value !== buyerPwd1.value) {
-        alert('비밀번호와 비밀번호 확인이 일치하지 않습니다.');
+        alert('비밀번호 확인이 일치하지 않습니다.');
         buyerPwd1.focus();
         return;
     }
@@ -302,6 +308,10 @@ function signUp() {
         return;
     }
 
-    document.signUpFrm.submit();
+    if (confirm("회원가입을 진행하시겠습니까?")) {
+        document.signUpFrm.submit();
+    } else {
+
+    }
 
 }

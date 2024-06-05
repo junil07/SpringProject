@@ -3,6 +3,7 @@ package com.example.demo.buyer.controller;
 import com.example.demo.admin.Entity.Buyer;
 import com.example.demo.admin.security.SecurityServiceImple;
 import com.example.demo.admin.service.BuyerService;
+import com.example.demo.admin.service.BuyerServiceImple;
 import com.example.demo.buyer.DTO.BuyerDTO;
 import com.example.demo.buyer.entity.ProductView;
 import com.example.demo.buyer.entity.Category;
@@ -59,7 +60,7 @@ public class BuyerController {
 	private StockService stockService;
 
 	@Autowired
-	private BuyerService buyerService1;
+	private BuyerServiceImple buyerService1;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -107,7 +108,7 @@ public class BuyerController {
 			System.out.println(user.getUsername());
 			ㄴ 현재 유지되고 있는 세션의 아이디를 반환
 			System.out.println(user.getAuthorities());
-			 */
+			*/
 		}
 
 		model.addAttribute("alert", alert);
@@ -132,11 +133,13 @@ public class BuyerController {
 		return "/buyer/signup";
 	}
 
-	// 회원가입 진행시켜
+	// 회원가입 진행
 	@RequestMapping(value = "/buyer/register", method = RequestMethod.POST)
 	public String signUpProc(Buyer buyer) {
 		// 암호화
 		buyer.setBuyerPassword(passwordEncoder.encode(buyer.getBuyerPassword()));
+		buyer.setBuyerActivation((short) 1);
+		buyer.setBuyerGrade((short) 1);
 		buyerService1.register(buyer);
 		return "redirect:/buyer/login";
 	}

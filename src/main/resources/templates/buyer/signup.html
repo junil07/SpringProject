@@ -135,12 +135,11 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="buyerPhone">전화번호</label>
-                                <input type="text" class="form-control" id="buyerPhone" th:field="*{buyerPhoneNum}" placeholder="전화번호">
+                                <input type="text" class="form-control" id="buyerPhone" placeholder="전화번호">
+                                <input type="hidden" id="buyerPhone1" th:field="*{buyerPhoneNum}">
                                 <label class="phoneAlert1 hide"><small>전화번호 형식을 확인해주세요.</small></label>
                             </div>
                         </div>
-                        <input type="hidden" value="1" th:field="*{buyerActivation}">
-                        <input type="hidden" value="1" th:field="*{buyerGrade}">
                         <div class="col-md-12">
                             <button class="btn btn-primary" type="button" onclick="signUp()">회원가입</button>
                             <p class="mt-5 mb-0">이미 계정이 있나요?<a href="/buyer/login"> 로그인</a></p>
