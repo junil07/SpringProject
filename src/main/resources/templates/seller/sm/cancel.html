@@ -25,7 +25,8 @@
 											<h5 class="card-title border-bottom fw-bold" style="padding-top: 10px;">
 												취소진행중/완료 주문건을 확인해주세요.
 											</h5>
-											<section class="col-lg-12 d-flex">
+											<div id="exchangeSection">
+												<section class="col-lg-12 d-flex">
 												<div class="col-xxl-3 col-md-3 d-flex">
 													<div class="col-xxl-2 col-md-2 card-icon rounded-circle d-flex align-items-center justify-content-center">
 														<i class="bi bi-cart"></i>
@@ -49,6 +50,7 @@
 													</ul>
 												</div>
 											</section>
+											</div>
 										</div>
 									</div>
 								</div><!-- End Sales Card -->
@@ -105,10 +107,10 @@
 								<th>취소확인</th>
 							</tr>
 							</thead>
-							<tbody>
+							<tbody id="orderTableBody">
 							<tr th:each="o, stat : ${orderitem}" id="orderlist" class="orderitem-row" th:data-orderitem-id="${o.orderitemId}">
 								<td class="text-center"><input type="checkbox" class="row-checkbox"></td>
-								<td th:text="${o.orderlist.orderlistId}"></td>
+								<td th:text="${o.orderitemId}"></td>
 								<td th:text="${o.product.productId}"></td>
 								<td th:text="${o.product.productName}"></td>
 								<td th:text="${o.product.productPrice}"></td>
@@ -124,6 +126,7 @@
 			</div>
 		</section>
 	</main><!-- End #main -->
+	<!--조회기관 관련 스크립트-->
 	<script>
 		document.addEventListener('DOMContentLoaded', function () {
 			const today = new Date();
@@ -213,6 +216,13 @@
 			return `${year}-${month}-${day}`;
 		}
 
+		//값리로드
+		function reloadSection() {
+			$.get('/seller/cm/cancel/reload', function(data) {
+				$('#exchangeSection').html(data);
+			});
+		}
+
 		// 날짜 선택에 따라 값을 설정하는 함수
 		function printValue(selectedValue) {
 			const currentDate = new Date();
@@ -283,7 +293,8 @@
 				if (status === '취소승인') {
 					hasCancelledOrder = true;
 				} else {
-					data.push({ "orderitemId": orderitemId });
+					data.push({ "orderitemId": orderitemId});
+					console.log(data);
 				}
 			});
 
@@ -291,60 +302,11 @@
 				alert('이미 취소 승인된 항목이 있습니다.');
 				return;
 			}
-
 			// AJAX로 데이터를 서버로 전송
 			var xhr = new XMLHttpRequest();
-			xhr.open('POST', '/seller/cm/cancel', true);
+			xhr.open('POST', '/seller/cm/cancel/action', true);
 			xhr.setRequestHeader('Content-Type', 'application/json');
 			xhr.setRequestHeader('Action-Type', 'cancel');
-			xhr.onreadystatechange = function() {
-				if (xhr.readyState === XMLHttpRequest.DONE) {
-					if (xhr.status === 200) {
-						console.log('전송성공');
-						console.log(data);
-						// 데이터 전송 성공 후 테이블 업데이트
-						updateTable(checkedRows, '취소승인');
-					} else {
-						console.error('Failed to send data');
-					}
-				}
-			};
-			xhr.send(JSON.stringify(data));
-		});
-
-		function updateTable(checkedRows, statusText) {
-			checkedRows.forEach(function(rowCheckbox) {
-				var row = rowCheckbox.closest('tr');
-				row.querySelector('td:nth-child(9)').textContent = statusText;
-				rowCheckbox.checked = false;
-			});
-
-			// 테이블을 다시 초기화
-			var dataTable = new simpleDatatables.DataTable('#datatablesSimple', {
-				searchable: true,
-				pagination: true
-			});
-
-			console.log('테이블 업데이트 완료');
-		}
-	</script>
-	<!-- 취소거부(철회)처리-->
-	<script>
-		document.getElementById('withdrawal').addEventListener('click', function() {
-			var checkedRows = document.querySelectorAll('.row-checkbox:checked');
-			var data = [];
-
-			checkedRows.forEach(function(rowCheckbox) {
-				var row = rowCheckbox.closest('tr');
-				var orderitemId = row.querySelector('td:nth-child(2)').textContent;
-				data.push({ "orderitemId": orderitemId });
-			});
-
-			// AJAX로 데이터를 서버로 전송
-			var xhr = new XMLHttpRequest();
-			xhr.open('POST', '/seller/cm/cancel', true);
-			xhr.setRequestHeader('Content-Type', 'application/json');
-			xhr.setRequestHeader('Action-Type', 'withdraw');
 			xhr.onreadystatechange = function() {
 				if (xhr.readyState === XMLHttpRequest.DONE) {
 					if (xhr.status === 200) {
@@ -358,22 +320,75 @@
 			};
 			xhr.send(JSON.stringify(data));
 		});
-		function updateTable(checkedRows) {
-			checkedRows.forEach(function(rowCheckbox) {
+
+		function  updateTable(checkedRows){
+		  checkedRows.forEach(function(rowCheckbox) {
 				var row = rowCheckbox.closest('tr');
-				row.parentNode.removeChild(row);
+				var statusCell = row.querySelector('td:nth-child(9)');
+				statusCell.textContent = '취소승인';
 			});
 
-			// 테이블을 다시 초기화
-			var dataTable = new simpleDatatables.DataTable('#datatablesSimple', {
-				searchable: true,
-				pagination: true
+			// 체크박스 상태 초기화
+			var checkboxes = document.querySelectorAll('.row-checkbox');
+			checkboxes.forEach(function(checkbox) {
+				checkbox.checked = false;
 			});
+			document.getElementById('allcheck').checked = false;
 
-			console.log('테이블 업데이트 완료');
+			alert('취소 승인이 완료되었습니다.');
+			reloadSection();
 		}
 	</script>
 
+	//취소거부(철회)처리
+	<script>
+		document.getElementById('withdrawal').addEventListener('click', function() {
+			var checkedRows = document.querySelectorAll('.row-checkbox:checked');
+			var data = [];
+
+			checkedRows.forEach(function(rowCheckbox) {
+				var row = rowCheckbox.closest('tr');
+				var orderitemId = row.querySelector('td:nth-child(2)').textContent;
+				data.push({ "orderitemId": orderitemId });
+				console.log(data);
+			});
+
+			// AJAX로 데이터를 서버로 전송
+			var xhr = new XMLHttpRequest();
+			xhr.open('POST', '/seller/cm/cancel/action', true);
+			xhr.setRequestHeader('Content-Type', 'application/json');
+			xhr.setRequestHeader('Action-Type', 'withdraw');
+			xhr.onreadystatechange = function() {
+				if (xhr.readyState === XMLHttpRequest.DONE) {
+					if (xhr.status === 200) {
+						console.log('전송성공');
+						console.log(data);
+						updateTables(checkedRows);
+					} else {
+						console.error('Failed to send data');
+					}
+				}
+			};
+			xhr.send(JSON.stringify(data));
+		});
+
+		function updateTables(checkedRows) {
+			checkedRows.forEach(function(rowCheckbox) {
+				var row = rowCheckbox.closest('tr');
+				row.remove(); // 행을 테이블에서 제거
+			});
+
+			// 체크박스 상태 초기화
+			var checkboxes = document.querySelectorAll('.row-checkbox');
+			checkboxes.forEach(function(checkbox) {
+				checkbox.checked = false;
+			});
+			document.getElementById('allcheck').checked = false;
+
+			alert('취소가 거부(철회)되었습니다.');
+			reloadSection();
+		}
+	</script>
 
 	<style>
 		input[type="radio"] {

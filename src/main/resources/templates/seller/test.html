@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html layout:decorate="~{_layout/seller/index}">
 <!--
 <th:block layout:fragment="pageHead">
@@ -9,7 +8,7 @@
     <main id="main" class="main">
         <section>
             <div class="container-fluid px-4">
-                <h1 class="mt-4">취소관리</h1>
+                <h1 class="mt-4">교환관리</h1>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item"><a href="index">Dashboard</a></li>
                     <li class="breadcrumb-item active">Tables</li>
@@ -22,18 +21,25 @@
                                 <div class="col-xxl-12 col-md-12">
                                     <div class="card info-card sales-card">
                                         <div class="card-body">
-                                            <h5 class="card-title border-bottom fw-bold" style="padding-top: 10px;">
-                                                취소진행중/완료 주문건을 확인해주세요.
-                                            </h5>
-                                            <section class="col-lg-12 d-flex">
+                                            <div class="border-bottom">
+                                                <h5 class="card-title fw-bold" style="padding-top: 10px; margin-bottom:0px;">
+                                                    구매자가 요청한 교환 주문건에 대해 완료/거부처리를 진행하실 수 있습니다.
+                                                </h5>
+                                                <ul class="mb-3" style="list-style-type:disc;">
+                                                    <li class="mb-1">판매자께서 직접 교환접수 하고자 하신다면 배송현황 관리 메뉴에서 처리해주세요.</li>
+                                                    <li class="mb-1">교환 재배송 처리는 수거완료 상태일 때만 가능하니 ‘수거완료’ 처리 후 재배송처리를 진행해주세요.</li>
+                                                    <li class="mb-1">수거완료 후 +3영업일 이내 반품처리를 진행하지 않으시면 페널티가 부과되오니 주의해 주세요.</li>
+                                                </ul>
+                                            </div>
+                                            <section class="col-lg-12 d-flex mt-3">
                                                 <div class="col-xxl-3 col-md-3 d-flex">
                                                     <div class="col-xxl-2 col-md-2 card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                                        <i class="bi bi-cart"></i>
+                                                        <i class="bi bi-bag-x"></i>
                                                     </div>
                                                     <ul class="col-xxl-8 col-md-8 list-group border-0 mt-1">
                                                         <li class="list-group-item border-0">
-                                                            <div>취소요청</div>
-                                                            <h5 class="fw-bold" th:text="${cancelcount.size()} + '건'"></h5>
+                                                            <div>교환요청</div>
+                                                            <h5 class="fw-bold" th:text="${returncount.size()} + '건'"></h5>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -43,7 +49,29 @@
                                                     </div>
                                                     <ul class="col-xxl-8 col-md-8 list-group border-0 mt-1">
                                                         <li class="list-group-item border-0">
-                                                            <div>취소완료(최근 3일)</div>
+                                                            <div>교환수거중</div>
+                                                            <h5 class="fw-bold" th:text="${returningcount.size()} + '건'"></h5>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="col-xxl-3 col-md-3 d-flex">
+                                                    <div class="col-xxl-2 col-md-2 card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                                        <i class="bi bi-box2"></i>
+                                                    </div>
+                                                    <ul class="col-xxl-8 col-md-8 list-group border-0 mt-1">
+                                                        <li class="list-group-item border-0">
+                                                            <div>교환 수거완료</div>
+                                                            <h5 class="fw-bold" th:text="${returnsucesscount.size()} + '건'"></h5>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="col-xxl-3 col-md-3 d-flex">
+                                                    <div class="col-xxl-2 col-md-2 card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                                        <i class="bi bi-clock-history"></i>
+                                                    </div>
+                                                    <ul class="col-xxl-8 col-md-8 list-group border-0 mt-1">
+                                                        <li class="list-group-item border-0">
+                                                            <div>교환완료(최근3일)</div>
                                                             <h5 class="fw-bold" th:text="${threecount.size()} + '건'"></h5>
                                                         </li>
                                                     </ul>
@@ -86,8 +114,10 @@
                     <div class="card-header">
                         <div class="fas fa-table me-1">목록 (총<span id="itemCountSpan" th:text="${orderitem.size()}"></span> 개)</div>
                         <div class="d-flex mt-2 mb-2">
-                            <button type="button" class="btn btn-info btn-sm btn-no-radius" id="approval">취소 승인처리</button>
-                            <button type="button" class="btn btn-info btn-sm btn-no-radius" id="withdrawal" style="margin-left:5px;">취소 거부(철회)처리</button>
+                            <button type="button" class="btn btn-info btn-sm btn-no-radius" id="exchange">교환재배송처리</button>
+                            <button type="button" class="btn btn-info btn-sm btn-no-radius" id="exchangesucess" style="margin-left:5px;">교환완료처리</button>
+                            <button type="button" class="btn btn-info btn-sm btn-no-radius" id="exchangefail" style="margin-left:5px;">교환 거부(철회)처리</button>
+                            <button type="button" class="btn btn-info btn-sm btn-no-radius" id="exchangetoreturn" style="margin-left:auto;">반품으로 변경</button>
                         </div>
                     </div>
                     <div class="card-body">
@@ -96,25 +126,28 @@
                             <tr>
                                 <th data-sortable="false" class="text-center"><input type="checkbox" id="allcheck"></th>
                                 <th>상품주문번호</th>
-                                <th>제품ID</th>
+                                <th>주문번호</th>
+                                <th>제품CODE</th>
                                 <th>제품명</th>
                                 <th>제품가격</th>
-                                <th>취소요청일</th>
-                                <th>결제상태</th>
-                                <th>배송상태</th>
-                                <th>취소확인</th>
+                                <th>주문상태</th>
+                                <th>주문일</th>
+                                <th>교환요청일</th>
+                                <th>교환처리상태</th>
                             </tr>
                             </thead>
                             <tbody>
+                            <!--반품요청, 반품지연, 반품승인, 반품-->
                             <tr th:each="o, stat : ${orderitem}" id="orderlist" class="orderitem-row" th:data-orderitem-id="${o.orderitemId}">
                                 <td class="text-center"><input type="checkbox" class="row-checkbox"></td>
+                                <td th:text="${o.orderitemId}"></td>
                                 <td th:text="${o.orderlist.orderlistId}"></td>
-                                <td th:text="${o.product.productId}"></td>
+                                <td th:text="${o.product.productCode}"></td>
                                 <td th:text="${o.product.productName}"></td>
                                 <td th:text="${o.product.productPrice}"></td>
                                 <td th:text="${o.orderitemDate}"></td>
-                                <td th:text="${o.orderitemPstatus}"></td>
                                 <td th:text="${o.orderitemDstatus}"></td>
+                                <td th:text="${o.orderitemDate}"></td>
                                 <td th:text="${o.orderitemCase}"></td>
                             </tr>
                             </tbody>
@@ -124,140 +157,140 @@
             </div>
         </section>
     </main><!-- End #main -->
+    <!-- 날짜별 출력-->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-    const today = new Date();
-    const formattedToday = formatDate(today);
+            const today = new Date();
+            const formattedToday = formatDate(today);
 
-    var nowdateInput = document.getElementById('nowdate');
-    if (nowdateInput) {
-        nowdateInput.value = formattedToday;
-    } else {
-        console.error('The nowdate input element is not found.');
-    }
-
-    var weekRadio = document.getElementById('week');
-    if (weekRadio && !weekRadio.checked) {
-        weekRadio.checked = true;
-        printValue('2');
-    } else {
-        console.error('The week radio input element is not found or already checked.');
-    }
-
-    var table;
-    var initialRows = Array.from(document.querySelectorAll('#datatablesSimple tbody tr')).map(function(row) {
-        return row.cloneNode(true); // 각 행을 복제하여 저장
-    });
-
-    function initTable() {
-        table = new simpleDatatables.DataTable('#datatablesSimple', {
-            searchable: true,
-            pagination: true
-        });
-
-        document.getElementById('allcheck').addEventListener('change', function() {
-            var checkboxes = document.querySelectorAll('.row-checkbox');
-            for (var checkbox of checkboxes) {
-                checkbox.checked = this.checked;
+            var nowdateInput = document.getElementById('nowdate');
+            if (nowdateInput) {
+                nowdateInput.value = formattedToday;
+            } else {
+                console.error('The nowdate input element is not found.');
             }
-        });
-    }
 
-    // 초기 테이블 데이터 저장
-    initTable();
+            var weekRadio = document.getElementById('week');
+            if (weekRadio && !weekRadio.checked) {
+                weekRadio.checked = true;
+                printValue('2');
+            } else {
+                console.error('The week radio input element is not found or already checked.');
+            }
 
-    document.getElementById('search').addEventListener('click', function() {
-        var startDate = document.getElementById('lastdate').value;
-        var endDate = document.getElementById('nowdate').value;
+            var table;
+            var initialRows = Array.from(document.querySelectorAll('#datatablesSimple tbody tr')).map(function(row) {
+                return row.cloneNode(true); // 각 행을 복제하여 저장
+            });
 
-        console.log(startDate);
-        console.log(endDate);
+            function initTable() {
+                table = new simpleDatatables.DataTable('#datatablesSimple', {
+                    searchable: true,
+                    pagination: true
+                });
 
-        // 기존 테이블 데이터 초기화
-        table.destroy();
-        var tbody = document.querySelector('tbody');
-        tbody.innerHTML = '';
+                document.getElementById('allcheck').addEventListener('change', function() {
+                    var checkboxes = document.querySelectorAll('.row-checkbox');
+                    for (var checkbox of checkboxes) {
+                        checkbox.checked = this.checked;
+                    }
+                });
+            }
 
-        var itemCount = 0;
+            // 초기 테이블 데이터 저장
+            initTable();
 
-        // 초기 데이터에서 날짜 범위에 맞는 행 필터링 및 추가
-        initialRows.forEach(function(row) {
-            var orderDateElement = row.querySelector('td:nth-child(6)');
+            document.getElementById('search').addEventListener('click', function() {
+                var startDate = document.getElementById('lastdate').value;
+                var endDate = document.getElementById('nowdate').value;
 
-            if (orderDateElement) {
-                var orderDate = orderDateElement.textContent;
-                if (orderDate >= startDate && orderDate <= endDate) {
-                    tbody.appendChild(row.cloneNode(true)); // 복제된 행을 추가
-                    itemCount++;
+                console.log(startDate);
+                console.log(endDate);
+
+                // 기존 테이블 데이터 초기화
+                table.destroy();
+                var tbody = document.querySelector('tbody');
+                tbody.innerHTML = '';
+
+                var itemCount = 0;
+
+                // 초기 데이터에서 날짜 범위에 맞는 행 필터링 및 추가
+                initialRows.forEach(function(row) {
+                    var orderDateElement = row.querySelector('td:nth-child(9)');
+
+                    if (orderDateElement) {
+                        var orderDate = orderDateElement.textContent;
+                        if (orderDate >= startDate && orderDate <= endDate) {
+                            tbody.appendChild(row.cloneNode(true)); // 복제된 행을 추가
+                            itemCount++;
+                        }
+                    }
+                });
+
+                // 새로운 데이터로 테이블 재초기화
+                initTable();
+
+                var itemCountSpan = document.getElementById('itemCountSpan');
+                if (itemCountSpan) {
+                    itemCountSpan.textContent = itemCount;
+                } else {
+                    console.error('The itemCountSpan element is not found.');
                 }
-            }
+            });
         });
 
-        // 새로운 데이터로 테이블 재초기화
-        initTable();
-
-        var itemCountSpan = document.getElementById('itemCountSpan');
-        if (itemCountSpan) {
-            itemCountSpan.textContent = itemCount;
-        } else {
-            console.error('The itemCountSpan element is not found.');
+        // 날짜 형식을 'YYYY-MM-DD'로 변환하는 함수
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
         }
-    });
-});
 
-// 날짜 형식을 'YYYY-MM-DD'로 변환하는 함수
-function formatDate(date) {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-}
+        // 날짜 선택에 따라 값을 설정하는 함수
+        function printValue(selectedValue) {
+            const currentDate = new Date();
+            let year, month, day, formattedDate;
 
-// 날짜 선택에 따라 값을 설정하는 함수
-function printValue(selectedValue) {
-    const currentDate = new Date();
-    let year, month, day, formattedDate;
+            if (selectedValue === '1') {
+                year = currentDate.getFullYear();
+                month = String(currentDate.getMonth() + 1).padStart(2, '0');
+                day = String(currentDate.getDate()).padStart(2, '0');
+                formattedDate = `${year}-${month}-${day}`;
+            } else if (selectedValue === '2') {
+                currentDate.setDate(currentDate.getDate() - 7);
+                year = currentDate.getFullYear();
+                month = String(currentDate.getMonth() + 1).padStart(2, '0');
+                day = String(currentDate.getDate()).padStart(2, '0');
+                formattedDate = `${year}-${month}-${day}`;
+            } else if (selectedValue === '3') {
+                currentDate.setMonth(currentDate.getMonth() - 1);
+                year = currentDate.getFullYear();
+                month = String(currentDate.getMonth() + 1).padStart(2, '0');
+                day = String(currentDate.getDate()).padStart(2, '0');
+                formattedDate = `${year}-${month}-${day}`;
+            } else if (selectedValue === '4') {
+                currentDate.setMonth(currentDate.getMonth() - 3);
+                year = currentDate.getFullYear();
+                month = String(currentDate.getMonth() + 1).padStart(2, '0');
+                day = String(currentDate.getDate()).padStart(2, '0');
+                formattedDate = `${year}-${month}-${day}`;
+            }
 
-    if (selectedValue === '1') {
-        year = currentDate.getFullYear();
-        month = String(currentDate.getMonth() + 1).padStart(2, '0');
-        day = String(currentDate.getDate()).padStart(2, '0');
-        formattedDate = `${year}-${month}-${day}`;
-    } else if (selectedValue === '2') {
-        currentDate.setDate(currentDate.getDate() - 7);
-        year = currentDate.getFullYear();
-        month = String(currentDate.getMonth() + 1).padStart(2, '0');
-        day = String(currentDate.getDate()).padStart(2, '0');
-        formattedDate = `${year}-${month}-${day}`;
-    } else if (selectedValue === '3') {
-        currentDate.setMonth(currentDate.getMonth() - 1);
-        year = currentDate.getFullYear();
-        month = String(currentDate.getMonth() + 1).padStart(2, '0');
-        day = String(currentDate.getDate()).padStart(2, '0');
-        formattedDate = `${year}-${month}-${day}`;
-    } else if (selectedValue === '4') {
-        currentDate.setMonth(currentDate.getMonth() - 3);
-        year = currentDate.getFullYear();
-        month = String(currentDate.getMonth() + 1).padStart(2, '0');
-        day = String(currentDate.getDate()).padStart(2, '0');
-        formattedDate = `${year}-${month}-${day}`;
-    }
+            const lastdateInput = document.getElementById('lastdate');
+            if (lastdateInput) {
+                lastdateInput.value = formattedDate;
+            } else {
+                console.error('The lastdate input element is not found.');
+            }
 
-    const lastdateInput = document.getElementById('lastdate');
-    if (lastdateInput) {
-        lastdateInput.value = formattedDate;
-    } else {
-        console.error('The lastdate input element is not found.');
-    }
-
-    const radios = document.querySelectorAll('input[type="radio"]');
-    radios.forEach(function(radio) {
-        if (radio.value !== selectedValue) {
-            radio.checked = false;
+            const radios = document.querySelectorAll('input[type="radio"]');
+            radios.forEach(function(radio) {
+                if (radio.value !== selectedValue) {
+                    radio.checked = false;
+                }
+            });
         }
-    });
-}
-
     </script>
     <!--모두 체크하기-->
     <script>
@@ -268,42 +301,43 @@ function printValue(selectedValue) {
             }
         });
     </script>
-
-    <!--취소 승인처리-->
+    <!--교환 재배송 처리-->
     <script>
-        document.getElementById('approval').addEventListener('click', function() {
+        document.getElementById('exchange').addEventListener('click', function() {
             var checkedRows = document.querySelectorAll('.row-checkbox:checked');
             var data = [];
-            var hasCancelledOrder = false;
+            var hasReturnOrder = false;
 
             checkedRows.forEach(function(rowCheckbox) {
                 var row = rowCheckbox.closest('tr');
                 var orderitemId = row.querySelector('td:nth-child(2)').textContent;
-                var status = row.querySelector('td:nth-child(9)').textContent;
+                var status = row.querySelector('td:nth-child(10)').textContent;
 
-                if (status === '취소승인') {
-                    hasCancelledOrder = true;
+                if (status !== '교환요청') {
+                    hasReturnOrder = true;
                 } else {
                     data.push({ "orderitemId": orderitemId });
+                    console.log(data);
                 }
             });
 
-            if (hasCancelledOrder) {
-                alert('이미 취소 승인된 항목이 있습니다.');
+            if (hasReturnOrder) {
+                alert('이미 교환 승인된 항목이 있습니다.');
                 return;
             }
 
             // AJAX로 데이터를 서버로 전송
             var xhr = new XMLHttpRequest();
-            xhr.open('POST', '/seller/cm/cancel', true);
+            xhr.open('POST', '/seller/cm/test', true);
             xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.setRequestHeader('Action-Type', 'exchange');
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
                         console.log('전송성공');
                         console.log(data);
                         // 데이터 전송 성공 후 테이블 업데이트
-                        updateTable(checkedRows);
+                        updateexchange(checkedRows, '교환수거중');
                     } else {
                         console.error('Failed to send data');
                     }
@@ -311,24 +345,204 @@ function printValue(selectedValue) {
             };
             xhr.send(JSON.stringify(data));
         });
-
-        function updateTable(checkedRows) {
-            checkedRows.forEach(function(rowCheckbox) {
+        function  updateexchange(checkedRows){
+          checkedRows.forEach(function(rowCheckbox) {
                 var row = rowCheckbox.closest('tr');
-                row.querySelector('td:nth-child(9)').textContent = '취소승인';
-                rowCheckbox.checked = false;
+                var statusCell = row.querySelector('td:nth-child(10)');
+                statusCell.textContent = '교환수거중';
             });
 
-            // 테이블을 다시 초기화
-            var dataTable = new simpleDatatables.DataTable('#datatablesSimple', {
-                searchable: true,
-                pagination: true
+            // 체크박스 상태 초기화
+            var checkboxes = document.querySelectorAll('.row-checkbox');
+            checkboxes.forEach(function(checkbox) {
+                checkbox.checked = false;
             });
+            document.getElementById('allcheck').checked = false;
 
-            console.log('테이블 업데이트 완료');
+            alert('교환 승인이 완료되었습니다.');
         }
     </script>
+    <!--교환 완료 처리-->
+    <script>
+        document.getElementById('exchangesucess').addEventListener('click', function() {
+            var checkedRows = document.querySelectorAll('.row-checkbox:checked');
+            var data = [];
+            var hasReturnOrder = false;
 
+            checkedRows.forEach(function(rowCheckbox) {
+                var row = rowCheckbox.closest('tr');
+                var orderitemId = row.querySelector('td:nth-child(2)').textContent;
+                var status = row.querySelector('td:nth-child(10)').textContent;
+
+                if (status !== '교환수거중') {
+                    hasReturnOrder = true;
+                } else {
+                    data.push({ "orderitemId": orderitemId });
+                    console.log(data);
+                }
+            });
+
+            if (hasReturnOrder) {
+                alert('교환수거중이 아닌 항목이 있습니다.');
+                return;
+            }
+
+            // AJAX로 데이터를 서버로 전송
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/seller/cm/test', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.setRequestHeader('Action-Type', 'exchangesucess');
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        console.log('전송성공');
+                        console.log(data);
+                        // 데이터 전송 성공 후 테이블 업데이트
+                        updatesucess(checkedRows, '교환완료');
+                    } else {
+                        console.error('Failed to send data');
+                    }
+                }
+            };
+            xhr.send(JSON.stringify(data));
+        });
+        function  updatesucess(checkedRows){
+          checkedRows.forEach(function(rowCheckbox) {
+                var row = rowCheckbox.closest('tr');
+                var statusCell = row.querySelector('td:nth-child(10)');
+                statusCell.textContent = '교환완료';
+            });
+
+            // 체크박스 상태 초기화
+            var checkboxes = document.querySelectorAll('.row-checkbox');
+            checkboxes.forEach(function(checkbox) {
+                checkbox.checked = false;
+            });
+            document.getElementById('allcheck').checked = false;
+
+            alert('교환이 완료되었습니다.');
+        }
+    </script>
+    <!--교환 거부(철회) 처리-->
+    <script>
+        document.getElementById('exchangefail').addEventListener('click', function() {
+            var checkedRows = document.querySelectorAll('.row-checkbox:checked');
+            var data = [];
+            var hasReturnOrder = false;
+
+
+            checkedRows.forEach(function(rowCheckbox) {
+                var row = rowCheckbox.closest('tr');
+                var orderitemId = row.querySelector('td:nth-child(2)').textContent;
+                var status = row.querySelector('td:nth-child(10)').textContent;
+
+                console.log(status);
+                if (status === '교환완료') {
+                    hasReturnOrder = true;
+                } else {
+                    data.push({ "orderitemId": orderitemId });
+                    console.log(data);
+                }
+            });
+            if (hasReturnOrder) {
+                alert('이미 교환처리가 완료되었습니다.');
+                return;
+            }
+
+            // AJAX로 데이터를 서버로 전송
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/seller/cm/test', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.setRequestHeader('Action-Type', 'exchangefail');
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        console.log('전송성공');
+                        console.log(data);
+                        // 데이터 전송 성공 후 테이블 업데이트
+                        updateexchangefail(checkedRows, '정상처리');
+                    } else {
+                        console.error('Failed to send data');
+                    }
+                }
+            };
+            xhr.send(JSON.stringify(data));
+        });
+        function  updateexchangefail(checkedRows){
+          checkedRows.forEach(function(rowCheckbox) {
+                var row = rowCheckbox.closest('tr');
+                row.remove(); // 행을 테이블에서 제거
+            });
+
+            // 체크박스 상태 초기화
+            var checkboxes = document.querySelectorAll('.row-checkbox');
+            checkboxes.forEach(function(checkbox) {
+                checkbox.checked = false;
+            });
+            document.getElementById('allcheck').checked = false;
+
+            alert('교환 승인이 취소(철회)처리되었습니다.');
+        }
+    </script>
+    <!--반품으로 변경-->
+    <script>
+        document.getElementById('exchangetoreturn').addEventListener('click', function() {
+            var checkedRows = document.querySelectorAll('.row-checkbox:checked');
+            var data = [];
+            var hasReturnOrder = false;
+
+
+            checkedRows.forEach(function(rowCheckbox) {
+                var row = rowCheckbox.closest('tr');
+                var orderitemId = row.querySelector('td:nth-child(2)').textContent;
+
+                if (status === '교환완료') {
+                    hasReturnOrder = true;
+                } else {
+                    data.push({ "orderitemId": orderitemId });
+                    console.log(data);
+                }
+            });
+            if (hasReturnOrder) {
+                alert('이미 교환처리가 완료되었습니다.');
+                return;
+            }
+
+            // AJAX로 데이터를 서버로 전송
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/seller/cm/test', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.setRequestHeader('Action-Type', 'exchangetoreturn');
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        console.log('전송성공');
+                        console.log(data);
+                        // 데이터 전송 성공 후 테이블 업데이트
+                        updatereturn(checkedRows, '반품요청');
+                    } else {
+                        console.error('Failed to send data');
+                    }
+                }
+            };
+            xhr.send(JSON.stringify(data));
+        });
+        function  updatereturn(checkedRows){
+          checkedRows.forEach(function(rowCheckbox) {
+                var row = rowCheckbox.closest('tr');
+                row.remove(); // 행을 테이블에서 제거
+            });
+
+            // 체크박스 상태 초기화
+            var checkboxes = document.querySelectorAll('.row-checkbox');
+            checkboxes.forEach(function(checkbox) {
+                checkbox.checked = false;
+            });
+            document.getElementById('allcheck').checked = false;
+
+            alert('반품요청으로 처리되었습니다.');
+        }
+    </script>
     <style>
         input[type="radio"] {
             display: none;

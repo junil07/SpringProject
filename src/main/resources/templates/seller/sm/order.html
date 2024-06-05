@@ -6,7 +6,285 @@
 -->
 <th:block layout:fragment="pageContent">
 	<main id="main" class="main">
-		<h2>inquiry</h2>
+		<section>
+			<div class="container-fluid px-4">
+				<h1 class="mt-4">배송(주문)확인/발송관리</h1>
+				<ol class="breadcrumb mb-4">
+					<li class="breadcrumb-item"><a href="index">Dashboard</a></li>
+					<li class="breadcrumb-item active">Tables</li>
+				</ol>
+				<section class="section dashboard">
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="row">
+								<!-- Sales Card -->
+								<div class="col-xxl-12 col-md-12">
+									<div class="card info-card sales-card">
+										<div class="card-body">
+											<div class="border-bottom">
+												<h5 class="card-title fw-bold" style="padding-top: 10px; margin-bottom:0px;">
+													확인(신규 주문건 확인) 및 발송처리, 발송지연 처리를 하실 수 있습니다.
+												</h5>
+												<ul class="mb-3" style="list-style-type:disc;">
+													<li class="mb-1">발송기한 내 '발송처리'를 진행해 주세요. 기한 내 미 발송 시 페널티가 부과 됩니다. (발송기한은 일반상품 기준 결제완료 후 3일, 단 상품마다 상이)</li>
+													<li class="mb-1">선택 된 배송방법에 따라 자동구매확정일이 달라질 수 있으며, 구매자가 문제 제기 시 자동구매확정이 연장/불가 될 수 있습니다.</li>
+												</ul>
+											</div>
+											<div id="exchangeSection">
+												<section class="col-lg-12 d-flex mt-3">
+													<div class="col-xxl-3 col-md-3 d-flex">
+														<div class="col-xxl-2 col-md-2 card-icon rounded-circle d-flex align-items-center justify-content-center">
+															<i class="bi bi-bag-x"></i>
+														</div>
+														<ul class="col-xxl-8 col-md-8 list-group border-0 mt-1">
+															<li class="list-group-item border-0">
+																<div>신규주문(배송 전)</div>
+																<h5 class="fw-bold" th:text="${ordersucess.size()} + '건'"></h5>
+															</li>
+														</ul>
+													</div>
+													<div class="col-xxl-3 col-md-3 d-flex">
+														<div class="col-xxl-2 col-md-2 card-icon rounded-circle d-flex align-items-center justify-content-center">
+															<i class="bi bi-truck"></i>
+														</div>
+														<ul class="col-xxl-8 col-md-8 list-group border-0 mt-1">
+															<li class="list-group-item border-0">
+																<div>신규주문(배송 중)</div>
+																<h5 class="fw-bold" th:text="${ordering.size()} + '건'"></h5>
+															</li>
+														</ul>
+													</div>
+													<div class="col-xxl-3 col-md-3 d-flex">
+														<div class="col-xxl-2 col-md-2 card-icon rounded-circle d-flex align-items-center justify-content-center">
+															<i class="bi bi-truck"></i>
+														</div>
+														<ul class="col-xxl-8 col-md-8 list-group border-0 mt-1">
+															<li class="list-group-item border-0">
+																<div>신규주문(배송 완료)</div>
+																<h5 class="fw-bold" th:text="${orderend.size()} + '건'"></h5>
+															</li>
+														</ul>
+													</div>
+												</section>
+											</div>
+										</div>
+									</div>
+								</div><!-- End Sales Card -->
+							</div>
+						</div>
+					</div>
+				</section>
+				<div class="card mb-4 d-flex">
+					<div class="card-body border-bottom">조회기간 (주문일 기준으로 검색합니다.)</div>
+					<div class="card-body">
+						<div class="d-flex">
+							<div style="margin-right:10px;">
+								<input type="radio" id="now" name="now" value="1">
+								<label class="btn btn-info btn-sm btn-no-radius" for="now" onclick="printValue('1')">오늘</label>
+								<input type="radio" id="week" name="week" value="2">
+								<label class="btn btn-info btn-sm btn-no-radius" for="week" onclick="printValue('2')">1주일</label>
+								<input type="radio" id="1month" name="1month" value="3">
+								<label class="btn btn-info btn-sm btn-no-radius" for="1month" onclick="printValue('3')">1개월</label>
+								<input type="radio" id="3month" name="3month" value="4">
+								<label class="btn btn-info btn-sm btn-no-radius" for="3month" onclick="printValue('4')">3개월</label>
+							</div>
+							<label for="lastdate" class="d-flex align-items-center">
+								<input type="date" id="lastdate" max="2040-12-31" min="2010-01-01">
+							</label>
+							<label for="nowdate" class="d-flex align-items-center"> ~
+								<input type="date" id="nowdate" max="2040-12-31" min="2010-01-01">
+							</label>
+						</div>
+					</div>
+					<div>
+						<button type="button" class="btn" id="search">검색</button>
+					</div>
+				</div>
+				<div class="card mb-4" id="listtable">
+					<div class="card-header">
+						<div class="fas fa-table me-1">목록 (총<span id="itemCountSpan" th:text="${orderitem.size()}"></span> 개)</div>
+					</div>
+					<div class="card-body">
+						<table id="datatablesSimple" class="table table-striped">
+							<thead>
+							<tr>
+								<th data-sortable="false"></th>
+								<th>상품주문번호</th>
+								<th>주문번호</th>
+								<th>구매자이름</th>
+								<th>구매자ID</th>
+								<th>제품CODE</th>
+								<th>제품명</th>
+								<th>제품가격</th>
+								<th>결제상황</th>
+								<th>주문일</th>
+								<th>배송상태</th>
+								<th>주문처리일</th>
+								<th>주소</th>
+							</tr>
+							</thead>
+							<tbody>
+							<!--반품요청, 반품지연, 반품승인, 반품-->
+							<tr th:each="o, stat : ${orderitem}" id="orderlist" class="orderitem-row" th:data-orderitem-id="${o.orderitemId}">
+								<td ></td>
+								<td th:text="${o.orderitemId}" style="width:10%"></td>
+								<td th:text="${o.orderlist.orderlistId}"></td>
+								<td th:text="${o.orderlist.buyer.buyerName}"></td>
+								<td th:text="${o.orderlist.buyer.buyerId}"></td>
+								<td th:text="${o.product.productCode}"></td>
+								<td th:text="${o.product.productName}"></td>
+								<td th:text="${o.product.productPrice}"></td>
+								<td th:text="${o.orderlist.orderlistDate}"></td>
+								<td th:text="${o.orderitemPstatus}"></td>
+								<td th:text="${o.orderitemDstatus}"></td>
+								<td th:text="${o.orderitemDate}"></td>
+								<td th:text="${o.orderlist.orderlistAddress}"></td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</section>
 	</main><!-- End #main -->
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			const today = new Date();
+			const formattedToday = formatDate(today);
+
+			var nowdateInput = document.getElementById('nowdate');
+			if (nowdateInput) {
+				nowdateInput.value = formattedToday;
+			} else {
+				console.error('The nowdate input element is not found.');
+			}
+
+			var weekRadio = document.getElementById('week');
+			if (weekRadio && !weekRadio.checked) {
+				weekRadio.checked = true;
+				printValue('2');
+			} else {
+				console.error('The week radio input element is not found or already checked.');
+			}
+
+			var table;
+			var initialRows = Array.from(document.querySelectorAll('#datatablesSimple tbody tr')).map(function(row) {
+				return row.cloneNode(true); // 각 행을 복제하여 저장
+			});
+
+			function initTable() {
+				table = new simpleDatatables.DataTable('#datatablesSimple', {
+					searchable: true,
+					pagination: true
+				});
+			}
+
+			// 초기 테이블 데이터 저장
+			initTable();
+
+			document.getElementById('search').addEventListener('click', function() {
+				var startDate = document.getElementById('lastdate').value;
+				var endDate = document.getElementById('nowdate').value;
+
+				console.log(startDate);
+				console.log(endDate);
+
+				// 기존 테이블 데이터 초기화
+				table.destroy();
+				var tbody = document.querySelector('tbody');
+				tbody.innerHTML = '';
+
+				var itemCount = 0;
+
+				// 초기 데이터에서 날짜 범위에 맞는 행 필터링 및 추가
+				initialRows.forEach(function(row) {
+					var orderDateElement = row.querySelector('td:nth-child(9)');
+
+					if (orderDateElement) {
+						var orderDate = orderDateElement.textContent;
+						if (orderDate >= startDate && orderDate <= endDate) {
+							tbody.appendChild(row.cloneNode(true)); // 복제된 행을 추가
+							itemCount++;
+						}
+					}
+				});
+
+				// 새로운 데이터로 테이블 재초기화
+				initTable();
+
+				var itemCountSpan = document.getElementById('itemCountSpan');
+				if (itemCountSpan) {
+					itemCountSpan.textContent = itemCount;
+				} else {
+					console.error('The itemCountSpan element is not found.');
+				}
+			});
+		});
+
+		// 날짜 형식을 'YYYY-MM-DD'로 변환하는 함수
+		function formatDate(date) {
+			const year = date.getFullYear();
+			const month = String(date.getMonth() + 1).padStart(2, '0');
+			const day = String(date.getDate()).padStart(2, '0');
+			return `${year}-${month}-${day}`;
+		}
+
+
+		// 날짜 선택에 따라 값을 설정하는 함수
+		function printValue(selectedValue) {
+			const currentDate = new Date();
+			let year, month, day, formattedDate;
+
+			if (selectedValue === '1') {
+				year = currentDate.getFullYear();
+				month = String(currentDate.getMonth() + 1).padStart(2, '0');
+				day = String(currentDate.getDate()).padStart(2, '0');
+				formattedDate = `${year}-${month}-${day}`;
+			} else if (selectedValue === '2') {
+				currentDate.setDate(currentDate.getDate() - 7);
+				year = currentDate.getFullYear();
+				month = String(currentDate.getMonth() + 1).padStart(2, '0');
+				day = String(currentDate.getDate()).padStart(2, '0');
+				formattedDate = `${year}-${month}-${day}`;
+			} else if (selectedValue === '3') {
+				currentDate.setMonth(currentDate.getMonth() - 1);
+				year = currentDate.getFullYear();
+				month = String(currentDate.getMonth() + 1).padStart(2, '0');
+				day = String(currentDate.getDate()).padStart(2, '0');
+				formattedDate = `${year}-${month}-${day}`;
+			} else if (selectedValue === '4') {
+				currentDate.setMonth(currentDate.getMonth() - 3);
+				year = currentDate.getFullYear();
+				month = String(currentDate.getMonth() + 1).padStart(2, '0');
+				day = String(currentDate.getDate()).padStart(2, '0');
+				formattedDate = `${year}-${month}-${day}`;
+			}
+
+			const lastdateInput = document.getElementById('lastdate');
+			if (lastdateInput) {
+				lastdateInput.value = formattedDate;
+			} else {
+				console.error('The lastdate input element is not found.');
+			}
+
+			const radios = document.querySelectorAll('input[type="radio"]');
+			radios.forEach(function(radio) {
+				if (radio.value !== selectedValue) {
+					radio.checked = false;
+				}
+			});
+		}
+	</script>
+	<style>
+		input[type="radio"] {
+            display: none;
+        }
+        input[type="radio"]:checked + label {
+            background-color: rgb(13, 110, 253);
+        }
+        .btn {
+            border-radius: 0 !important;
+        }
+	</style>
 </th:block>
 </html>

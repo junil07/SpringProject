@@ -1,0 +1,225 @@
+<html layout:decorate="~{_layout/seller/index}">
+<th:block layout:fragment="pageContent">
+    <main id="main" class="main">
+        <section class="container-fluid px-4">
+            <header>
+                <h4 class="fw-bold mt-2">F.A.Q</h4>
+            </header>
+            <main class="card mb-4">
+                <section class="card-body">
+                    <div class="accordion" id="accordionExampleone">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne_one" aria-expanded="true" aria-controls="collapseOne">
+                                    회원가입
+                                </button>
+                            </h2>
+                            <div id="collapseOne_one" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <div class="accordion" id="one_under">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#oneUnderone" aria-expanded="true" aria-controls="collapseOne">
+                                                    판매자 가입이 '거부' 되었습니다. 왜그런가요?
+                                                </button>
+                                            </h2>
+                                            <div id="oneUnderone" class="accordion-collapse collapse " data-bs-parent="#one_under">
+                                                <div class="accordion-body">
+                                                    심사 담당자의 코멘트를 통해 자세한 사유 확인이 가능하며, 아래 2가지 사유로 거부될 수 있습니다.<br><br>
+                                                    1. 가입 신청 하신 이후 30일 이내에 가입 심사가 완료되지 않은 경우<br>
+                                                    자동으로 '보류'상태로 변경되며, 심사 보류상태에서 180일째 되는 날 자동으로 회원가입은 '거부' 상태로 변경됩니다.<br><br>
+                                                    2. 신청된 정보 중 취급불가 상품이 확인되거나,<br>
+                                                    사업자 폐업 상태 등 스마트스토어센터의 가입이 부적합하다고 판단된 경우에 '거부'상태로 처리됩니다.<br><br>
+                                                    이 경우에는 가입 자체가 부적합하기 때문에 재심사 불가능합니다. 필요시 [가입하기]를 통해 처음부터 진행해 주세요.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#oneUndertwo" aria-expanded="true" aria-controls="collapseOne">
+                                                    미성년자(만 19세미만)도 판매회원 가입이 가능한가요?
+                                                </button>
+                                            </h2>
+                                            <div id="oneUndertwo" class="accordion-collapse collapse" data-bs-parent="#one_under">
+                                                <div class="accordion-body">
+                                                    네이버 스마트스토어는 만 14세 미만의 개인(개인 사업자 포함) 또는 법인사업자는 입점이 불가함을 양해 부탁 드립니다.<br>
+                                                    (스마트스토어 판매 이용약관 : 제5조 (이용계약의 성립) 3항)<br><br>
+                                                    만 14세 이상 ~ 만 19세 미만인 판매회원은 아래의 서류를 가입 신청단계에서 제출해주셔야 심사가 가능합니다.<br><br>
+                                                    <strong>*참고</strong>
+                                                    <ul>
+                                                        <li>만 14세 이상~만 19세 미만인 개인/법인 사업자회원은 가입심사 서류만 제출해주시면 됩니다.</li>
+                                                        <li>가족관계증명서의 경우 발급일은 무관하며, 주민등록번호 뒤 6자리(생년월일+성별 구분 제외)는 마스킹 후 제출해 주세요.</li>
+                                                        <li>법정대리인 인감증명서 제출이 어려울 경우 법정대리인 본인서명사실확인서로 대체 가능합니다.</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#oneUnderthree" aria-expanded="true" aria-controls="collapseOne">
+                                                    개인 판매자로 가입을 원합니다. 고객센터 전화번호 인증은 필수인가요?
+                                                </button>
+                                            </h2>
+                                            <div id="oneUnderthree" class="accordion-collapse collapse" data-bs-parent="#one_under">
+                                                <div class="accordion-body">
+                                                    개인 판매자로 가입할 경우, 고객센터 전화번호 인증은 필수입니다.<br>
+                                                    따라서 가입 시 전화번호 인증이 가능한 연락처를 입력하여 인증 후 가입 바랍니다.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#oneUnderfour" aria-expanded="true" aria-controls="collapseOne">
+                                                    예금주명에 특수문자를 넣을 수 있나요?
+                                                </button>
+                                            </h2>
+                                            <div id="oneUnderfour" class="accordion-collapse collapse" data-bs-parent="#one_under">
+                                                <div class="accordion-body">
+                                                    스마트스토어 판매대금 정산과 충전금 출금은 반드시 대표자 또는 사업자명의의 계좌로만 가능하며, 법인사업자일 경우 법인명의의 계좌로만 가능합니다.<br>
+                                                    가입 시 기재한 계좌정보가 은행에 등록된 정보와 상이한 경우 인증이 불가하므로 정보가 일치하는지 확인해 주세요.<br><br>
+                                                    <strong>*참고</strong>
+                                                    <ul>
+                                                        <li>국내사업자 중 ​예금주명이 대표자명 또는 사업자등록증의 상호명과 동일 또는 공동대표의 경우 대표자가 예금주명에 있는 경우 통장사본 제출 생략이 가능합니다.</li>
+                                                        <li>법인사업자 중 예금주명이 사업자등록증의 법인 명의(상호명)과 동일 할 경우 통장사본 제출 생략이 가능합니다.</li>
+                                                        <li>가입 시 "대표자명과 예금주명이 일치하지 않습니다." 메세지가 노출되는 경우는 판매자 유형을 "개인"으로 선택하고 사업자명의 계좌로 계좌인증을 한 경우입니다. </li>
+                                                        <li>"개인"으로 가입하고자 한다면 대표자 개인명의 계좌로 등록하셔야 하며, 만약 사업자명의 계좌로 등록을 원할 경우 판매자유형을 "사업자"로 선택하여 다시 회원가입을 진행해 주세요. </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#oneUnderfive" aria-expanded="true" aria-controls="collapseOne">
+                                                    가입 시 [이미 가입되어 있습니다.] 화면이 노출됩니다.
+                                                </button>
+                                            </h2>
+                                            <div id="oneUnderfive" class="accordion-collapse collapse" data-bs-parent="#one_under">
+                                                <div class="accordion-body">
+                                                    ID 가입영역(아이디로 가입하기)에서 가입을 시도한 사업자번호가 이미 가입되어 있을 경우 해당 화면이 노출됩니다.<br>
+                                                    노출되는 상호(법인명)이 가입 진행하려는 상호(법인명)일 경우 [로그인하기>아이디 찾기]버튼을 통해 로그인 정보 확인 후 스토어에 접속해 주세요.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+            <main class="card mb-4">
+                <section class="card-body">
+                    <div class="accordion" id="accordionExampletwo">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapsetwo_one" aria-expanded="true" aria-controls="collapsetwo">
+                                    상품관리
+                                </button>
+                            </h2>
+                            <div id="collapsetwo_one" class="accordion-collapse collapse" data-bs-parent="#accordionExampletwo">
+                                <div class="accordion-body">
+                                    <div class="accordion" id="two_under">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#twoUnderone" aria-expanded="true" aria-controls="collapseOne">
+                                                    상품 조회/수정하는 방법
+                                                </button>
+                                            </h2>
+                                            <div id="twoUnderone" class="accordion-collapse collapse " data-bs-parent="#two_under">
+                                                <div class="accordion-body">
+                                                    <strong>1. 상품조회하기</strong><br><br>
+                                                    1) [상품관리 > 상품조회/수정] 메뉴를 접속합니다.<br><br>
+
+                                                    2) 조건을 설정하여 검색해 주세요.<br>
+                                                    - 기본적으로 "최근 3개월 이내 신규등록","판매중"의 상품을 우선 노출 해 주고 있으며  판매대기/품절 등 모든 상품을 조회하시려면 "판매상태"를 전체로 체크하여 조회하시면 됩니다.<br>
+                                                    - 상단에 판매상태별 상품 건수 확인이 가능하며, 건수를 클릭 시 상품목록에 등록한 상품이 조회됩니다.<br>
+                                                    - 특정 상품의 조회를 원하신다면, "검색어" 기능을 사용해서 상품번호/상품명/제조사명 등 원하시는 유형으로 조회하실 수 있습니다. (상품번호/판매자 상품번호로 검색 시 다른 조건은 포함되지 않으며, 해당 키워드로만 조회됩니다.)<br><br>
+
+                                                    3) 상품번호 클릭 시 상품의 상세페이지로 이동합니다.<br><br>
+
+                                                    <strong>2. 상품 수정하기</strong><br><br>
+
+                                                    1) [상품관리 > 상품조회/수정] 메뉴를 접속합니다.<br>
+                                                    2) 조건을 설정하여 검색해 주세요.<br>
+                                                    3) 상품목록의 '수정' 버튼을 클릭하시면 최초 상품을 등록했던 페이지로 이동합니다.<br><br>
+
+                                                    <strong>3. 상품 일괄 수정(변경)하기  </strong><br><br>
+
+                                                    상품 일괄 수정(변경) 방법
+
+                                                    1. [상품관리 >상품 조회/수정] 메뉴에서 변경할 상품을 검색해 주세요.<br>
+
+                                                    2. 상품목록에서 변경할 상품을 선택해 주세요.<br>
+
+                                                    3. 상품목록 상단의 노출되는 일부 항목에 대해서만 상품 일괄 변경(수정)이 가능합니다.<br>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#twoUndertwo" aria-expanded="true" aria-controls="collapseOne">
+                                                    상품조회/수정 메뉴에서 내가 등록한 상품이 조회되지 않아요.
+                                                </button>
+                                            </h2>
+                                            <div id="twoUndertwo" class="accordion-collapse collapse" data-bs-parent="#two_under">
+                                                <div class="accordion-body">
+                                                    [상품관리 > 상품조회/수정] 메뉴에서는 기본적으로 "최근 3개월 이내 신규 등록","판매중"인 상태의 상품을 우선 노출 해 주고 있습니다.<br>
+                                                    만약, 판매대기/품절 등 모든 상품을 조회하시려면 "판매상태"를 전체로 체크하여 조회하시면 됩니다.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#twoUnderthree" aria-expanded="true" aria-controls="collapseOne">
+                                                    이미 등록한 상품을 수정하고 싶어요.
+                                                </button>
+                                            </h2>
+                                            <div id="twoUnderthree" class="accordion-collapse collapse" data-bs-parent="#three_under">
+                                                <div class="accordion-body">
+                                                    등록된 상품의 정보 수정은  [상품관리 > 상품조회/수정] 메뉴에서 가능합니다.<br>
+                                                    상품을 검색하신 후 "수정" 버튼을 선택해 주세요.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#twoUnderfour" aria-expanded="true" aria-controls="collapseOne">
+                                                    노출되는 제조사/브랜드명이 입력한 정보와 상이하게 노출돼요.
+                                                </button>
+                                            </h2>
+                                            <div id="twoUnderfour" class="accordion-collapse collapse" data-bs-parent="#four_under">
+                                                <div class="accordion-body">
+                                                    상품등록 시 제조사/브랜드 정보를 수정하셨다면, 네이버쇼핑 검색 결과에는<br>
+                                                    직접 등록하신 제조사/브랜드 명이 아닌, 홈페이지에 등록된 제조사/브랜드 정보로 변경되어 노출될 수 있습니다.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#twoUnderfive" aria-expanded="true" aria-controls="collapseOne">
+                                                    상품(옵션)의 재고수량이 많으나, 품절로 변경되었어요.
+                                                </button>
+                                            </h2>
+                                            <div id="twoUnderfive" class="accordion-collapse collapse" data-bs-parent="#five_under">
+                                                <div class="accordion-body">
+                                                    해당 상품의 재고소진으로 인해 품절로 변경되거나, 해당 상품이 주문된 주문건을 '상품품절' 사유로 취소하는 경우 품절로 변경됩니다.<br><br>
+                                                    ※ 참고.<br>
+                                                    · 품절로 변경된 상품도 주문 취소 시 재고수량이 복구됩니다.<br>
+                                                    만약, 해당 상품(옵션)의 재고복구를 원하지 않는다면 상품 상태를 '판매중지'로 변경하거나, 특정옵션의 사용여부를 'N'으로 바꿔주세요.<br>
+                                                    · 옵션 중 옵션가 0원으로 구성된 '모든 옵션'이 재고가 없을 경우 옵션가가 적용된 옵션에 재고가 있더라도 상품은 '품절'상태로 변경됩니다.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </section>
+    </main><!-- End #main -->
+    <script>
+    </script>
+</th:block>
+</html>

@@ -19,19 +19,15 @@
 											<ul class="col-xxl-8 col-md-8 list-group border-0">
 												<li class="list-group-item border-0">
 													<span>결제대기</span>
-													<span class="float-end">0<span class="float-end">건</span></span>
+													<span class="float-end"><span class="float-end"><span th:text="${paybeforecount.size()}"></span>건</span></span>
 												</li>
 												<li class="list-group-item border-0">
 													<span>신규주문</span>
-													<span class="float-end">0<span class="float-end">건</span></span>
+													<span class="float-end"><span class="float-end"><span th:text="${threecount.size()}"></span>건</span></span>
 												</li>
 												<li class="list-group-item border-0">
 													<span>오늘출발</span>
-													<span class="float-end">0<span class="float-end">건</span></span>
-												</li>
-												<li class="list-group-item border-0">
-													<span>예약구매</span>
-													<span class="float-end">0<span class="float-end">건</span></span>
+													<span class="float-end"><span class="float-end"><span th:text="${nowdaycount.size()}"></span>건</span></span>
 												</li>
 											</ul>
 										</div>
@@ -42,15 +38,15 @@
 											<ul class="col-xxl-8 col-md-8 list-group border-0">
 												<li class="list-group-item border-0">
 													<span>배송준비</span>
-													<span class="float-end">0<span class="float-end">건</span></span>
+													<span class="float-end"><span class="float-end"><span th:text="${deliverycount.size()}"></span>건</span></span>
 												</li>
 												<li class="list-group-item border-0">
 													<span>배송중</span>
-													<span class="float-end">0<span class="float-end">건</span></span>
+													<span class="float-end"><span class="float-end"><span th:text="${deliveryingcount.size()}"></span>건</span></span>
 												</li>
 												<li class="list-group-item border-0">
 													<span>배송완료</span>
-													<span class="float-end">0<span class="float-end">건</span></span>
+													<span class="float-end"><span class="float-end"><span th:text="${deliverysucesscount.size()}"></span>건</span></span>
 												</li>
 											</ul>
 										</div>
@@ -71,19 +67,15 @@
 											<ul class="col-xxl-8 col-md-8 list-group border-0">
 												<li class="list-group-item border-0">
 													<span>취소요청</span>
-													<span class="float-end">0<span class="float-end">건</span></span>
+													<span class="float-end"><span class="float-end"><span th:text="${cancelcount.size()}"></span>건</span></span>
 												</li>
 												<li class="list-group-item border-0">
 													<span>반품요청</span>
-													<span class="float-end">0<span class="float-end">건</span></span>
+													<span class="float-end"><span class="float-end"><span th:text="${returncount.size()}"></span>건</span></span>
 												</li>
 												<li class="list-group-item border-0">
 													<span>교환요청</span>
-													<span class="float-end">0<span class="float-end">건</span></span>
-												</li>
-												<li class="list-group-item border-0">
-													<span>총 해결건수</span>
-													<span class="float-end">0<span class="float-end">건</span></span>
+													<span class="float-end"><span class="float-end"><span th:text="${exchangecount.size()}"></span>건</span></span>
 												</li>
 											</ul>
 										</div>
@@ -94,15 +86,11 @@
 											<ul class="col-xxl-8 col-md-8 list-group border-0">
 												<li class="list-group-item border-0">
 													<span>구매확정</span>
-													<span class="float-end">0<span class="float-end">건</span></span>
+													<span class="float-end"><span class="float-end"><span th:text="${buyend.size()}"></span>건</span></span>
 												</li>
 												<li class="list-group-item border-0">
 													<span>오늘정산</span>
-													<span class="float-end">0<span class="float-end">건</span></span>
-												</li>
-												<li class="list-group-item border-0">
-													<span>정산예정</span>
-													<span class="float-end">0<span class="float-end">건</span></span>
+													<span class="float-end"><span class="float-end"><span th:text="${todayend.size()}"></span>건</span></span>
 												</li>
 											</ul>
 										</div>
@@ -166,7 +154,7 @@
 						</div>
 						<div class="col-xxl-4 col-md-4">
 							<div class="card info-card sales-card">
-								<div class="card-body" style="height:537px;">
+								<div class="card-body" style="height:549px;">
 									<div class="d-flex justify-content-center align-items-center border-bottom p-2">
 										<h5 style="margin-bottom: 0px;" class="fw-bold">제품별 매출 현황</h5>
 									</div>
@@ -269,7 +257,7 @@
                 data: {
                     labels: sortedLabels,
                     datasets: [{
-                        label: '총 결제 건수',
+                        label: '총 결제자 수',
                         data: sortedValues,
                         backgroundColor: 'rgba(75, 192, 192, 0.2)',
                         borderColor: 'rgba(75, 192, 192, 1)',
@@ -361,13 +349,18 @@
                 options: {
                     responsive: true,
                     aspectRatio: 1,
-                    maintainAspectRatio: false
+                    maintainAspectRatio: false,
+                    plugins:{
+                    	legend:{
+                    		display:false
+                    	},
+                    }
                 }
             };
 
             // 차트 생성
             const canvas = document.getElementById('orderproduct');
-            canvas.style.height = '458px';
+            canvas.style.height = '470px';
             new Chart(ctx4, productConfig);
         });
 	</script>
