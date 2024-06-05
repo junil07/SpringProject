@@ -35,7 +35,7 @@ public class CartController {
         for(Cart cart : cartList){
             Product product=cart.getProduct();
 
-            ProductImage images = productImageService.productImageRoute(product);
+            ProductImage images = productImageService.getProductImage(product);
 
             productImages.add(images);
         }

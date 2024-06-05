@@ -34,7 +34,7 @@ public class Product {
     private int productActivation;
 
     @ManyToOne
-    @JoinColumn(name = "SELLER_ID", referencedColumnName = "sellerId")
+    @JoinColumn(name = "SELLER_ID")
     private Seller seller;
 
     @ManyToOne
