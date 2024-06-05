@@ -21,6 +21,8 @@ public class QProductView extends EntityPathBase<ProductView> {
 
     public final NumberPath<Integer> categoryId = createNumber("categoryId", Integer.class);
 
+    public final StringPath productCode = createString("productCode");
+
     public final StringPath productDetailAs = createString("productDetailAs");
 
     public final StringPath productDetailColor = createString("productDetailColor");

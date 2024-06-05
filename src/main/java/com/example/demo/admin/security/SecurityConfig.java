@@ -77,10 +77,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers(
-                                "/css/**", "/assets/**"
+                                        "/css/**", "/assets/**"
                                         , "/demo/**", "/images/**", "/js/**", "/plugins/**"
                                         ,"/buyer/**", "/buyer/detail", "/seller/**"
-                                        , "/error", "/error/**", "/errorpage/**"
+                                        , "/error", "/error/**", "/errorpage/**", "/reviews/**"
+                                        ,"/cart/**","/updateCartProductCount", "/deleteSelectedCartItems"
                                 ).permitAll()
                                 .requestMatchers("/buyer/detail").hasRole(Role.BUYER.name())
                                 .anyRequest().authenticated())

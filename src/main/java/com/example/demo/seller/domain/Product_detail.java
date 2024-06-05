@@ -24,7 +24,7 @@ public class Product_detail {
     private String productDetailAs;
     private String productDetailStandard;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "PRODUCT_ID", referencedColumnName = "productId")
     private Product product;
 
