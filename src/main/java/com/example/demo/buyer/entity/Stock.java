@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 @Table(name="stock")
 public class Stock {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer stockId;
 
     @Column(name="STOCK_SIZE")
@@ -14,15 +15,15 @@ public class Stock {
     @Column(name="STOCK_COUNT")
     private int stockCount;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name="PRODUCT_ID",referencedColumnName = "productId")
     private Product product;
 
-    public int getStockId() {
+    public Integer getStockId() {
         return stockId;
     }
 
-    public void setStockId(int stockId) {
+    public void setStockId(Integer stockId) {
         this.stockId = stockId;
     }
 

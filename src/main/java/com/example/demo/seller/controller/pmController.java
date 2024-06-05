@@ -1,7 +1,9 @@
 package com.example.demo.seller.controller;
 
 import com.example.demo.buyer.entity.Category;
+import com.example.demo.buyer.entity.Stock;
 import com.example.demo.buyer.service.CategoryService;
+import com.example.demo.buyer.service.StockService;
 import com.example.demo.seller.DTO.ProductDTO;
 import com.example.demo.seller.DTO.ProductDetailDTO;
 import com.example.demo.seller.domain.Product;
@@ -14,8 +16,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/seller/pm")
@@ -27,6 +35,8 @@ public class pmController {
 	private ProductImageService productImageService;
 	@Autowired
 	private CategoryService categoryService;
+	@Autowired
+	private StockService stockService;
 
 	public pmController() {
 
@@ -76,10 +86,14 @@ public class pmController {
 		List<Category> categories = categoryService.getAll();
 		model.addAttribute("category", categories);
 		//이미지
-		ProductImage productImage = productImageService.productImageRoute(product);
+		ProductImage productImage = productImageService.getProductImage(product);
 		model.addAttribute("productImage", productImage);
-		model.addAttribute("productImageRoute", "/assets/image/pMain/" + productImage.getProductImageSname() + productImage.getProductImageExtension());
-
+		model.addAttribute("getProductImage", "/assets/image/pMain/" + productImage.getProductImageSname() + productImage.getProductImageExtension());
+		//해시태그 객체로 저장
+		model.addAttribute("hashtagList", productDTO.getProductHashtag());
+		//상품 재고
+		List<Stock> stocks = stockService.getStockList(productId);
+		model.addAttribute("stockList", stocks);
 		// 저장된 카테고리 불러오기
 		Category subSubCategory = product.getCategory();
 		model.addAttribute("ssubSubCategory", subSubCategory);
@@ -108,30 +122,94 @@ public class pmController {
 		return subSubcategories;
 	}
 
+	//저장
 	@PostMapping("/products")
 	public String saveProduct(@ModelAttribute("productDTO") ProductDTO productDTO,
 							  @ModelAttribute("productDetailDTO") ProductDetailDTO productDetailDTO,
+							  @RequestParam("totalHash") List<String> totalHash,
+							  @RequestParam("totalStock") List<Object> totalStock,
 							  @RequestParam("file") MultipartFile file) {
+		//해시태그 추가
+		productDTO.setProductHashtag(totalHash);
+		//상품 추가
 		productService.addProduct(productDTO);
+
 		Product product = productService.getProductPK(productDTO.getProductCode());
 		productDTO.setProductId(product.getProductId());
 		productDetailDTO.setProductId(product.getProductId());
+
+		//상품 상세정보 추가
 		productService.addProductDetail(productDetailDTO);
+		//상품 이미지 추가
 		productImageService.addProductImage(file, productDTO);
+		//재고 추가
+		List<List<Object>> newStocks = stockService.getNewStockList(totalStock);
+		stockService.stockResult(newStocks, product.getProductId());
 		return "redirect:/seller/pm/inquiry"; // 파일 업로드 성공 시 리다이렉트할 뷰 이름
 	}
 
 	@PostMapping("/productsUpdate")
 	public String updateProduct(@ModelAttribute("productDTO") ProductDTO productDTO,
 							  @ModelAttribute("productDetailDTO") ProductDetailDTO productDetailDTO,
-							  @RequestParam("file") MultipartFile file) {
+								@ModelAttribute("newCategoryId") Long categoryId,
+								@RequestParam("totalHash") List<String> totalHash,
+							  @RequestParam("totalStock") List<Object> totalStock,
+							  @RequestParam("file") MultipartFile file,
+								RedirectAttributes redirectAttributes, Model model) {
+
+		long productId = productDTO.getProductId();
+		redirectAttributes.addAttribute("productId", productId);
+		productDTO.setCategoryId(categoryId);
+		productDTO.setProductHashtag(totalHash);
+
+		//재고 파트
+		List<List<Object>> newStocks = stockService.getNewStockList(totalStock);
+		stockService.stockResult(newStocks, productId);
+
 		productService.addProduct(productDTO);
 		productService.addProductDetail(productDetailDTO);
-		productImageService.addProductImage(file, productDTO);
+		if(file != null) {
+
+			ProductImage productImage = productImageService.getProductImage(productService.getProduct(productId));
+
+			//기존 파일 삭제
+			productImageService.delProductImage(productImage.getProductImageSname(), productImage);
+			//파일 추가
+			productImageService.addProductImage(file, productDTO);
+		}
+
+
+		ProductImage productImage = productImageService.getProductImage(productService.getProduct(productId));
+
+		System.out.println(productImage);
+		File fileExists = new File("/assets/image/pMain/" + productImage.getProductImageSname()+productImage.getProductImageExtension());
+		if (fileExists.exists() && !fileExists.isDirectory()) {
+			System.out.println("존재함!!");
+		} else {
+			System.out.println("없음!!");
+		}
+
+
+
+
+
+
+
 
 		return "redirect:/seller/pm/{productId}"; // 파일 업로드 성공 시 리다이렉트할 뷰 이름
 	}
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+

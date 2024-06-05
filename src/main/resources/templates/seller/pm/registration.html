@@ -41,8 +41,15 @@
 											<input type="text" class="form-control" id="productdiscount" th:field="*{productDiscount}">
 										</div>
 										<div class="mb-3">
-											<label for="producthash" class="form-label">해시태그</label>
-											<input type="text" class="form-control" id="producthash" th:field="*{productHashtag}">
+											<label for="hashText" class="form-label">해시태그</label>
+											<div class="input-group mb-3">
+												<input type="text" id="hashText" name="hashText" class="form-control" placeholder="해시태그 입력" aria-label="Recipient's username" aria-describedby="button-addon2">
+												<button class="btn btn-outline-secondary" type="button" id="addHashBtn" name="addHashBtn">추가</button>
+												<button class="btn btn-outline-secondary" type="button" id="delHashBtn" name="delHashBtn">삭제</button>
+											</div>
+											<div id="hashtag-container">
+												<div th:each="hashtagList : ${hashtagList}" th:if="${hashtagList != null and #lists.isEmpty(hashtagList) == false}" id="hashtag-box" name="hashtag-box" class="hashtag-box" th:text="${hashtagList}"></div>
+											</div>
 										</div>
 										<div class="mb-3">
 											<label for="productexplain" class="form-label">설명</label>
@@ -76,10 +83,21 @@
 												<input type="text" class="form-control" id="productDetailColor" th:field="*{productDetailColor}">
 											</div>
 											<div class="mb-3">
-												<label for="productDetailSize" class="form-label">치수</label>
-												<input type="text" class="form-control" id="productDetailSize" th:field="*{productDetailSize}">
+												<label for="addStock-count" class="form-label">치수(재고)</label>
+												<div class="input-group mb-3">
+													<input type="number" id="addStock-size" name="addStock-text" class="form-control" placeholder="사이즈 입력" aria-describedby="button-addon2">
+													<input type="number" id="addStock-count" name="addStock-text" class="form-control" placeholder="수량 입력" aria-describedby="button-addon2">
+													<button class="btn btn-outline-secondary" type="button" id="addStockBtn" name="addStockBtn">추가</button>
+												</div>
+												<div id="stock-container">
+													<div  class="input-group input-group-sm mb-3" style="float:left; width: 33%;" th:each="stock : ${stockList}" th:object="${stock}">
+														<span class="input-group-text" id="stockSize" name="stockSize" th:text="${stock.stockSize}"></span>
+														<input type="number" class="form-control" placeholder="수량 입력" aria-describedby="inputGroup-sizing-sm" th:value="*{stockCount}">
+														<button class="btn btn-outline-secondary" type="button" id="delStockBtn" name="delStockBtn">삭제</button>
+													</div>
+												</div>
 											</div>
-											<div class="mb-3">
+											<div class="mb-3" style="clear: left;">
 												<label for="productDetailYear" class="form-label">제조년월</label>
 												<input type="text" class="form-control" id="productDetailYear" th:field="*{productDetailYear}">
 											</div>
@@ -118,9 +136,10 @@
 											</div>
 										</div>
 									</div>
-									<button type="submit" class="btn btn-primary">등록</button>
+									<button id="saveButton" name="saveButton" type="submit" class="btn btn-primary">등록</button>
 								</div>
-
+								<input type="hidden" id="totalHash" name="totalHash" value="">
+								<input type="hidden" id="totalStock" name="totalStock" value="">
 								<input type="hidden" id="categoryId" name="categoryId" th:value="*{categoryId}">
 							</form>
 					</div>
@@ -131,6 +150,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="/js/pdList.js"></script>
 	<script>
 		document.addEventListener('DOMContentLoaded', function () {
 			var productImageInput = document.getElementById("file");
