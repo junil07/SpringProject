@@ -1,5 +1,6 @@
 package com.example.demo.seller.service;
 
+import java.time.LocalDate;
 import java.util.*;
 
 import com.example.demo.seller.DTO.OrderitemDTO;
@@ -75,6 +76,92 @@ public class OrderitemService {
         return orderitemRepository.findoutstanding();
     }
 
+    //배송페이지-배송 승인처리
+//    public void ordercheck(List<OrderitemDTO> orderItems){
+//        for (OrderitemDTO orderItemDTO : orderItems) {
+//            Optional<Orderitem> optionalOrderitem = orderitemRepository.findById(orderItemDTO.getOrderitemId());
+//            if (optionalOrderitem.isPresent()) {
+//                Orderitem orderitem = optionalOrderitem.get();
+//                orderitem.setOrderitemDstatus("배송중"); // orderitemCase를 "정상처리"으로 변경
+//                orderitemRepository.save(orderitem);
+//            } else {
+//                throw new RuntimeException("Orderitem not found: " + orderItemDTO.getOrderitemId());
+//            }
+//        }
+//    }
+
+    //배송페이지-배송 완료처리
+//    public void ordersucess(List<OrderitemDTO> orderItems){
+//        for (OrderitemDTO orderItemDTO : orderItems) {
+//            Optional<Orderitem> optionalOrderitem = orderitemRepository.findById(orderItemDTO.getOrderitemId());
+//            if (optionalOrderitem.isPresent()) {
+//                Orderitem orderitem = optionalOrderitem.get();
+//                orderitem.setOrderitemDstatus("배송완료"); // orderitemCase를 "정상처리"으로 변경
+//                orderitemRepository.save(orderitem);
+//            } else {
+//                throw new RuntimeException("Orderitem not found: " + orderItemDTO.getOrderitemId());
+//            }
+//        }
+//    }
+
+    //배송페이지-배송 거부(철회)처리
+//    public void ordercancel(List<OrderitemDTO> orderItems){
+//        for (OrderitemDTO orderItemDTO : orderItems) {
+//            Optional<Orderitem> optionalOrderitem = orderitemRepository.findById(orderItemDTO.getOrderitemId());
+//            if (optionalOrderitem.isPresent()) {
+//                Orderitem orderitem = optionalOrderitem.get();
+//                orderitem.setOrderitemDstatus("정상처리"); // orderitemCase를 "정상처리"으로 변경
+//                orderitemRepository.save(orderitem);
+//            } else {
+//                throw new RuntimeException("Orderitem not found: " + orderItemDTO.getOrderitemId());
+//            }
+//        }
+//    }
+
+    //배송현황 관리 페이지 - 배송처리
+    public void deliverycheck(List<OrderitemDTO> orderItems){
+        for (OrderitemDTO orderItemDTO : orderItems) {
+            Optional<Orderitem> optionalOrderitem = orderitemRepository.findById(orderItemDTO.getOrderitemId());
+            if (optionalOrderitem.isPresent()) {
+                Orderitem orderitem = optionalOrderitem.get();
+                orderitem.setOrderitemDstatus("배송중"); // orderitemCase를 "정상처리"으로 변경
+                orderitemRepository.save(orderitem);
+            } else {
+                throw new RuntimeException("Orderitem not found: " + orderItemDTO.getOrderitemId());
+            }
+        }
+    }
+
+    //배송현황 관리 페이지 - 배송완료
+    public void deliverysucess(List<OrderitemDTO> orderItems){
+        for (OrderitemDTO orderItemDTO : orderItems) {
+            Optional<Orderitem> optionalOrderitem = orderitemRepository.findById(orderItemDTO.getOrderitemId());
+            if (optionalOrderitem.isPresent()) {
+                Orderitem orderitem = optionalOrderitem.get();
+                orderitem.setOrderitemDstatus("배송완료"); //
+                orderitemRepository.save(orderitem);
+            } else {
+                throw new RuntimeException("Orderitem not found: " + orderItemDTO.getOrderitemId());
+            }
+        }
+    }
+
+    //배송현황 관리 페이지 - 구매확정요청
+    public void sucesscheck(List<OrderitemDTO> orderItems){
+        for (OrderitemDTO orderItemDTO : orderItems) {
+            Optional<Orderitem> optionalOrderitem = orderitemRepository.findById(orderItemDTO.getOrderitemId());
+            if (optionalOrderitem.isPresent()) {
+                Orderitem orderitem = optionalOrderitem.get();
+                orderitem.setOrderitemCase("구매확정요청"); // orderitemCase를 "정상처리"으로 변경
+                orderitem.setOrderitemDate(LocalDate.now()); // orderitemDate를 오늘 날짜로 업데이트
+                orderitemRepository.save(orderitem);
+            } else {
+                throw new RuntimeException("Orderitem not found: " + orderItemDTO.getOrderitemId());
+            }
+        }
+    }
+
+    //취소페이지-취소 승인처리
     public void updateOrderitemCase(List<OrderitemDTO> orderItems) {
         for (OrderitemDTO orderItemDTO : orderItems) {
             Optional<Orderitem> optionalOrderitem = orderitemRepository.findById(orderItemDTO.getOrderitemId());
@@ -88,6 +175,7 @@ public class OrderitemService {
         }
     }
 
+    //취소페이지-취소 철회처리
     public void withdrawOrderitemCase(List<OrderitemDTO> orderItems){
         for (OrderitemDTO orderItemDTO : orderItems) {
             Optional<Orderitem> optionalOrderitem = orderitemRepository.findById(orderItemDTO.getOrderitemId());
@@ -100,13 +188,99 @@ public class OrderitemService {
             }
         }
     }
-
+    
+    //빈픔페이지-반픔 승인처리
     public void updatereutrnitemCase(List<OrderitemDTO> orderItems) {
         for (OrderitemDTO orderItemDTO : orderItems) {
             Optional<Orderitem> optionalOrderitem = orderitemRepository.findById(orderItemDTO.getOrderitemId());
             if (optionalOrderitem.isPresent()) {
                 Orderitem orderitem = optionalOrderitem.get();
                 orderitem.setOrderitemCase("반품수거중"); // orderitemCase를 "반품수거중"으로 변경
+                orderitemRepository.save(orderitem);
+            } else {
+                throw new RuntimeException("Orderitem not found: " + orderItemDTO.getOrderitemId());
+            }
+        }
+    }
+
+    //빈픔페이지-반픔 승인처리
+    public void updatesucessitemCase(List<OrderitemDTO> orderItems) {
+        for (OrderitemDTO orderItemDTO : orderItems) {
+            Optional<Orderitem> optionalOrderitem = orderitemRepository.findById(orderItemDTO.getOrderitemId());
+            if (optionalOrderitem.isPresent()) {
+                Orderitem orderitem = optionalOrderitem.get();
+                orderitem.setOrderitemCase("반품완료"); // orderitemCase를 "반품완료"으로 변경
+                orderitemRepository.save(orderitem);
+            } else {
+                throw new RuntimeException("Orderitem not found: " + orderItemDTO.getOrderitemId());
+            }
+        }
+    }
+
+    //빈픔페이지-반픔 거부(철회)처리
+    public void updatecancelitemCase(List<OrderitemDTO> orderItems) {
+        for (OrderitemDTO orderItemDTO : orderItems) {
+            Optional<Orderitem> optionalOrderitem = orderitemRepository.findById(orderItemDTO.getOrderitemId());
+            if (optionalOrderitem.isPresent()) {
+                Orderitem orderitem = optionalOrderitem.get();
+                orderitem.setOrderitemCase("정상처리"); // orderitemCase를 "반품완료"으로 변경
+                orderitemRepository.save(orderitem);
+            } else {
+                throw new RuntimeException("Orderitem not found: " + orderItemDTO.getOrderitemId());
+            }
+        }
+    }
+
+
+    //교환페이지 - 교환재배송처리
+    public void updatexchangeitemCase(List<OrderitemDTO> orderItems) {
+        for (OrderitemDTO orderItemDTO : orderItems) {
+            Optional<Orderitem> optionalOrderitem = orderitemRepository.findById(orderItemDTO.getOrderitemId());
+            if (optionalOrderitem.isPresent()) {
+                Orderitem orderitem = optionalOrderitem.get();
+                orderitem.setOrderitemCase("교환수거중"); // orderitemCase를 "반품완료"으로 변경
+                orderitemRepository.save(orderitem);
+            } else {
+                throw new RuntimeException("Orderitem not found: " + orderItemDTO.getOrderitemId());
+            }
+        }
+    }
+
+    //교환페이지 - 교환완료처리
+    public void updateexsucessitemCase(List<OrderitemDTO> orderItems) {
+        for (OrderitemDTO orderItemDTO : orderItems) {
+            Optional<Orderitem> optionalOrderitem = orderitemRepository.findById(orderItemDTO.getOrderitemId());
+            if (optionalOrderitem.isPresent()) {
+                Orderitem orderitem = optionalOrderitem.get();
+                orderitem.setOrderitemCase("교환완료"); // orderitemCase를 "반품완료"으로 변경
+                orderitemRepository.save(orderitem);
+            } else {
+                throw new RuntimeException("Orderitem not found: " + orderItemDTO.getOrderitemId());
+            }
+        }
+    }
+
+    //교환페이지 - 교환 거부(철회)처리
+    public void updatefailitemCase(List<OrderitemDTO> orderItems) {
+        for (OrderitemDTO orderItemDTO : orderItems) {
+            Optional<Orderitem> optionalOrderitem = orderitemRepository.findById(orderItemDTO.getOrderitemId());
+            if (optionalOrderitem.isPresent()) {
+                Orderitem orderitem = optionalOrderitem.get();
+                orderitem.setOrderitemCase("정상처리"); // orderitemCase를 "반품완료"으로 변경
+                orderitemRepository.save(orderitem);
+            } else {
+                throw new RuntimeException("Orderitem not found: " + orderItemDTO.getOrderitemId());
+            }
+        }
+    }
+
+    //교환페이지 - 반품으로 변경
+    public void updatereturnCase(List<OrderitemDTO> orderItems) {
+        for (OrderitemDTO orderItemDTO : orderItems) {
+            Optional<Orderitem> optionalOrderitem = orderitemRepository.findById(orderItemDTO.getOrderitemId());
+            if (optionalOrderitem.isPresent()) {
+                Orderitem orderitem = optionalOrderitem.get();
+                orderitem.setOrderitemCase("반품요청"); // orderitemCase를 "반품완료"으로 변경
                 orderitemRepository.save(orderitem);
             } else {
                 throw new RuntimeException("Orderitem not found: " + orderItemDTO.getOrderitemId());

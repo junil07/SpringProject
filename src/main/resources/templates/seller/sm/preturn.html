@@ -31,7 +31,8 @@
 													<li class="mb-1">수거완료 후 +3영업일 이내 반품처리를 진행하지 않으시면 페널티가 부과되오니 주의해 주세요.</li>
 												</ul>
 											</div>
-											<section class="col-lg-12 d-flex mt-3">
+											<div id="exchangeSection">
+												<section class="col-lg-12 d-flex mt-3">
 												<div class="col-xxl-3 col-md-3 d-flex">
 													<div class="col-xxl-2 col-md-2 card-icon rounded-circle d-flex align-items-center justify-content-center">
 														<i class="bi bi-bag-x"></i>
@@ -77,6 +78,7 @@
 													</ul>
 												</div>
 											</section>
+											</div>
 										</div>
 									</div>
 								</div><!-- End Sales Card -->
@@ -138,7 +140,7 @@
 							<!--반품요청, 반품지연, 반품승인, 반품-->
 							<tr th:each="o, stat : ${orderitem}" id="orderlist" class="orderitem-row" th:data-orderitem-id="${o.orderitemId}">
 								<td class="text-center"><input type="checkbox" class="row-checkbox"></td>
-								<td th:text="${o.orderlist.orderlistId}"></td>
+								<td th:text="${o.orderitemId}"></td>
 								<td th:text="${o.product.productId}"></td>
 								<td th:text="${o.product.productName}"></td>
 								<td th:text="${o.product.productPrice}"></td>
@@ -243,6 +245,13 @@
 			return `${year}-${month}-${day}`;
 		}
 
+		//값리로드
+		function reloadSection() {
+			$.get('/seller/cm/preturn/reload', function(data) {
+				$('#exchangeSection').html(data);
+			});
+		}
+
 		// 날짜 선택에 따라 값을 설정하는 함수
 		function printValue(selectedValue) {
 			const currentDate = new Date();
@@ -325,7 +334,7 @@
 
 			// AJAX로 데이터를 서버로 전송
 			var xhr = new XMLHttpRequest();
-			xhr.open('POST', '/seller/cm/preturn', true);
+			xhr.open('POST', '/seller/cm/preturn/action', true);
 			xhr.setRequestHeader('Content-Type', 'application/json');
 			xhr.setRequestHeader('Action-Type', 'preturn');
 			xhr.onreadystatechange = function() {
@@ -334,7 +343,118 @@
 						console.log('전송성공');
 						console.log(data);
 						// 데이터 전송 성공 후 테이블 업데이트
-<!--						updateTable(checkedRows, '반품수거중');-->
+						updatepreutrn(checkedRows, '반품수거중');
+					} else {
+						console.error('Failed to send data');
+					}
+				}
+			};
+			xhr.send(JSON.stringify(data));
+		});
+		function  updatepreutrn(checkedRows){
+		  checkedRows.forEach(function(rowCheckbox) {
+				var row = rowCheckbox.closest('tr');
+				var statusCell = row.querySelector('td:nth-child(9)');
+				statusCell.textContent = '반품수거중';
+			});
+
+			// 체크박스 상태 초기화
+			var checkboxes = document.querySelectorAll('.row-checkbox');
+			checkboxes.forEach(function(checkbox) {
+				checkbox.checked = false;
+			});
+			document.getElementById('allcheck').checked = false;
+
+			alert('반품 승인이 완료되었습니다.');
+			reloadSection();
+		}
+	</script>
+	<!-- 반품 완료 처리-->
+	<script>
+		document.getElementById('returnsucess').addEventListener('click', function() {
+			var checkedRows = document.querySelectorAll('.row-checkbox:checked');
+			var data = [];
+			var hasReturnOrder = false;
+
+			checkedRows.forEach(function(rowCheckbox) {
+				var row = rowCheckbox.closest('tr');
+				var orderitemId = row.querySelector('td:nth-child(2)').textContent;
+				var status = row.querySelector('td:nth-child(9)').textContent;
+
+				if (status !== '반품수거중') {
+					hasReturnOrder = true;
+				} else {
+					data.push({ "orderitemId": orderitemId });
+					console.log(data);
+				}
+			});
+
+			if (hasReturnOrder) {
+				alert('반품수거중이 아닌 항목이 있습니다.');
+				return;
+			}
+
+			// AJAX로 데이터를 서버로 전송
+			var xhr = new XMLHttpRequest();
+			xhr.open('POST', '/seller/cm/preturn/action', true);
+			xhr.setRequestHeader('Content-Type', 'application/json');
+			xhr.setRequestHeader('Action-Type', 'returnsucess');
+			xhr.onreadystatechange = function() {
+				if (xhr.readyState === XMLHttpRequest.DONE) {
+					if (xhr.status === 200) {
+						console.log('전송성공');
+						console.log(data);
+						// 데이터 전송 성공 후 테이블 업데이트
+						updatesucess(checkedRows, '반품완료');
+					} else {
+						console.error('Failed to send data');
+					}
+				}
+			};
+			xhr.send(JSON.stringify(data));
+		});
+		function  updatesucess(checkedRows){
+		  checkedRows.forEach(function(rowCheckbox) {
+				var row = rowCheckbox.closest('tr');
+				var statusCell = row.querySelector('td:nth-child(9)');
+				statusCell.textContent = '반품완료';
+			});
+
+			// 체크박스 상태 초기화
+			var checkboxes = document.querySelectorAll('.row-checkbox');
+			checkboxes.forEach(function(checkbox) {
+				checkbox.checked = false;
+			});
+			document.getElementById('allcheck').checked = false;
+
+			alert('반품 수거가 완료되었습니다.');
+			reloadSection();
+		}
+	</script>
+	<!-- 반품 거부(철회)처리-->
+	<script>
+		document.getElementById('returncancel').addEventListener('click', function() {
+			var checkedRows = document.querySelectorAll('.row-checkbox:checked');
+			var data = [];
+
+			checkedRows.forEach(function(rowCheckbox) {
+				var row = rowCheckbox.closest('tr');
+				var orderitemId = row.querySelector('td:nth-child(2)').textContent;
+				data.push({ "orderitemId": orderitemId });
+				console.log(data);
+			});
+
+			// AJAX로 데이터를 서버로 전송
+			var xhr = new XMLHttpRequest();
+			xhr.open('POST', '/seller/cm/preturn/action', true);
+			xhr.setRequestHeader('Content-Type', 'application/json');
+			xhr.setRequestHeader('Action-Type', 'returncancel');
+			xhr.onreadystatechange = function() {
+				if (xhr.readyState === XMLHttpRequest.DONE) {
+					if (xhr.status === 200) {
+						console.log('전송성공');
+						console.log(data);
+						updateTables(checkedRows);
 					} else {
 						console.error('Failed to send data');
 					}
@@ -343,7 +463,22 @@
 			xhr.send(JSON.stringify(data));
 		});
 
+		function updateTables(checkedRows) {
+			checkedRows.forEach(function(rowCheckbox) {
+				var row = rowCheckbox.closest('tr');
+				row.remove(); // 행을 테이블에서 제거
+			});
 
+			// 체크박스 상태 초기화
+			var checkboxes = document.querySelectorAll('.row-checkbox');
+			checkboxes.forEach(function(checkbox) {
+				checkbox.checked = false;
+			});
+			document.getElementById('allcheck').checked = false;
+
+			alert('반품이 거부(철회)되었습니다.');
+			reloadSection();
+		}
 	</script>
 	<style>
 		input[type="radio"] {

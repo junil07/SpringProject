@@ -1,0 +1,82 @@
+<html layout:decorate="~{_layout/seller/index}">
+<th:block layout:fragment="pageContent">
+    <main id="main" class="main">
+        <section class="container-fluid px-4">
+            <header>
+                <h4 class="fw-bold mt-2">마이페이지</h4>
+            </header>
+            <main class="card mb-4">
+                <section class="card-body">
+                    <div class="border-bottom pb-3 fw-semibold">로그인</div>
+                    <div class="d-flex mt-3">
+                        <div class="fs-6 text-muted" style="width: 110px;">로그인 아이디</div>
+                        <div class="fs-6 text-muted ms-5">출력 부분</div>
+                    </div>
+                </section>
+            </main>
+            <main class="card mb-4">
+                <section class="card-body">
+                    <div class="d-flex border-bottom">
+                        <div class="pb-3 fw-semibold">기본정보</div>
+                        <button type="button" class="btn btn-info btn-sm btn-no-radius fw-bold" id="reform"
+                                style="height:24px;padding-bottom: 0px;padding-top: 0px; margin-left:auto;"
+                                data-bs-toggle="modal" data-bs-target="#exampleModal">수정
+                        </button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">개인 정보 수정</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="d-flex">
+                                            <div class="fs-6 text-muted" style="width: 110px;">이름</div>
+                                            <input type="text" class="form-control" placeholder="수정할 이름을 입력해주세요">
+                                        </div>
+                                        <div class="d-flex mt-3">
+                                            <div class="fs-6 text-muted" style="width: 110px;">전화번호</div>
+                                            <input type="text" class="form-control" placeholder="수정할 전화번호을 입력해주세요">
+                                        </div>
+                                        <div class="d-flex mt-3">
+                                            <div class="fs-6 text-muted" style="width: 110px;">이메일</div>
+                                            <input type="text" class="form-control" placeholder="수정할 이메일을 입력해주세요">
+                                        </div>
+                                        <div class="d-flex mt-3">
+                                            <div class="fs-6 text-muted" style="width: 110px;">주소</div>
+                                            <input type="text" class="form-control" placeholder="수정할 주소를 입력해주세요">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex mt-3">
+                        <div class="fs-6 text-muted" style="width: 110px;">이름</div>
+                        <div class="fs-6 text-muted ms-5">이름출력</div>
+                    </div>
+                    <div class="d-flex mt-3">
+                        <div class="fs-6 text-muted" style="width: 110px;">휴대전화 번호</div>
+                        <div class="fs-6 text-muted ms-5">대한민국(+82)전화번호</div>
+                    </div>
+                    <div class="d-flex mt-3">
+                        <div class="fs-6 text-muted" style="width: 110px;">이메일</div>
+                        <div class="fs-6 text-muted ms-5">이메일 출력</div>
+                    </div>
+                    <div class="d-flex mt-3">
+                        <div class="fs-6 text-muted" style="width: 110px;">주소</div>
+                        <div class="fs-6 text-muted ms-5">주소 출력</div>
+                    </div>
+                </section>
+            </main>
+        </section>
+    </main><!-- End #main -->
+    <script>
+    </script>
+</th:block>
+</html>
