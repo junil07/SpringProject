@@ -82,7 +82,6 @@ body, p {
   line-height: 26px;
   font-size: 16px;
   text-rendering: optimizeLegibility;
-  color: #666;
   font-weight: 400;
 }
 
@@ -113,7 +112,7 @@ h4, .h4 {
 }
 
 h5, .h5 {
-  font-size: 14px;
+  font-size: 20px;
   line-height: 24px;
 }
 
@@ -121,7 +120,6 @@ h5, .h5 {
 ================================================== */
 body {
   background: #fff;
-  color: #575769;
 }
 
 html, body {
@@ -2334,5 +2332,9 @@ ul.navbar-nav > li.header-get-a-quote {
     margin-bottom: 20px;
   }
 
+  .line-through {
+    position: relative; /* 상대 위치 지정 */
+    display: inline-block; /* 인라인 블록 요소로 설정하여 텍스트와 함께 나타나도록 함 */
+  }
 }
 /*# sourceMappingURL=style.css.map */

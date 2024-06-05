@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>processing....</title>
+</head>
+<body>
+
+    <form name="buyerFrm" action="/buyer/loginProc" method="post">
+        <input type="hidden" name="buyerId" id="buyer1" th:value="${buyerDTO.buyerId}">
+        <input type="hidden" name="buyerPwd" id="buyer2" th:value="${buyerDTO.buyerPassword}">
+    </form>
+
+    <script>
+        document.buyerFrm.submit();
+    </script>
+
+</body>
+</html>

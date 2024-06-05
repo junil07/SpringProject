@@ -1,5 +1,7 @@
 package com.example.demo.buyer.service;
 
+import com.example.demo.admin.Entity.Buyer;
+
 import java.util.List;
 import java.util.Map;
 

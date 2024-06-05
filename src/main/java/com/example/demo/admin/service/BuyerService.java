@@ -1,5 +1,7 @@
 package com.example.demo.admin.service;
 
+import com.example.demo.admin.Entity.Buyer;
+
 import java.util.List;
 
 public interface BuyerService {
@@ -12,5 +14,7 @@ public interface BuyerService {
     public boolean buyerEmailUpdate(String buyerId, String buyerEmail);
     public boolean buyerAddrUpdate(String buyerId, String buyerAddr);
     public boolean buyerPhoneUpdate(String buyerId, String buyerPhone);
+    public int idCheck(String buyerId);
+    public Buyer register(Buyer buyer);
 
 }

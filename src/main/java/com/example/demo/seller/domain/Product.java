@@ -33,11 +33,11 @@ public class Product {
     @Column(name = "product_activation")
     private int productActivation;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "SELLER_ID", referencedColumnName = "sellerId")
     private Seller seller;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "CATEGORY_ID", referencedColumnName = "categoryId")
     private Category category;
 

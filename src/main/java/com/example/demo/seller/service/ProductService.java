@@ -1,7 +1,10 @@
 package com.example.demo.seller.service;
 
+import java.util.Arrays;
 import java.util.List;
 
+import com.example.demo.buyer.DTO.StockDTO;
+import com.example.demo.buyer.entity.Stock;
 import com.example.demo.seller.DTO.ProductDetailDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -75,15 +78,15 @@ public class ProductService{
 
     private Product CToEProduct(ProductDTO productDTO) {
         Product product = new Product();
-        // DTO로부터 데이터를 엔티티로 변환하여 설정
+
+        product.setProductId(productDTO.getProductId());
         product.setProductCode(productDTO.getProductCode());
         product.setProductName(productDTO.getProductName());
         product.setProductExplain(productDTO.getProductExplain());
         product.setProductPrice(productDTO.getProductPrice());
         product.setProductDiscount(productDTO.getProductDiscount());
-        product.setProductHashtag(productDTO.getProductHashtag());
+        product.setProductHashtag(CToS(productDTO.getProductHashtag()));
         product.setProductActivation(productDTO.getProductActivation());
-        product.setProductId(productDTO.getProductId());
 
         // 나머지 필드 설정 (Seller, Category 등)
         product.setSeller(sellerService.getSeller("xx"));
@@ -94,25 +97,26 @@ public class ProductService{
     private ProductDTO CToDProduct(Product product) {
         ProductDTO productDTO = new ProductDTO();
 
-        // DTO로부터 데이터를 엔티티로 변환하여 설정
+        // DTO로부터 데이터를 엔로 변환하여 설정
         productDTO.setProductId(product.getProductId());
-        productDTO.setProductCode(reId(product.getProductCode(), "xx"));
+        productDTO.setProductCode(product.getProductCode());
         productDTO.setProductName(product.getProductName());
         productDTO.setProductExplain(product.getProductExplain());
         productDTO.setProductPrice(product.getProductPrice());
         productDTO.setProductDiscount(product.getProductDiscount());
-        productDTO.setProductHashtag(product.getProductHashtag());
+        productDTO.setProductHashtag(CToL(product.getProductHashtag()));
         productDTO.setProductActivation(product.getProductActivation());
 
         // 나머지 필드 설정 (Seller, Category 등)
-        //productDTO.setSellerId(productId.getSeller());
-        //productDTO.setCategoryId(categoryService.getCategory(productDTO.getCategoryId()));
+        productDTO.setSellerId(product.getSeller().getSellerId());
+        productDTO.setCategoryId(product.getCategory().getCategoryId());
         return productDTO;
     }
 
     private Product_detail CToEProductDetail(ProductDetailDTO productDetailDTO) {
         Product_detail productDetail = new Product_detail();
         // DTO로부터 데이터를 엔티티로 변환하여 설정
+        productDetail.setProductDetailId(productDetailDTO.getProductDetailId());
         productDetail.setProductDetailMate(productDetailDTO.getProductDetailMate());
         productDetail.setProductDetailColor(productDetailDTO.getProductDetailColor());
         productDetail.setProductDetailHeight(productDetailDTO.getProductDetailHeight());
@@ -130,6 +134,7 @@ public class ProductService{
     private ProductDetailDTO CToDProductDetail(Product_detail productDetail) {
         ProductDetailDTO productDetailDTO = new ProductDetailDTO();
         // DTO로부터 데이터를 엔티티로 변환하여 설정
+        productDetailDTO.setProductDetailId(productDetail.getProductDetailId());
         productDetailDTO.setProductDetailMate(productDetail.getProductDetailMate());
         productDetailDTO.setProductDetailColor(productDetail.getProductDetailColor());
         productDetailDTO.setProductDetailHeight(productDetail.getProductDetailHeight());
@@ -141,23 +146,25 @@ public class ProductService{
         productDetailDTO.setProductDetailAs(productDetail.getProductDetailAs());
         productDetailDTO.setProductDetailStandard(productDetail.getProductDetailStandard());
 
-        productDetailDTO.setProductId(productDetailDTO.getProductId());
+        productDetailDTO.setProductId(productDetail.getProduct().getProductId());
 
         return productDetailDTO;
     }
 
-
-
-    public String generateUniqueId(String seller, String id) {
+    private String generateUniqueId(String seller, String id) {
         //중복방지 예외처리 할 것
         seller = "xx";
         return seller + id;
     }
-    public String reId(String pkId, String seller) {
-        int firstCnt = seller.length();
-        String reId = pkId.substring(firstCnt);
-        return reId;
+
+    private List<String> CToL(String hashtag) {
+        return Arrays.asList(hashtag.split(","));
     }
+
+    private String CToS(List<String> hashtag) {
+        return String.join(",", hashtag);
+    }
+
 
 
 }

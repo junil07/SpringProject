@@ -1,8 +1,10 @@
 package com.example.demo.admin.service;
 
+import com.example.demo.admin.Entity.Buyer;
 import com.example.demo.admin.Entity.Seller;
 import com.example.demo.admin.repository.SellerRepository1;
 import jakarta.transaction.Transactional;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -15,9 +17,11 @@ import java.util.List;
 public class SellerServiceImple implements SellerService {
 
     private SellerRepository1 sellerRepository1;
+    private PasswordEncoder passwordEncoder;
 
-    public SellerServiceImple(SellerRepository1 sellerRepository1) {
+    public SellerServiceImple(SellerRepository1 sellerRepository1, PasswordEncoder passwordEncoder) {
         this.sellerRepository1 = sellerRepository1;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -142,4 +146,35 @@ public class SellerServiceImple implements SellerService {
 
         return flag;
     }
+
+    @Override
+    public int idCheck(String sellerId) {
+        Seller seller = sellerRepository1.findBysellerId(sellerId).orElse(null);
+        int check = 0;
+
+        if (seller != null) {
+            check = 1;
+        }
+
+        return check;
+    }
+
+    @Transactional
+    @Override
+    public Seller register(Seller seller) {
+        return sellerRepository1.save(seller);
+    }
+
+    // Seller 비밀번호 전부 암호화 하는데 사용했음
+    public boolean authenticate() {
+        List<Seller> sellerList = sellerRepository1.findAll();
+
+        for (Seller test : sellerList) {
+            System.out.println(test.getSellerId() + "\t\t" + test.getSellerPassword());
+//            test.setSellerPassword(passwordEncoder.encode(test.getSellerPassword()));
+//            sellerRepository1.save(test);
+        }
+        return true;
+    }
+
 }

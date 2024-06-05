@@ -3,6 +3,8 @@ package com.example.demo.seller.DTO;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 public class ProductDTO {
@@ -13,7 +15,7 @@ public class ProductDTO {
     private String productExplain;
     private int productPrice;
     private int productDiscount;
-    private String productHashtag;
+    private List<String> productHashtag;
     private int productActivation;
     private String sellerId; // 판매자 ID
     private Long categoryId; // 카테고리 ID
@@ -24,7 +26,7 @@ public class ProductDTO {
 
     // 생성자
     public ProductDTO(long productId, String productCode, String productName, String productExplain,
-                      int productPrice, int productDiscount, String productHashtag,
+                      int productPrice, int productDiscount, List<String> productHashtag,
                       int productActivation, String sellerId, Long categoryId) {
         this.productId = productId;
         this.productCode = productCode;
@@ -90,11 +92,11 @@ public class ProductDTO {
         this.productDiscount = productDiscount;
     }
 
-    public String getProductHashtag() {
+    public List<String> getProductHashtag() {
         return productHashtag;
     }
 
-    public void setProductHashtag(String productHashtag) {
+    public void setProductHashtag(List<String> productHashtag) {
         this.productHashtag = productHashtag;
     }
 

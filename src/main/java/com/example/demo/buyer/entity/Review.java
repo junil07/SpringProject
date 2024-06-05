@@ -4,12 +4,15 @@ import com.example.demo.admin.Entity.Buyer;
 import com.example.demo.seller.domain.Product;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "review")
 public class Review {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer reviewId;
 
     @Column
@@ -21,18 +24,18 @@ public class Review {
     @Column
     private int reviewGood;
 
-    @Column
-    private String reviewDate;
+    @Column(nullable = false)
+    private LocalDateTime reviewDate = LocalDateTime.now();
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name="PRODUCT_ID",referencedColumnName = "productId")
+    @ManyToOne
+    @JoinColumn(name="PRODUCT_ID")
     private Product product;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name="BUYER_ID")
     private Buyer buyer;
 
-    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReviewImage> reviewImages;
 
     public List<ReviewImage> getReviewImages() {
@@ -83,11 +86,11 @@ public class Review {
         this.reviewGood = reviewGood;
     }
 
-    public String getReviewDate() {
+    public LocalDateTime getReviewDate() {
         return reviewDate;
     }
 
-    public void setReviewDate(String reviewDate) {
+    public void setReviewDate(LocalDateTime reviewDate) {
         this.reviewDate = reviewDate;
     }
 

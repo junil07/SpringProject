@@ -9,6 +9,7 @@ import jakarta.persistence.Table;
 public class ProductView {
     @Id
     private Integer productId;
+    private String productCode;
     private String sellerId;
     private String productName;
     private String productExplain;
@@ -31,6 +32,14 @@ public class ProductView {
     private String productImageName;
     private String productImageExtension;
     private int productImageSize;
+
+    public String getProductCode() {
+        return productCode;
+    }
+
+    public void setProductCode(String productCode) {
+        this.productCode = productCode;
+    }
 
     public Integer getProductId() {
         return productId;
