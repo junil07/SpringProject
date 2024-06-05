@@ -33,11 +33,11 @@ public class Product {
     @Column(name = "product_activation")
     private int productActivation;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "SELLER_ID", referencedColumnName = "sellerId")
     private Seller seller;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "CATEGORY_ID", referencedColumnName = "categoryId")
     private Category category;
 
@@ -69,12 +69,12 @@ public class Product {
 
     public void setProductId(long productId) { this.productId = productId; }
 
-    public String getproductCode() {
-        return productCode;
+    public void setProductCode(String productCode) {
+        this.productCode = productCode;
     }
 
-    public void setproductCode(String productCode) {
-        this.productCode = productCode;
+    public String getProductCode() {
+        return productCode;
     }
 
     public String getProductName() {
