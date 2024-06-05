@@ -23,6 +23,53 @@
     <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
 
+    <style>
+        /* 로그인 아이콘 */
+        .util-login {
+            background-image: url('/assets/image/login_icon.png'); /* 로그인 아이콘 경로 */
+        }
+
+        /* 회원가입 아이콘 */
+        .util-register {
+            background-image: url('/assets/image/join_icon.png'); /* 회원가입 아이콘 경로 */
+        }
+
+        /* 장바구니 아이콘 */
+        .util-cart {
+            background-image: url('/assets/image/cart_icon.png'); /* 장바구니 아이콘 경로 */
+        }
+        .util-menu {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* 공통 스타일 설정 */
+        .util-menu a {
+            display: inline-block;
+            width: 36px;
+            height: 36px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            text-indent: -9999px; /* 텍스트 숨기기 */
+        }
+
+        /* 추가적인 스타일링 필요 시 */
+        .util-menu li {
+            display: inline-block;
+            margin-right: 10px; /* 아이콘 사이 간격 조정 */
+        }
+        .header-navigation .row {
+            display: flex;
+            align-items: center;
+        }
+
+        .header-navigation .col-sm-9 {
+            display: flex;
+            justify-content: flex-end;
+        }
+    </style>
     <th:block layout:fragment="pageStyle"></th:block>
 
     <!-- THEME CSS

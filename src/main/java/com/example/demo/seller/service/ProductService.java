@@ -78,7 +78,6 @@ public class ProductService{
 
     private Product CToEProduct(ProductDTO productDTO) {
         Product product = new Product();
-
         product.setProductId(productDTO.getProductId());
         product.setProductCode(productDTO.getProductCode());
         product.setProductName(productDTO.getProductName());
