@@ -8,7 +8,6 @@ import com.example.demo.buyer.repository.ProductViewRepository;
 import com.example.demo.buyer.repository.ReviewRepository;
 import com.example.demo.buyer.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -54,7 +53,7 @@ public class BuyerController {
 		List<ProductView> productDetail = productViewRepository.findByProductId(productId);
 		List<String> productSize = productSizeimple.getRowParamOne(productId);
 		List<Stock> stockList = stockService.getStockList(productId);
-		List<Review> reviewList = reviewRepository.findByProductProductId(productId);
+		List<Review> reviewList = reviewRepository.findByProductProductIdOrderByReviewIdDesc(productId);
 		model.addAttribute("categories", categories);
 		model.addAttribute("productDetail", productDetail);
 		model.addAttribute("productSize", productSize);

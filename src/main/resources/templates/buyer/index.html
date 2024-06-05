@@ -176,6 +176,7 @@
             gap: 0.5rem; /* 상품 간의 간격을 줄이기 위해 0.5rem로 설정 */
         }
 
+
     </style>
 </th:block>
 <th:block layout:fragment="pageContent">
@@ -290,7 +291,7 @@
             <div th:each="productSummaryList: ${productSummaryList}" class="col-lg-3 col-md-6 mb-4">
                 <div class="card h-100">
                     <a href="javascript:void(0);" class="product-list-item" th:data-product-id="${productSummaryList.productId}">
-                        <img class="card-img-top" th:src="@{'/assets/image/' + ${productSummaryList.productImageName} + ${productSummaryList.productImageExtension}}" alt="shoes">
+                        <img class="card-img-top" th:src="@{'/assets/image/pMain/' + ${productSummaryList.productImageSname} + ${productSummaryList.productImageExtension}}" alt="shoes">
                         <div class="card-body">
                             <!-- 상품명 -->
                             <h4 class="card-title" th:text="${productSummaryList.productName}"></h4>

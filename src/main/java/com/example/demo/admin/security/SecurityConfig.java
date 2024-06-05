@@ -31,7 +31,8 @@ public class SecurityConfig {
                                 .requestMatchers("/admin/login", "/admin/logout", "/admin/.vscode/**"
                                         , "/admin/css/**", "/admin/icons/**", "/admin/images/**"
                                         , "/admin/js/**", "/admin/logincss/**", "/admin/vendor/**", "/login", "/seller/**", "/buyer/**"
-                                        , "/assets/**", "/css/**", "/demo/**", "/images/**", "/js/**", "/plugins/**","/buyer/detail").permitAll()
+                                        , "/assets/**", "/css/**", "/demo/**", "/images/**", "/js/**", "/plugins/**","/buyer/detail","/reviews/**"
+                                        ,"/cart/**","/updateCartProductCount","/deleteSelectedCartItems").permitAll()
                                 .requestMatchers("admin/main").hasRole(Role.ADMIN.name())
                                 .anyRequest().authenticated()
                 )

@@ -2,53 +2,6 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{_layout/index}">
 <th:block layout:fragment="pageStyle">
     <style>
-        .util-menu {
-            display: flex;
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        /* 공통 스타일 설정 */
-        .util-menu a {
-            display: inline-block;
-            width: 36px;
-            height: 36px;
-            background-size: contain;
-            background-repeat: no-repeat;
-            text-indent: -9999px; /* 텍스트 숨기기 */
-        }
-
-        /* 로그인 아이콘 */
-        .util-login {
-            background-image: url('/assets/image/login_icon.png'); /* 로그인 아이콘 경로 */
-        }
-
-        /* 회원가입 아이콘 */
-        .util-register {
-            background-image: url('/assets/image/join_icon.png'); /* 회원가입 아이콘 경로 */
-        }
-
-        /* 장바구니 아이콘 */
-        .util-cart {
-            background-image: url('/assets/image/cart_icon.png'); /* 장바구니 아이콘 경로 */
-        }
-
-        /* 추가적인 스타일링 필요 시 */
-        .util-menu li {
-            display: inline-block;
-            margin-right: 10px; /* 아이콘 사이 간격 조정 */
-        }
-        .header-navigation .row {
-            display: flex;
-            align-items: center;
-        }
-
-        .header-navigation .col-sm-9 {
-            display: flex;
-            justify-content: flex-end;
-        }
-
         .line-through {
         position: relative; /* 상대 위치 지정 */
         display: inline-block; /* 인라인 블록 요소로 설정하여 텍스트와 함께 나타나도록 함 */
@@ -245,9 +198,9 @@
             <div class="row mt-20" style="margin-top:50px">
                 <div class="col-md-5">
                     <div class="single-product-slider">
-                            <div class='item active' style="width:400px; height:400px;">
-                                <img th:src="@{'/assets/image/' + ${productDetailList.productImageName} + ${productDetailList.productImageExtension}}"
-                                     alt='' th:data-zoom-image="@{'/assets/image/' + ${productDetailList.productImageName} + ${productDetailList.productImageExtension}}"
+                            <div class='item active' style="width:400px; height:400px; margin-bottom:100px;">
+                                <img th:src="@{'/assets/image/pMain/' + ${productDetailList.productImageSname} + ${productDetailList.productImageExtension}}"
+                                     alt='' th:data-zoom-image="@{'/assets/image/pMain' + ${productDetailList.productImageSname} + ${productDetailList.productImageExtension}}"
                                     style="width:100%"/>
                             </div>
                     </div>
@@ -256,7 +209,7 @@
                     <div class="single-product-details">
                         <h3 th:text="${productDetailList.productDetailMaker}"></h3>
                         <h1 th:text="${productDetailList.productName}"></h1>
-                        <p th:text="상품코드+ ':' +${productDetailList.productId}" style="font-size:20px;"></p>
+                        <p th:text="상품코드+ ':' +${productDetailList.productCode}" style="font-size:20px;"></p>
 
                         <div th:if="${productDetailList.productDiscount==0}">
                             <h2 th:text="${productSummaryList.productPrice}"></h2>
@@ -377,9 +330,41 @@
                             </div>
                         </div>
                         <div style="display: flex; justify-content: center;">
-                            <button type="button" class="btn btn-secondary" style="width:370px; height:60px; margin-top:30px; margin-right:30px;">장바구니</button>
+                            <button type="button" id="cartInsert" class="btn btn-secondary" style="width:370px; height:60px; margin-top:30px; margin-right:30px;">장바구니</button>
                             <button type="button" class="btn btn-dark" style="width:370px; height:60px; margin-top:30px;">바로구매</button>
                         </div>
+                        <script>
+                            $(document).ready(function(){
+                                $('#cartInsert').on('click', function(event){
+                                    event.preventDefault();
+                                    var cartItems = [];
+                                    $('#selectedOption .option-item').each(function(){
+                                        var productId = $('.product_Id').val();
+                                        var sizeText = $(this).find('h3:first').text();
+                                        var size = sizeText.replace('mm', '').trim(); // 'mm' 제거 및 공백 제거
+                                        var quantity = parseInt($(this).find('.counter-value').text());
+                                        cartItems.push({
+                                            product: { productId: productId }, // 수정: product 필드로 감싸기
+                                            cartProductSize: size,
+                                            cartProductCount: quantity
+                                        });
+                                    });
+
+                                    $.ajax({
+                                        url: '/cart/insert',
+                                        type: 'POST',
+                                        contentType: 'application/json',
+                                        data: JSON.stringify(cartItems),
+                                        success: function(result){
+                                            alert('장바구니에 추가되었습니다.');
+                                        },
+                                        error: function(err) {
+                                            alert('장바구니 추가에 실패했습니다.');
+                                        }
+                                    });
+                                });
+                            });
+                        </script>
                     </div>
                 </div>
             </div>
@@ -442,7 +427,8 @@
                             </div>
                         </div>
                         <div class="tab-content" id="product-reviews">
-                            <div class="review-container">
+                            <div class="review-container" id="reviewFormContainer">
+                                <input type="hidden" class="product_Id" th:value="${productDetailList.productId}">
                                 <div>
                                     <h2>리뷰 등록</h2>
                                     <hr style="border: 1px; color:black; ">
@@ -469,23 +455,25 @@
                                 </div>
                                 <script>
                                     $(document).ready(function() {
+                                        var fileNo = 0;
+                                        var filesArr = [];
+                                        var ratingValue = 0; // 별점 값 초기화
+
+                                        // 별점 관련 코드
                                         function updateRatingValue(value) {
                                             $('.star_rating .rating-value').text('별점 : ' + value + '점');
+                                            ratingValue = value; // 별점 값 업데이트
                                         }
 
                                         $('.star_rating > .star').click(function() {
                                             $(this).parent().children('span').removeClass('on');
                                             $(this).addClass('on').prevAll('span').addClass('on');
-                                            var ratingValue = $(this).attr('value');
-                                            updateRatingValue(ratingValue); // 값 업데이트
+                                            var clickedRatingValue = $(this).attr('value');
+                                            updateRatingValue(clickedRatingValue);
                                         });
 
-                                        // 초기 값을 설정
                                         var initialRating = $('.star_rating > .star.on').last().attr('value');
                                         updateRatingValue(initialRating);
-
-                                        var fileNo = 0;
-                                        var filesArr = [];
 
                                         function addFile(input) {
                                             var maxFileCnt = 3;
@@ -516,13 +504,12 @@
                                                             var previewHtml = '<img src="' + e.target.result + '" alt="미리보기" id="preview' + fileNo + '">';
                                                             $('.preview-container').append(previewHtml);
 
-                                                            // Hide the placeholder
                                                             $('.placeholder').hide();
                                                         };
                                                     })(file, fileNo);
                                                     reader.readAsDataURL(file);
                                                 }
-                                                fileNo++; // 파일이 추가될 때마다 fileNo를 증가시킴
+                                                fileNo++;
                                             }
                                             $(input).val("");
                                         }
@@ -552,7 +539,6 @@
 
                                             $("#preview" + fileNo).remove();
 
-                                            // Show the placeholder if no files are left
                                             if ($('.filebox').length === 0) {
                                                 $('.placeholder').show();
                                             }
@@ -566,81 +552,142 @@
                                             var fileNo = $(this).data('file-no');
                                             deleteFile(fileNo);
                                         });
+
+                                        // 리뷰 등록 버튼 클릭 이벤트
+                                        $('#submitReview').on('click', function(event) {
+                                            event.preventDefault();
+
+                                            var productIdValue = $('.product_Id').val();
+                                            var reviewContent = $('.review_box').val();
+                                            var formData = new FormData();
+
+                                            formData.append('productId', productIdValue);
+                                            formData.append('rating', ratingValue); // 전역 변수 사용
+                                            formData.append('content', reviewContent);
+
+                                            // 파일 배열이 비어있는 경우를 처리
+                                            if (filesArr.length > 0) {
+                                                filesArr.forEach(function(file, index) {
+                                                    formData.append('files[]', file);
+                                                });
+                                            } else {
+                                                formData.append('files', new Blob()); // 빈 Blob을 추가하여 빈 파일 배열을 전송
+                                            }
+
+                                            $.ajax({
+                                                url: '/reviews/add',
+                                                type: 'POST',
+                                                data: formData,
+                                                contentType: false,
+                                                processData: false,
+                                                success: function(response) {
+                                                    alert('리뷰가 성공적으로 등록되었습니다.');
+                                                    location.reload(); // 성공 후 페이지 새로고침 또는 다른 동작
+                                                },
+                                                error: function(error) {
+                                                    alert('리뷰 등록에 실패했습니다.');
+                                                }
+                                            });
+                                        });
                                     });
                                 </script>
                                 <textarea class="review_box" placeholder="리뷰 내용을 작성해주세요."></textarea>
-                                <input type="submit" class="btn02" value="리뷰 등록">
+                                <input type="button" class="btn02" id="submitReview" value="리뷰 등록">
                             </div>
                             <hr>
                             <div name="selectReview">
                                 <div th:each="review, iterStat : ${reviewList}">
-                                    <h4 th:text="${review.buyer.buyerId}"></h4>
-                                    <div class="star_rating">
-                                        <span class="review-star" th:attr="data-review-id=${review.reviewId}" value="1"></span>
-                                        <span class="review-star" th:attr="data-review-id=${review.reviewId}" value="2"></span>
-                                        <span class="review-star" th:attr="data-review-id=${review.reviewId}" value="3"></span>
-                                        <span class="review-star" th:attr="data-review-id=${review.reviewId}" value="4"></span>
-                                        <span class="review-star" th:attr="data-review-id=${review.reviewId}" value="5"></span>
-                                        <div th:text="${review.reviewRating}" th:attr="id='reviewRating-' + ${review.reviewId}" style="display:none"></div>
-                                        <div th:text="${'별점 : '+review.reviewRating}"></div>
-                                    </div>
-                                    <div class="review-content">
-                                        <span th:text="${review.reviewContent}"></span>
-                                    </div>
-                                    <div class="d-flex" th:if="${review.reviewImages != null && !review.reviewImages.isEmpty()}">
-                                        <div th:each="reviewImage : ${review.reviewImages}" class="review-image"
-                                             style="width:100px; height:100px; margin-right:30px; border:1px solid black;"
-                                             th:attr="data-review-id=${review.reviewId}">
-                                            <img th:src="@{'/assets/image/'+ ${reviewImage.reviewImageName} + ${reviewImage.reviewImageExtension}}" alt="" style="width:100%;">
+                                    <div th:id="reviewItem-" + ${review.reviewId}>
+                                        <h4 th:text="${review.buyer.buyerId}"></h4>
+                                        <div class="review-Date" th:text="'작성날짜 :' + ${review.reviewDate}"></div>
+                                        <div class="star_rating">
+                                            <span class="review-star" th:attr="data-review-id=${review.reviewId}" value="1"></span>
+                                            <span class="review-star" th:attr="data-review-id=${review.reviewId}" value="2"></span>
+                                            <span class="review-star" th:attr="data-review-id=${review.reviewId}" value="3"></span>
+                                            <span class="review-star" th:attr="data-review-id=${review.reviewId}" value="4"></span>
+                                            <span class="review-star" th:attr="data-review-id=${review.reviewId}" value="5"></span>
+                                            <div th:text="${review.reviewRating}" th:attr="id='reviewRating-' + ${review.reviewId}" style="display:none"></div>
+                                            <div th:text="${'별점 : '+review.reviewRating}"></div>
                                         </div>
-                                    </div>
-                                    <div th:if="${review.reviewImages != null && !review.reviewImages.isEmpty()}"
-                                         class="imageLarge" style="margin-top:10px;">
-                                        <button th:attr="id='toggleSizeButton-' + ${review.reviewId}" class="btn btn-dark">이미지 확대</button>
-                                    </div>
-                                    <div>
-                                        <button th:attr="id='deleteButton' + ${review.reviewId}" class="btn btn-danger">삭제</button>
-                                    </div>
-                                    <script>
-                                        $(document).ready(function() {
-                                            var reviewId = [[${review.reviewId}]];
-                                            var reviewRating = parseInt($('#reviewRating-' + reviewId).text());
+                                        <div class="review-content">
+                                            <span th:text="${review.reviewContent}"></span>
+                                        </div>
+                                        <div class="d-flex" th:if="${review.reviewImages != null && !review.reviewImages.isEmpty()}">
+                                            <div th:each="reviewImage : ${review.reviewImages}" class="review-image"
+                                                 style="width:100px; height:100px; margin-right:30px; border:1px solid black;"
+                                                 th:attr="data-review-id=${review.reviewId}">
+                                                <img th:src="@{'/assets/image/reviewImage/'+ ${reviewImage.reviewImageSname} + ${reviewImage.reviewImageExtension}}" alt="" style="width:100%; height:100%; object-fit:cover;">
+                                            </div>
+                                        </div>
+                                        <div th:if="${review.reviewImages != null && !review.reviewImages.isEmpty()}"
+                                             class="imageLarge" style="margin-top:10px;">
+                                            <button th:attr="id='toggleSizeButton-' + ${review.reviewId}" class="btn btn-dark">이미지 확대</button>
+                                        </div>
+                                        <div>
+                                            <button th:attr="id='deleteButton-' + ${review.reviewId}" th:data-review-id="${review.reviewId}" class="btn btn-danger">삭제</button>
+                                        </div>
+                                        <script>
+                                            $(document).ready(function() {
+                                                var reviewId = [[${review.reviewId}]];
+                                                var reviewRating = parseInt($('#reviewRating-' + reviewId).text());
 
-                                            $('.review-star[data-review-id="' + reviewId + '"]').removeClass('on');
-                                            for (var i = 1; i <= reviewRating; i++) {
-                                                $('.review-star[data-review-id="' + reviewId + '"][value="' + i + '"]').addClass('on');
-                                            }
+                                                $('.review-star[data-review-id="' + reviewId + '"]').removeClass('on');
+                                                for (var i = 1; i <= reviewRating; i++) {
+                                                    $('.review-star[data-review-id="' + reviewId + '"][value="' + i + '"]').addClass('on');
+                                                }
 
-                                            $('#toggleSizeButton-' + reviewId).on('click', function() {
-                                                const $button = $(this);
-                                                const isExpanded = $button.text() === '이미지 축소';
+                                                $('#toggleSizeButton-' + reviewId).on('click', function() {
+                                                    const $button = $(this);
+                                                    const isExpanded = $button.text() === '이미지 축소';
 
-                                                $('.review-image[data-review-id="' + reviewId + '"]').css({
-                                                    'width': isExpanded ? '100px' : '300px',
-                                                    'height': isExpanded ? '100px' : '300px'
+                                                    $('.review-image[data-review-id="' + reviewId + '"]').css({
+                                                        'width': isExpanded ? '100px' : '300px',
+                                                        'height': isExpanded ? '100px' : '300px'
+                                                    });
+
+                                                    $button.text(isExpanded ? '이미지 확대' : '이미지 축소');
                                                 });
 
-                                                $button.text(isExpanded ? '이미지 확대' : '이미지 축소');
-                                            });
+                                                $('#deleteButton-' + reviewId).on('click', function() {
+                                                    var reviewId = $(this).data('review-id'); // 데이터 속성을 통해 리뷰 ID 가져오기
 
-                                            $('#deleteButton' + reviewId).on('click', function() {
-                                                if(confirm('정말로 이 리뷰를 삭제하시겠습니까?')) {
-                                                    $.ajax({
-                                                        url: '/reviews/delete/' + [[${review.reviewId}]], // 엔드포인트를 실제로 구현한 URL로 바꾸세요
-                                                        type: 'DELETE',
-                                                        success: function(result) {
-                                                            alert('리뷰가 삭제되었습니다.');
-                                                            location.reload(); // 페이지를 새로고침하여 변경사항 반영
-                                                        },
-                                                        error: function(err) {
-                                                            alert('리뷰 삭제에 실패했습니다.');
-                                                        }
-                                                    });
-                                                }
+                                                    if (confirm('정말로 이 리뷰를 삭제하시겠습니까?')) {
+                                                        $.ajax({
+                                                            url: '/reviews/delete/' + reviewId, // 삭제할 리뷰의 엔드포인트
+                                                            type: 'DELETE',
+                                                            success: function(result) {
+                                                                alert('리뷰가 삭제되었습니다.');
+                                                                // 삭제 후 필요한 작업 수행 (예: 화면 새로고침)
+                                                                location.reload();
+                                                            },
+                                                            error: function(err) {
+                                                                alert('리뷰 삭제에 실패했습니다.');
+                                                            }
+                                                        });
+                                                    }
+                                                });
+
+                                                $('#updateButton-' + reviewId).on('click', function() {
+                                                    // 리뷰 데이터를 가져와 폼 필드에 설정
+                                                    var reviewContent = $(this).closest('[th\\:id="reviewItem-' + reviewId + '"]').find('.review-content span').text();
+                                                    var reviewRating = parseInt($('#reviewRating-' + reviewId).text());
+
+                                                    // 리뷰 등록 폼 필드에 데이터 설정
+                                                    $('#reviewContent').val(reviewContent); // 리뷰 내용 설정
+                                                    $('.star').removeClass('on'); // 별점 초기화
+                                                    for (var i = 1; i <= reviewRating; i++) {
+                                                        $('.star[value="' + i + '"]').addClass('on'); // 별점 설정
+                                                    }
+                                                    // 필요한 경우, 이미지 미리보기 및 기타 필드도 설정
+
+                                                    // 폼을 보여주거나 탭 전환 등 UI 업데이트
+                                                    $('#reviewFormContainer').show(); // 예시: 폼이 숨겨져 있는 경우 보이도록 설정
+                                                    $('html, body').animate({ scrollTop: $('#reviewFormContainer').offset().top }, 'slow'); // 폼으로 스크롤 이동
+                                                });
                                             });
-                                        });
-                                    </script>
-                                    <hr>
+                                        </script>
+                                        <hr>
+                                    </div>
                                 </div>
                             </div>
                         </div>

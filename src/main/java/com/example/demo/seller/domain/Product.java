@@ -69,11 +69,11 @@ public class Product {
 
     public void setProductId(long productId) { this.productId = productId; }
 
-    public String getproductCode() {
+    public String getProductCode() {
         return productCode;
     }
 
-    public void setproductCode(String productCode) {
+    public void setProductCode(String productCode) {
         this.productCode = productCode;
     }
 

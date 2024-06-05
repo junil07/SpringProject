@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{_layout/index}">
+<th:block layout:fragment="pageStyle">
+    <style>
+        body {
+          margin: 0;
+        }
+
+        * {
+          box-sizing: border-box;
+        }
+
+        p,
+        span {
+          margin: 0;
+        }
+
+        a {
+          color: black;
+        }
+
+        img {
+          display: block;
+          width: 80%;
+          height: 80px;
+          margin: auto;
+        }
+
+        .cart {
+          width: 80%;
+          margin: auto;
+          padding: 30px;
+        }
+
+        .cart ul {
+          background-color: whitesmoke;
+          padding: 30px;
+          margin-bottom: 50px;
+          border: whitesmoke solid 1px;
+          border-radius: 5px;
+          font-size: 13px;
+          font-weight: 300;
+        }
+
+        .cart ul :first-child {
+          color: limegreen;
+        }
+
+        table {
+          border-top: solid 1.5px black;
+          border-collapse: collapse;
+          width: 100%;
+          font-size: 14px;
+        }
+
+        thead {
+          text-align: center;
+          font-weight: bold;
+        }
+
+        tbody {
+          font-size: 12px;
+        }
+
+        td {
+          padding: 15px 0px;
+          border-bottom: 1px solid lightgrey;
+        }
+
+        .cart__list__detail :nth-child(3) {
+          vertical-align: top;
+        }
+
+        .cart__list__detail :nth-child(3) a {
+          font-size: 12px;
+        }
+
+        .cart__list__detail :nth-child(3) p {
+          margin-top: 6px;
+          font-weight: bold;
+        }
+
+        .cart__list__smartstore {
+          font-size: 12px;
+          color: gray;
+        }
+
+        .cart__list__option {
+          vertical-align: top;
+          padding: 20px;
+        }
+
+        .cart__list__option p {
+          margin-bottom: 25px;
+          position: relative;
+        }
+
+        .cart__list__option p::after {
+          content: "";
+          width: 90%;
+          height: 1px;
+          background-color: lightgrey;
+          left: 0px;
+          top: 25px;
+          position: absolute;
+        }
+
+        .cart__list__optionbtn {
+          background-color: white;
+          font-size: 10px;
+          border: lightgrey solid 1px;
+          padding: 7px;
+        }
+
+        .cart__list__detail :nth-child(4),
+        .cart__list__detail :nth-child(5),
+        .cart__list__detail :nth-child(6) {
+          border-left: 2px solid lightgrey;
+        }
+
+        .cart__list__detail :nth-child(5),
+        .cart__list__detail :nth-child(6) {
+          text-align: center;
+        }
+
+        .cart__list__detail :nth-child(5) button {
+          padding: 4px 8px;
+          font-size: 12px;
+          margin-top: 5px;
+        }
+
+        .price {
+          font-weight: bold;
+        }
+
+        .cart__mainbtns {
+          width: 420px;
+          height: 200px;
+          padding-top: 40px;
+          display: block;
+          margin: auto;
+        }
+
+        .cart__bigorderbtn {
+          width: 200px;
+          height: 50px;
+          font-size: 16px;
+          margin: auto;
+          border-radius: 5px;
+        }
+
+        .cart__bigorderbtn.left {
+          background-color: white;
+          border: 1px lightgray solid;
+        }
+
+        .payment-value {
+            text-align: right; /* .payment-value 요소만 오른쪽 정렬 */
+            display: inline-block; /* 오른쪽 정렬이 잘 적용되도록 */
+            width: 70%; /* 전체 넓이를 차지하도록 설정 */
+          }
+
+        .btn btn-outline-dark {
+          border: none;
+        }
+        .tbl-payment td {
+          border-right: 1px solid #000; /* 오른쪽에 1px 두께의 검은색 선을 추가합니다 */
+        }
+
+        .tbl-payment td:last-child {
+          border-right: none; /* 마지막 <td> 요소에는 오른쪽 border를 제거합니다 */
+        }
+        .payment-label {
+          font-size: 20px; /* 원하는 크기로 설정 */
+          padding-left: 30px;
+        }
+
+        #order_total_sale_amt,
+        #order_total_discount_amt,
+        #order_total_pay_amt {
+          font-size: 20px; /* 원하는 크기로 설정 */
+          font-color: BLACK;
+        }
+
+        .unit {
+          font-size: 16px; /* 원하는 크기로 설정 */
+        }
+    </style>
+
+</th:block>
+<th:block layout:fragment="pageContent">
+    <section class="cart">
+        <div class="cart_Name" style="margin-bottom:20px;">
+            <h1>장바구니</h1>
+        </div>
+        <div class="cart__information">
+            <ul>
+                <li>장바구니 상품은 최대 30일간 저장됩니다.</li>
+                <li>가격, 옵션 등 정보가 변경된 경우 주문이 불가할 수 있습니다.</li>
+                <li>오늘출발 상품은 판매자 설정 시점에 따라 오늘출발 여부가 변경될 수 있으니 주문 시 꼭 다시 확인해 주시기 바랍니다.</li>
+            </ul>
+        </div>
+        <table class="cart__list">
+                <thead>
+                <tr>
+                    <td><input type="checkbox" id="select-all"></td>
+                    <td colspan="2">상품정보</td>
+                    <td>옵션</td>
+                    <td>상품금액</td>
+                    <td>배송비</td>
+                </tr>
+                </thead>
+                <tbody style="margin-left:10px;">
+                <div th:each="cartItem, iterStat : ${cartList}">
+                    <div th:with="productImage=${productImageList[iterStat.index]}">
+                        <tr class="cart__list__detail" th:data-price="${cartItem.product.productPrice * cartItem.cartProductCount}" th:data-discount="${cartItem.product.productDiscount}" th:data-count="${cartItem.cartProductCount}">
+                            <td style="width: 2%;"><input type="checkbox" class="product-checkbox"></td>
+                            <td style="width: 13%;">
+                                <div style="width: 100px; height:100px;">
+                                    <input type="hidden" class="cartId" th:value="${cartItem.cartId}"/>
+                                    <img th:src="@{'/assets/image/pMain/'+${productImage.productImageSname}+${productImage.productImageExtension}}"
+                                         style="display:block; width:100%;height:100%;margin:auto; border:1px solid black;">
+                                </div>
+                            </td>
+                            <td class="product-detail" style="width: 27%;">
+                                <div>
+                                    <span style="margin-left:2px;" class="cart__list__smartstore" th:text="'상품코드 : '+${cartItem.product.productCode}"></span>
+                                    <p style="margin-left:2px;" th:text="'상품명 : '+${cartItem.product.productName}"></p>
+                                    <span style="margin-left:2px;" class=" price" th:text="'사이즈 : ' + ${cartItem.cartProductSize}"></span><br>
+                                </div>
+                            </td>
+                            <td class="cart__list__option" style="width: 27%; text-align: center; vertical-align: middle;">
+                                <span>주문 수량</span>
+                                <div class="counter-container" style="display: flex; justify-content: center; align-items: center;margin: 5px;">
+                                    <button class="counter-btn btn btn-outline-dark" th:id="'decrementBtn_' + ${iterStat.index}">-</button>
+                                    <div class="counter-value-container" style="width:40px; text-align: center;">
+                                        <span class="counter-value" th:id="'counterValue_' + ${iterStat.index}" th:text="${cartItem.cartProductCount}"></span>
+                                    </div>
+                                    <button class="counter-btn btn btn-outline-dark" th:id="'incrementBtn_' + ${iterStat.index}">+</button>
+                                </div>
+                                <button class="change-Pcount btn btn-outline-dark" style="margin-left:2px;">수량 변경</button>
+                            </td>
+                            <td style="width: 15%; text-align: center; vertical-align: middle;">
+                                <div th:if="${cartItem.product.productDiscount==0}">
+                                    <h5 th:text="${cartItem.product.productPrice * cartItem.cartProductCount}"></h5>
+                                </div>
+                                <div th:if="${cartItem.product.productDiscount!=0}" style="">
+                                    <h5 class="line-through" th:text="${cartItem.product.productPrice * cartItem.cartProductCount +'원'}"
+                                        style="color:#666; margin-top:5px; position: relative; display: inline-block;"></h5>
+                                    <h5 th:text="${cartItem.cartProductCount * ((100 - cartItem.product.productDiscount) * cartItem.product.productPrice / 100) + '원'}" style="color:red;"></h5>
+                                    <h5 th:text="${'['+cartItem.product.productDiscount+'%]'}" style="margin-top:5px; color:red;"></h5>
+                                </div>
+                                <button class="btn btn-dark">구매하기</button>
+                            </td>
+                            <td style="width: 15%; font-size: 15px;">무료</td>
+                        </tr>
+                    </div>
+                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                    <script>
+                        $(document).ready(function() {
+                            const $checkboxes = $('.product-checkbox');
+                            const $selectAllCheckbox = $('#select-all');
+                            const $totalSaleAmt = $('#order_total_sale_amt');
+                            const $totalDiscountAmt = $('#order_total_discount_amt');
+                            const $totalPayCount = $('#order_total_pay_amt')
+
+                            function calculateTotals() {
+                                let totalOrderAmount = 0;
+                                let totalDiscountAmount = 0;
+
+                                $checkboxes.each(function() {
+                                    if ($(this).is(':checked')) {
+                                        const $tr = $(this).closest('tr');
+                                        const price = parseInt($tr.data('price'));
+                                        const discount = parseInt($tr.data('discount'));
+                                        const count = parseInt($tr.data('count'));
+
+                                        let productTotal = price;
+                                        let discountedTotal = price;
+
+                                        if (discount !== 0) {
+                                            discountedTotal = count * ((100 - discount) * (price / count) / 100);
+                                        }
+
+                                        totalOrderAmount += productTotal;
+                                        totalDiscountAmount += (productTotal - discountedTotal);
+                                    }
+                                });
+
+                                $totalSaleAmt.text(totalOrderAmount.toLocaleString());
+                                $totalDiscountAmt.text(totalDiscountAmount.toLocaleString());
+                                $totalPayCount.text((totalOrderAmount-totalDiscountAmount).toLocaleString());
+                            }
+
+                            $checkboxes.on('change', calculateTotals);
+
+                            $selectAllCheckbox.on('change', function() {
+                                const isChecked = $(this).is(':checked');
+                                $checkboxes.prop('checked', isChecked);
+                                calculateTotals();
+                            });
+                        });
+                    </script>
+                </div>
+                <script>
+                    $(document).ready(function() {
+                             $('.counter-btn').on('click', function() {
+                                            // 클릭된 버튼의 ID에서 인덱스 추출
+                                            var index = $(this).attr('id').split('_').pop();
+
+                                            // 해당 인덱스에 대응하는 버튼과 span 요소 선택
+                                            var $counterValue = $('#counterValue_' + index);
+                                            var currentValue = parseInt($counterValue.text());
+
+                                            if ($(this).attr('id').startsWith('decrementBtn_'+index)) {
+                                                // Decrement button clicked
+                                                if (currentValue > 1) {
+                                                    $counterValue.text(currentValue - 1);
+                                                }
+                                            } else if ($(this).attr('id').startsWith('incrementBtn_'+index)) {
+                                                // Increment button clicked
+                                                $counterValue.text(currentValue + 1);
+                                            }
+                                        });
+                             $('.change-Pcount').on('click', function() {
+                                var cartId = $(this).closest('.cart__list__detail').find('.cartId').val(); // 해당 버튼이 속한 상품의 cartId 가져오기
+                                var newCount = parseInt($(this).closest('.cart__list__detail').find('.counter-value').text()); // 변경된 수량
+
+                                $.ajax({
+                                    type: "POST",
+                                    url: "/updateCartProductCount",
+                                    data: { cartId: cartId, newCount: newCount },
+                                    success: function(response) {
+                                        alert('수량이 변경되었습니다.');
+                                        // 성공적으로 업데이트된 경우에 수행할 작업
+                                        console.log(response);
+                                        location.reload();
+                                    },
+                                    error: function(xhr, status, error) {
+                                        // 오류 발생 시 수행할 작업
+                                        console.error(error);
+                                    }
+                                });
+                            });
+                    });
+                </script>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="3">
+                        <button class="cart__list__optionbtn">선택상품 삭제</button>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                </tfoot>
+            <script>
+                $(document).ready(function(){
+                    $('.cart__list__optionbtn').on('click', function () {
+                        var selectedCartIds = [];
+                        $('.product-checkbox:checked').each(function () {
+                            var cartId = $(this).closest('.cart__list__detail').find('.cartId').val(); // 수정된 부분
+                            selectedCartIds.push(cartId);
+                        });
+
+                        if (selectedCartIds.length > 0) {
+                            $.ajax({
+                                type: "POST",
+                                url: "/deleteSelectedCartItems",
+                                data: { cartIds: selectedCartIds },
+                                success: function (response) {
+                                    alert("선택한 상품이 삭제되었습니다.");
+                                    console.log(response);
+                                    location.reload();
+                                },
+                                error: function (xhr, status, error) {
+                                    console.error(error);
+                                }
+                            });
+                        } else {
+                            alert('선택한 상품이 없습니다.');
+                        }
+                    });
+                });
+            </script>
+        </table>
+
+        <div class="border-line-box tbl-wrap tbl-col tbl-payment" style="border-top:3px solid #000;">
+            <table style="width:100%; border-collapse : collapse; border-spacing: 0; table-layout:fixed;">
+                <tbody>
+                <tr>
+                    <td class="icon-minus">
+                        <div class="payment-box">
+                            <span class="payment-label">주문금액</span>
+                            <span class="payment-value">
+                      <span id="order_total_sale_amt">0</span>
+                      <span class="unit">원</span>
+                    </span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="payment-box">
+                            <span class="payment-label">총 할인금액</span>
+                            <span class="payment-value">
+                      <span id="order_total_discount_amt">0</span>
+                      <span class="unit">원</span>
+                    </span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="payment-box">
+                            <span class="payment-label">결제예정금액</span>
+                            <span class="payment-value spot">
+                      <span id="order_total_pay_amt" style="color:RED;">0</span>
+                      <span class="unit">원</span>
+                    </span>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="cart__mainbtns">
+            <button class="cart__bigorderbtn left">쇼핑 계속하기</button>
+            <button class="btn btn-dark" style="width: 200px; height: 50px; font-size: 16px; margin: auto; border-radius: 5px;">구매하기</button>
+        </div>
+    </section>
+</th:block>
+</html>

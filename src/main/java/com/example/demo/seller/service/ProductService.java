@@ -76,7 +76,7 @@ public class ProductService{
     private Product CToEProduct(ProductDTO productDTO) {
         Product product = new Product();
         // DTO로부터 데이터를 엔티티로 변환하여 설정
-        product.setproductCode(productDTO.getProductCode());
+        product.setProductCode(productDTO.getProductCode());
         product.setProductName(productDTO.getProductName());
         product.setProductExplain(productDTO.getProductExplain());
         product.setProductPrice(productDTO.getProductPrice());
@@ -96,7 +96,7 @@ public class ProductService{
 
         // DTO로부터 데이터를 엔티티로 변환하여 설정
         productDTO.setProductId(product.getProductId());
-        productDTO.setProductCode(reId(product.getproductCode(), "xx"));
+        productDTO.setProductCode(reId(product.getProductCode(), "xx"));
         productDTO.setProductName(product.getProductName());
         productDTO.setProductExplain(product.getProductExplain());
         productDTO.setProductPrice(product.getProductPrice());

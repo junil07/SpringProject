@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -45,7 +46,7 @@ public class ProductImageService {
             productImage.setProductImageSize((int) file.getSize()); // 파일 크기 가져오기 (바이트 단위)
 
             try{
-                Path path = Paths.get("src/main/resources/static/assets/image/pMain" + File.separator + productImage.getProductImageSname() + productImage.getProductImageExtension());
+                Path path = Paths.get("src/main/resources/static/assets/image/reviewImage" + File.separator + productImage.getProductImageSname() + productImage.getProductImageExtension());
                 Files.write(path, file.getBytes());
 
                 productImageRepository.save(productImage);

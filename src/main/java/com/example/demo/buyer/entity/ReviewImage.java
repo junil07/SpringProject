@@ -17,7 +17,7 @@ public class ReviewImage {
     @Column
     private int reviewImageSize;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name="REVIEW_ID")
     private Review review;
 
