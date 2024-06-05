@@ -1,6 +1,7 @@
 package com.example.demo.admin.Entity;
 
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -15,7 +16,8 @@ public class Buyer {
     @Column(name = "BUYER_NAME")
     private String buyerName;
     @Column(name = "BUYER_BIRTH")
-    @Temporal(TemporalType.DATE) //
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-mm-dd") // 자동으로 Date 타입으로 변환해주네? 개꿀 ㅋㅋㅋ
     private Date buyerBirth;
     @Column(name = "BUYER_EMAIL")
     private String buyerEmail;

@@ -4,12 +4,60 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <!-- 캐싱을 방지하는 meta 태그 지시어 -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
 
-    <title>Pages / Register - NiceAdmin Bootstrap Template</title>
+    <title>판매자 회원가입</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
     <th:block th:replace="~{_layout/seller/link::defaultLink}"></th:block>
+
+    <style>
+
+        .hide {
+            display: none;
+        }
+
+        #sellerAddress {
+            cursor: pointer;
+        }
+
+        .idAlert1, .pwdAlert1,
+        .pwdAlert2, .emailAlert1,
+        .nameAlert1, .phoneAlert1, .BNumAlert1 {
+            color: red;
+            width: 100%;
+            font-size: small !important;
+        }
+
+        .idAlert2 {
+            color: green;
+            width: 100%;
+        }
+
+        input {
+            font-size: small !important;
+        }
+
+        input:focus {
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 0, 255, 0.5) !important;
+        }
+
+        .borderRed {
+            border: 1px solid red !important;
+        }
+
+        .borderRed:focus {
+            outline: none !important;
+            box-shadow: 0 0 5px red !important;
+        }
+
+    </style>
+
 </head>
 
 <body>
@@ -24,8 +72,7 @@
 
                         <div class="d-flex justify-content-center py-4">
                             <a href="index" class="logo d-flex align-items-center w-auto">
-                                <img src="/assets/img/logo.png" alt="">
-                                <span class="d-none d-lg-block">NiceAdmin</span>
+                                <img src="/assets/image/LOGO.png" alt="">
                             </a>
                         </div><!-- End Logo -->
 
@@ -34,77 +81,90 @@
                             <div class="card-body">
 
                                 <div class="pt-4 pb-2">
-                                    <h5 class="card-title text-center pb-0 fs-4">Create an Account</h5>
-                                    <p class="text-center small">Enter your personal details to create account</p>
+                                    <h5 class="card-title text-center pb-0 fs-4">판매자 회원가입</h5>
+                                    <p class="text-center small"></p>
                                 </div>
-
-                                <form class="row g-3 needs-validation" novalidate>
+                                <!-- 아이디, 비번, 이름, 생일, 이메일, 주소, 전화번호, 사업자번호 -->
+                                <form class="row g-3 needs-validation" name="sellerFrm" action="/seller/signup" method="post" th:object="${seller}" novalidate>
                                     <div class="col-12">
-                                        <label for="yourUsername" class="form-label">Username</label>
+                                        <label for="sellerId" class="form-label">아이디</label>
                                         <div class="input-group has-validation">
-                                            <span class="input-group-text" id="inputGroupPrepend">@</span>
-                                            <input type="text" name="username" class="form-control" id="yourUsername" required>
-                                            <div class="invalid-feedback">Please choose a username.</div>
+                                            <button type="button" class="btn btn-primary" id="idDuplicate">중복확인</button>
+                                            <input type="text" name="username" class="form-control" id="sellerId" th:field="*{sellerId}" placeholder="아이디">
+                                            <div class="idAlert1 hide">이미 존재하는 아이디입니다.</div>
+                                            <div class="idAlert2 hide">사용 가능한 아이디입니다.</div>
                                         </div>
                                     </div>
 
                                     <div class="col-12">
-                                        <label for="yourName" class="form-label">Your Name</label>
-                                        <input type="text" name="name" class="form-control" id="yourName" required>
-                                        <div class="invalid-feedback">Please, enter your name!</div>
+                                        <label for="sellerPwd" class="form-label">비밀번호</label>
+                                        <input type="password" name="name" class="form-control" id="sellerPwd" th:field="*{sellerPassword}" placeholder="비밀번호">
+                                        <div class="pwdAlert1 hide">공백이 존재합니다.</div>
                                     </div>
 
                                     <div class="col-12">
-                                        <label for="yourPassword" class="form-label">Password</label>
-                                        <input type="password" name="password" class="form-control" id="yourPassword" required>
-                                        <div class="invalid-feedback">Please enter your password!</div>
+                                        <label for="sellerPwd1" class="form-label">비밀번호 확인</label>
+                                        <input type="password" name="password" class="form-control" id="sellerPwd1" placeholder="비밀번호 확인">
+                                        <div class="pwdAlert2 hide">비밀번호가 다릅니다.</div>
                                     </div>
 
                                     <div class="col-12">
-                                        <label for="yourEmail" class="form-label">Your Email</label>
-                                        <input type="email" name="email" class="form-control" id="yourEmail" required>
-                                        <div class="invalid-feedback">Please enter a valid Email adddress!</div>
+                                        <label for="sellerName" class="form-label">이름</label>
+                                        <input type="text" name="email" class="form-control" id="sellerName" th:field="*{sellerName}" placeholder="이름">
+                                        <div class="nameAlert1 hide">한글로 입력해주세요</div>
                                     </div>
 
-
-
-
+                                    <div class="col-12">
+                                        <label for="sellerBirth" class="form-label">생년월일</label>
+                                        <input type="date" name="email" class="form-control" id="sellerBirth" th:field="*{sellerBirth}" placeholder="생년월일">
+                                    </div>
 
                                     <div class="col-12">
-                                        <div class="form-check">
-                                            <input class="form-check-input" name="terms" type="checkbox" value="" id="acceptTerms" required>
-                                            <label class="form-check-label" for="acceptTerms">I agree and accept the <a href="#">terms and conditions</a></label>
-                                            <div class="invalid-feedback">You must agree before submitting.</div>
-                                        </div>
+                                        <label for="sellerEmail" class="form-label">이메일</label>
+                                        <input type="email" name="email" class="form-control" id="sellerEmail" th:field="*{sellerEmail}" placeholder="이메일">
+                                        <div class="emailAlert1 hide">이메일 형식을 확인해주세요.</div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="sellerAddress" class="form-label">주소</label>
+                                        <input type="text" name="email" class="form-control" id="sellerAddress"  th:field="*{sellerAddress}" placeholder="주소" onclick="sample6_execDaumPostcode()" readonly>
+                                        <input type="text" class="form-control" id="sellerAddress1" placeholder="상세주소">
+                                        <input type="hidden" id="sellerAddress2">
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="sellerPhone" class="form-label">전화번호</label>
+                                        <input type="text" name="email" class="form-control" id="sellerPhone" autocomplete="off" placeholder="전화번호">
+                                        <input type="hidden" id="sellerPhone1" th:field="*{sellerPhoneNum}">
+                                        <div class="phoneAlert1 hide">전화번호 형식을 확인해주세요.</div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="sellerBNum" class="form-label">사업자번호</label>
+                                        <input type="text" name="email" class="form-control" id="sellerBNum" autocomplete="off" th:field="*{sellerBnum}" placeholder="사업자번호">
+                                        <div class="BNumAlert1 hide">사업자번호를 입력해주세요.</div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <button class="btn btn-primary w-100" type="button" onclick="signUp()">회원가입</button>
                                     </div>
                                     <div class="col-12">
-                                        <button class="btn btn-primary w-100" type="submit">Create Account</button>
-                                    </div>
-                                    <div class="col-12">
-                                        <p class="small mb-0">Already have an account? <a href="login">Log in</a></p>
+                                        <p class="small mb-0">이미 계정이 있나요? <a href="/seller/login">로그인</a></p>
                                     </div>
                                 </form>
 
                             </div>
                         </div>
-
-                        <div class="credits">
-                            <!-- All the links in the footer should remain intact. -->
-                            <!-- You can delete the links only if you purchased the pro version. -->
-                            <!-- Licensing information: https://bootstrapmade.com/license/ -->
-                            <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-                            Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-                        </div>
-
                     </div>
                 </div>
             </div>
 
         </section>
-
     </div>
 </main><!-- End #main -->
 
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="/js/sellerRegister.js"></script>
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 </body>
 <footer id="footer" class="footer">

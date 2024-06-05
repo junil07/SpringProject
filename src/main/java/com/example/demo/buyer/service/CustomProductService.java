@@ -21,8 +21,10 @@ public class CustomProductService {
 
         // Product 정보를 저장할 List<Map<String, Object>> 생성
         List<Map<String, Object>> productSummaryList = new ArrayList<>();
+
         for (Object[] row : productList) {
             Map<String, Object> productSummary = new HashMap<>();
+
             productSummary.put("productId", ((Number) row[0]).intValue()); // 제품 ID
             productSummary.put("productCode", (String) row[1]);
             productSummary.put("productName", (String) row[2]); // 제품 이름
@@ -31,6 +33,7 @@ public class CustomProductService {
             productSummary.put("productImageSname", (String) row[5]); // 제품 이미지 이름
             productSummary.put("productImageExtension", (String) row[6]); // 제품 이미지 확장자
             productSummary.put("productDetailMaker", (String) row[7]);
+
             // 필요한 필드들을 추출하여 Map에 저장
             productSummaryList.add(productSummary);
         }

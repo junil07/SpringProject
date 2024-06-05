@@ -1,0 +1,18 @@
+1. 구매자 회원가입 완료
+
+2. Buyer 엔티티에 private Date buyerBirth 위에 @DateTimeFormat(pattern = "yyyy-mm-dd")
+추가, 자동으로 패턴에 맞게 Date 타입으로 변경해줌
+
+3. 로그인 할 때 last login 갱신
+
+
+-------------------
+해야할거
+
+1. 판매자 회원가입
+
+2. 상품 등록 승인
+
+3. 물품 리스트 관리
+
+4. 메인 페이지 꾸미기

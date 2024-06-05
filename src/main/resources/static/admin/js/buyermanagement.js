@@ -74,6 +74,7 @@ function updateCheck(event) {
         console.log(checkbox.id);
         addList(checkbox.id);
         var result = idList.join("/");
+        console.log(result);
         document.getElementById('GradeInput1').textContent = result;
         document.getElementById('GradeInput2').value = result;
         document.getElementById('ActivationInput1').textContent = result;

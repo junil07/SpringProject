@@ -3,7 +3,8 @@ package com.example.demo.admin.security;
 public enum Role {
 
     ADMIN("ROLE_ADMIN"),
-    USER("ROLE_USER");
+    BUYER("ROLE_BUYER"),
+    SELLER("ROLE_SELLER");
 
     Role(String key) {
         this.key = key;

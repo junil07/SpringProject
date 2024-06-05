@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <title>회원가입</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- 캐싱을 방지하는 meta 태그 지시어 -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
+    <!--Favicon-->
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+    <!-- THEME CSS
+	================================================== -->
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="/plugins/bootstrap/css/bootstrap.min.css">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="/plugins/font-awesome/css/font-awesome.min.css">
+    <!-- Slick Carousel -->
+    <link rel="stylesheet" href="/plugins/slick-carousel/slick.css">
+    <link rel="stylesheet" href="/plugins/slick-carousel/slick-theme.css">
+    <!-- manin stylesheet -->
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+
+        .signup {
+            margin-top: 400px;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        .borderRed {
+            border: 1px solid red;
+        }
+
+        #idDuplicate {
+            float: right;
+        }
+
+        .idAlert1, .pwdAlert1,
+        .pwdAlert2, .emailAlert1,
+        .nameAlert1, .phoneAlert1 {
+            color: red;
+        }
+
+        .idAlert2 {
+            color: green;
+        }
+
+        .focusRed:focus {
+            box-shadow: none;
+            border: 1px solid red !important;
+        }
+
+        #buyerAddress {
+            cursor: pointer;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<section class="login-signup section-padding">
+    <div class="container">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-lg-7">
+                <div class="signup">
+                    <div class="text-center"><a href="/buyer/index"><img src="/assets/image/LOGO.png" alt="" class="img-fluid"></a></div>
+                    <h3 class="mt-4">회원가입</h3>
+                    <p class="mb-5"></p>
+                    <form action="/buyer/register" class="signup-form row" method="post" name="signUpFrm" th:object="${buyer}">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="buyerId">아이디</label>
+                                <div style="display: ruby-text;">
+                                    <input type="text" class="form-control" id="buyerId" th:field="*{buyerId}" placeholder="아이디" style="width: 70%;">
+                                    <button class="btn btn-primary" id="idDuplicate" type="button">중복확인</button>
+                                </div>
+                                <label class="idAlert1 hide"><small>이미 존재하는 아이디입니다.</small></label>
+                                <label class="idAlert2 hide"><small>사용 가능한 아이디입니다.</small></label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="buyerPwd">비밀번호</label>
+                                <input type="password" id="buyerPwd" th:field="*{buyerPassword}" class="form-control" placeholder="비밀번호">
+                                <label class="pwdAlert1 hide"><small>공백이 존재합니다.</small></label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="buyerPwd1">비밀번호 확인</label>
+                                <input type="password" class="form-control" name="email-address" id="buyerPwd1" placeholder="비밀번호 확인">
+                                <label class="pwdAlert2 hide"><small>비밀번호가 일치하지 않습니다.</small></label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="buyerName">이름</label>
+                                <input type="text" class="form-control" id="buyerName" th:field="*{buyerName}" placeholder="이름">
+                                <label class="nameAlert1 hide"><small>한글만 입력가능합니다.</small></label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="buyerBirth">생년월일</label>
+                                <input type="date" class="form-control" id="buyerBirth" th:field="*{buyerBirth}" placeholder="생년월일">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="buyerEmail">이메일</label>
+                                <input type="email" class="form-control" id="buyerEmail" th:field="*{buyerEmail}" placeholder="이메일">
+                                <label class="emailAlert1 hide"><small>이메일 형식을 확인해주세요.</small></label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="buyerAddress"><a onclick="sample6_execDaumPostcode()">주소</a></label>
+                                <input type="text" class="form-control" id="buyerAddress" name="password-s" placeholder="주소" onclick="sample6_execDaumPostcode()" readonly>
+                                <input type="text" class="form-control" id="buyerAddress1" name="password-s" placeholder="상세주소" autocomplete="off">
+                                <input type="hidden" id="buyerAddress2" th:field="*{buyerAddress}">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="buyerPhone">전화번호</label>
+                                <input type="text" class="form-control" id="buyerPhone" placeholder="전화번호">
+                                <input type="hidden" id="buyerPhone1" th:field="*{buyerPhoneNum}">
+                                <label class="phoneAlert1 hide"><small>전화번호 형식을 확인해주세요.</small></label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <button class="btn btn-primary" type="button" onclick="signUp()">회원가입</button>
+                            <p class="mt-5 mb-0">이미 계정이 있나요?<a href="/buyer/login"> 로그인</a></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<!-- THEME JAVASCRIPT FILES
+================================================== -->
+<!-- initialize jQuery Library -->
+<script src="/plugins/jquery/jquery.js"></script>
+<!-- Bootstrap jQuery -->
+<script src="/plugins/bootstrap/js/bootstrap.min.js"></script>
+<!-- Slick Slider -->
+<script src="/plugins/slick-carousel/slick.min.js"></script>
+<!-- main js -->
+<script src="/js/custom.js"></script>
+<script src="/js/buyerRegister.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,38 @@
+현재 내 집컴 db buyer 아이디 비번
+
+11			11
+12			12
+aa			aa
+asdf			asdf
+bb			bb
+dio12		theworld12
+dyflrqjvm		dyflrqjvm
+gee1567		15167344
+hyehyeboai12	asdf1234
+hyeonju159	1313
+hyunwoo12	password10
+jihoon12		1234
+jisoo3456		1597533
+jiwon15		15467
+minho7979	159753
+newjeans12	omomgomomg
+ohhappyday	whenjesuswash
+snsd1212		131324
+sooah1234	tndk123
+yoonka		159753
+
+----------------------------------------
+
+seller 아이디 비번
+
+AaBbCc1234		Pass1234@5678!
+DdEeFf5678		Secure@8765Pass
+GgHhIi9101		RandomPass@1234
+JjKkLl2345		StrongPass@5678
+MmNnOo6789		Password!2345
+PpQqRr0123		Pass1234$5678
+SsTtUu4567		Secret@Pass1234
+VvWwXx8901		Safe@Password5678
+xx		xx
+yy		yy
+zz		zz

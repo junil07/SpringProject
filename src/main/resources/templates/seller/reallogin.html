@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>processing....</title>
+</head>
+<body>
+
+    <form name="sellerFrm" action="/seller/loginProc" method="post">
+        <input type="hidden" name="sellerId" th:value="${sellerDTO.getSellerId}">
+        <input type="hidden" name="sellerPwd" th:value="${sellerDTO.getSellerPassword}">
+    </form>
+
+    <script>
+        document.sellerFrm.submit();
+    </script>
+
+</body>
+</html>

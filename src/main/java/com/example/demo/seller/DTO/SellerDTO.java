@@ -2,11 +2,13 @@ package com.example.demo.seller.DTO;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 
 @Getter
 @Setter
+@Component
 public class SellerDTO {
 
     private String sellerId;

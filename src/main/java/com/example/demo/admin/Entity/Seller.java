@@ -2,6 +2,7 @@ package com.example.demo.admin.Entity;
 
 import com.example.demo.seller.domain.Product;
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import java.util.Set;
@@ -11,7 +12,7 @@ import java.util.Set;
 public class Seller {
 
     @Id
-    //@Column(name = "SELLER_ID", length = 40, nullable = false)
+    @Column(name = "SELLER_ID", length = 40, nullable = false)
     private String sellerId;
 
     @Column(name = "SELLER_PASSWORD", length = 500, nullable = false)
@@ -19,6 +20,7 @@ public class Seller {
 
     @Column(name = "seller_birth")
     @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "yyyy-mm-dd") // 자동으로 Date 타입으로 변환해주네? 개꿀 ㅋㅋㅋ
     private Date sellerBirth;
 
     @Column(name = "SELLER_ADDRESS", length = 100, nullable = false)
@@ -42,7 +44,6 @@ public class Seller {
     @Column(name = "seller_lastlogin")
     @Temporal(TemporalType.TIMESTAMP)
     private Date sellerLastLogin;
-
 
     public String getSellerId() {
         return sellerId;
