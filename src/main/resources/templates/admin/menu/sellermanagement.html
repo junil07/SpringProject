@@ -55,7 +55,7 @@
                                     </div>
                                 </td>
                                 <td>[[${seller.sellerId}]]</td>
-                                <td><a href="" data-toggle="modal" data-target="#sellerInfo" th:onclick="nameUpdate([[${seller.sellerId}]], [[${seller.sellerName}]])">[[${seller.sellerName}]]</a></td>
+                                <td style="border-right: 1px solid;"><a href="" data-toggle="modal" data-target="#sellerInfo" th:onclick="nameUpdate([[${seller.sellerId}]], [[${seller.sellerName}]])">[[${seller.sellerName}]]</a></td>
                                 <td><a href="" data-toggle="modal" data-target="#sellerInfo" th:onclick="birthUpdate([[${seller.sellerId}]], [[${seller.sellerName}]])" th:text="${#dates.format(seller.sellerBirth, 'yyyy-MM-dd')}"></a></td>
                                 <td><a href="" data-toggle="modal" data-target="#sellerInfo" th:onclick="emailUpdate([[${seller.sellerId}]], [[${seller.sellerName}]])">[[${seller.sellerEmail}]]</a></td>
                                 <td><a href="" data-toggle="modal" data-target="#sellerInfo" th:onclick="addressUpdate([[${seller.sellerId}]], [[${seller.sellerName}]])">[[${seller.sellerAddress}]]</a></td>

@@ -74,6 +74,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// coolsms 문자메세지
+	implementation 'net.nurigo:sdk:4.3.0'
 }
 
 tasks.named('test') {

@@ -42,12 +42,12 @@
                     </div>
                     <div class="card-body">
                         <p>상품 승인 대기 내역입니다.</p>
-                        <div class="table-responsive">
+                        <div class="table-responsive" style="max-height: 600px;">
                             <table class="table table-bordered table-striped my-4" style="min-width: 480px; width: 150%;">
                                 <thead>
 
                                 <tr>
-                                    <th>
+                                    <th style="position: sticky; left: 0; background: white;">
                                         <div class="custom-control custom-checkbox pl-4">
                                             <input type="checkbox" id="checkBoss">
                                         </div>
@@ -61,11 +61,11 @@
                                 <tbody>
 
                                     <tr th:each="product : ${productList}">
-                                        <th style="width: 5%;">
+                                        <td style="width: 5%; position: sticky; left: 0; background: white;">
                                             <div class="custom-control custom-checkbox pl-4">
-                                                <input type="checkbox" class="checkBaby">
+                                                <input type="checkbox" class="checkBaby" th:id="${product.productId}">
                                             </div>
-                                        </th>
+                                        </td>
                                         <td>[[${product.productId}]]</td>
                                         <td>[[${product.seller.sellerId}]]</td>
                                         <td>[[${product.productName}]]</td>
@@ -74,12 +74,18 @@
                                         <td>[[${product.productHashtag}]]</td>
                                         <td>[[${product.category.categoryName}]]</td>
                                     </tr>
+
                                 </tbody>
                             </table>
                         </div>
-                        <div class="card-footer">
-                            <button type="button" class="btn btn-secondary" style="float: right;">승인</button>
-                        </div>
+                        <form name="approvalFrm" action="/admin/approvalProc" method="post">
+                            <div th:object="${productInfo}">
+                                <input type="hidden" id="hiddenInput" th:field="*{id}">
+                            </div>
+                            <div class="card-footer">
+                                <button type="button" class="btn btn-secondary" onclick="letsApproval()" style="float: right;">승인</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
