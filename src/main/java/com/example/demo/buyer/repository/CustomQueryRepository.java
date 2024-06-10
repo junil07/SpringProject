@@ -16,8 +16,10 @@ public class CustomQueryRepository {
         return entityManager.createQuery(
                 "SELECT " +
                         "p.productId, " +
+                        "p.productCode, "+
                         "p.productName, " +
                         "p.productPrice, " +
+                        "p.productDiscount, " +
                         "SUM(oi.orderitemPcount) AS total_count, " +
                         "pi.productImageSname, " +
                         "pi.productImageExtension, " +
@@ -29,7 +31,7 @@ public class CustomQueryRepository {
                         "LEFT JOIN ProductImage pi ON p.productId = pi.product.productId " +
                         "LEFT JOIN Product_detail pd ON p.productId = pd.product.productId " +
                         "GROUP BY " +
-                        "p.productId, p.productCode, p.productName, p.productPrice, pi.productImageSname, pi.productImageExtension, pd.productDetailMaker " +
+                        "p.productId, p.productCode, p.productName, p.productPrice,p.productDiscount ,pi.productImageSname, pi.productImageExtension, pd.productDetailMaker " +
                         "ORDER BY " +
                         "total_count DESC "+
                         "LIMIT 4"

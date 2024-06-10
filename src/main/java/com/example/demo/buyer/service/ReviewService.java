@@ -57,11 +57,11 @@ public class ReviewService {
         reviewRepository.deleteById(reviewId);
     }
     @Transactional
-    public void addReview(Integer productId,Integer rating, String content, List<MultipartFile> files){
+    public void addReview(Integer productId,String buyerId,Integer rating, String content, List<MultipartFile> files){
         Review review = new Review();
 
         review.setProduct(productService.getProduct(productId));
-        review.setBuyer(buyerRepository.findByBuyerId("jiwon15"));
+        review.setBuyer(buyerRepository.findByBuyerId(buyerId));
         review.setReviewRating(rating);
         review.setReviewContent(content);
 

@@ -4,6 +4,10 @@ import java.time.LocalDate;
 import java.util.*;
 
 import com.example.demo.seller.DTO.OrderitemDTO;
+import com.example.demo.seller.domain.Orderlist;
+import com.example.demo.seller.domain.Product;
+import com.example.demo.seller.repository.Order_listRepository;
+import com.example.demo.seller.repository.ProductRepository;
 import org.hibernate.query.Order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +28,11 @@ public class OrderitemService {
         this.orderitemRepository = orderitemRepository;
     }
 
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private Order_listRepository orderListRepository;
 
     public Map<String, Integer> findDisBuyer(){
         List<Object[]> resultsBuyer = orderitemRepository.findBuyerDate();
@@ -287,5 +296,37 @@ public class OrderitemService {
             }
         }
     }
+
+    public void insertOrderItem(List<Long> productIds, List<Integer> productCounts, List<Integer> productPrices) {
+        for (int i = 0; i < productIds.size(); i++) {
+            try {
+                Orderitem orderitem = new Orderitem();
+                orderitem.setOrderitemPstatus("결제완료");
+                orderitem.setOrderitemDstatus("배송전");
+                orderitem.setOrderitemPcount(productCounts.get(i));
+                orderitem.setOrderitemPrice(productPrices.get(i));
+                orderitem.setOrderitemCase("정상처리");
+                Orderlist orderlist = orderListRepository.findTopByOrderByOrderlistIdDesc();
+                if (orderlist == null) {
+                    throw new IllegalArgumentException("Orderlist not found");
+                }
+                orderitem.setOrderlist(orderlist);
+
+                Product product = productRepository.findByProductId(productIds.get(i));
+                if (product == null) {
+                    throw new IllegalArgumentException("Product not found for id: " + productIds.get(i));
+                }
+                orderitem.setProduct(product);
+
+                orderitemRepository.save(orderitem);
+                System.out.println("insert 성공!!");
+
+            } catch (Exception e) {
+                System.err.println("insert 실패: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+    }
+
 
 }

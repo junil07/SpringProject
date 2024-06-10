@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.example.demo.seller.DTO.ProductDetailDTO;
+import com.example.demo.seller.domain.ProductImage;
+import com.example.demo.seller.repository.ProductImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +35,8 @@ public class ProductService{
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private ProductImageRepository productImageRepository;
 //    @Override
     public List<Product> getProductList(String sellerId) {
         return productRepository.findBySellerNameContains(sellerId);
@@ -171,6 +175,13 @@ public class ProductService{
         return String.join(",", hashtag);
     }
 
+    public List<Product> getProductsByCategoryName(String categoryName) {
+        return productRepository.findByCategory_CategoryName(categoryName);
+    }
+
+    public List<ProductImage> getProductImagesByCategoryName(String categoryName) {
+        return productImageRepository.findByProduct_Category_CategoryName(categoryName);
+      
     //판매자 아이디 가져오기
     private String getSellerId(String origin) {
 

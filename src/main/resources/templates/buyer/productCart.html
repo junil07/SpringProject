@@ -213,7 +213,7 @@
                 <tbody style="margin-left:10px;">
                 <div th:each="cartItem, iterStat : ${cartList}">
                     <div th:with="productImage=${productImageList[iterStat.index]}">
-                        <tr class="cart__list__detail" th:data-price="${cartItem.product.productPrice * cartItem.cartProductCount}" th:data-discount="${cartItem.product.productDiscount}" th:data-count="${cartItem.cartProductCount}">
+                        <tr class="cart__list__detail" th:data-price="${cartItem.product.productPrice * cartItem.cartProductCount}" th:data-discount="${cartItem.product.productDiscount}" th:data-count="${cartItem.cartProductCount}" th:id="${iterStat.index}">
                             <td style="width: 2%;"><input type="checkbox" class="product-checkbox"></td>
                             <td style="width: 13%;">
                                 <div style="width: 100px; height:100px;">
@@ -424,8 +424,34 @@
 
         <div class="cart__mainbtns">
             <button class="cart__bigorderbtn left">쇼핑 계속하기</button>
-            <button class="btn btn-dark" style="width: 200px; height: 50px; font-size: 16px; margin: auto; border-radius: 5px;">구매하기</button>
+            <button type="submit" class="productBuy btn btn-dark" style="width: 200px; height: 50px; font-size: 16px; margin: auto; border-radius: 5px;">구매하기</button>
         </div>
+
+        <form id="purchaseForm" action="/buyer/productBuy" method="POST">
+            <!-- Hidden inputs for selected cart IDs will be dynamically added here -->
+        </form>
+        <script>
+            $(document).ready(function() {
+                $('.btn-dark').on('click', function(e) {
+                    e.preventDefault();
+                    var selectedCartIds = [];
+
+                    $('.product-checkbox:checked').each(function() {
+                        var cartId = $(this).closest('tr').find('.cartId').val();
+                        selectedCartIds.push(cartId);
+                    });
+
+                    var $form = $('#purchaseForm');
+                    $form.empty();  // 기존의 hidden input들을 제거합니다.
+
+                    selectedCartIds.forEach(function(cartId) {
+                        $form.append('<input type="hidden" name="cartIds" value="' + parseInt(cartId) + '">');
+                    });
+
+                    $form.submit();
+                });
+            });
+        </script>
     </section>
 </th:block>
 </html>

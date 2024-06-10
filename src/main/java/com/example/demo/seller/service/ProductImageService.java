@@ -76,7 +76,7 @@ public class ProductImageService {
 //            productImage.setProductImageSname(productImage.getProductImageSname());
 //            productImage.setProduct(productImage.getProduct());
 //            String fileName = file.getOriginalFilename(); // 파일 이름 가져오기
-//            productImage.setProductImageName(fileName);
+//            productImage.setProductImageSname(fileName);
 //            productImage.setProductImageExtension("."+getFileExtension(fileName)); // 파일 확장자명 가져오기
 //            productImage.setProductImageSize((int) file.getSize()); // 파일 크기 가져오기 (바이트 단위)
 //
