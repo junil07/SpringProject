@@ -29,9 +29,11 @@
 </th:block>
 <th:block layout:fragment="pageContent">
     <div class="contents-width">
-        <h1 th:text="${categoryName}" style="text-align: center; margin-top:20px; margin-bottom:20px;"></h1>
-        <hr style="border:2px solid BLACK;">
-        <div class="row">
+        <h1 th:text="${hashtag + ' 검색'}" style="text-align: center; margin-top:20px; margin-bottom:20px;"></h1>
+        <div th:if="${productflag=='false'}">
+            <h2 style="text-align:center;">검색 결과에 맞는 상품이 없습니다.</h2>
+        </div>
+        <div th:if="${productList!=null and productImage!=null}" class="row">
             <div th:each="productList, iterStat : ${productList}" class="col-md-3 product-card">
                 <div th:with="productImage=${productImage[iterStat.index]}">
                     <div class="card h-100">

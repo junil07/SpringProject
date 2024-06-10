@@ -127,6 +127,8 @@ public class BuyerController {
 				buyerId = user.getUsername();
 			} else { // 다른 권한을 갖고 있거나
 			}
+		}else{
+			buyerId=null;
 		}
 
 		model.addAttribute("buyerId", buyerId);
@@ -239,6 +241,7 @@ public class BuyerController {
 			// Buyer 정보가 없는 경우 처리
 			model.addAttribute("buyer", new Buyer()); // 예시: 빈 Buyer 객체 추가
 		}
+		model.addAttribute("buyerId", buyerId);
 		model.addAttribute("categories", categories);
 		model.addAttribute("productImages",productImages);
 		model.addAttribute("cartList",cartList);
@@ -273,6 +276,7 @@ public class BuyerController {
 
 		System.out.println(orderList.size());
 		System.out.println(productImages.size());
+		model.addAttribute("buyerId", buyerId);
 		model.addAttribute("productImages", productImages);
 		model.addAttribute("orderList" , orderList);
 		model.addAttribute("categories", categories);
@@ -318,10 +322,42 @@ public class BuyerController {
 			System.out.println("Image Size: " + pi.getProductImageSize());
 			System.out.println("--------------------------------------------------");
 		}
+		model.addAttribute("buyerId", buyerId);
 		model.addAttribute("categories", categories);
 		model.addAttribute("categoryName",categoryName);
 		model.addAttribute("productList",product);
 		model.addAttribute("productImage",productImages);
 		return "/buyer/productList";
+	}
+	@GetMapping("buyer/productSearch")
+	public String searchProducts(@AuthenticationPrincipal User user, Principal principal,@RequestParam("site_search") String keyword, Model model){
+		List<Product> productList = productService.getProductByHashtagName(keyword);
+		List<ProductImage> productImageList = new ArrayList<>();
+		String buyerId="";
+		String productflag="";
+		for(Product productIndex : productList){
+			ProductImage images = productImageService.getProductImage(productIndex);
+
+			productImageList.add(images);
+		}
+		System.out.println(keyword);
+		if (principal != null) { // 로그인이 되었을 때 이야기임 로그인이 안되었을 때 예외는 if else 밖에
+			if (securityService.hasRole(user, "ROLE_BUYER")) { // 만약 '구매자'의 권한을 갖고 있다면
+				buyerId = user.getUsername();
+			} else { // 다른 권한을 갖고 있거나
+			}
+		}else{
+			buyerId=null;
+		}
+		if(productList.size()==0){
+			productflag = "false";
+		}
+
+		model.addAttribute("productflag",productflag);
+		model.addAttribute("buyerId",buyerId);
+		model.addAttribute("productList",productList);
+		model.addAttribute("productImage",productImageList);
+		model.addAttribute("hashtag", keyword);
+		return "buyer/productSearch";
 	}
 }

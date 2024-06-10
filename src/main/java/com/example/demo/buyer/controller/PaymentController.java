@@ -1,6 +1,8 @@
 package com.example.demo.buyer.controller;
 
+import com.example.demo.buyer.entity.Stock;
 import com.example.demo.buyer.service.CartService;
+import com.example.demo.buyer.service.StockService;
 import com.example.demo.seller.service.Order_listService;
 import com.example.demo.seller.service.OrderitemService;
 import com.siot.IamportRestClient.IamportClient;
@@ -34,6 +36,8 @@ public class PaymentController {
     private OrderitemService orderitemService;
     @Autowired
     private CartService cartService;
+    @Autowired
+    private StockService stockService;
 
     private IamportClient iamportClient;
 
@@ -77,6 +81,9 @@ public class PaymentController {
             List<Integer> cartIds = ((List<?>) paymentData.get("cartIds")).stream()
                     .map(cart -> Integer.parseInt(cart.toString()))
                     .collect(Collectors.toList());
+            List<Integer> productSize = ((List<?>) paymentData.get("productSize")).stream()
+                    .map(size -> Integer.parseInt(size.toString()))
+                    .collect(Collectors.toList());
             System.out.println("buyerId: " + buyerId);
             System.out.println("buyerAddress: " + buyerAddress);
             System.out.println("payPrice: " + payPrice);
@@ -91,6 +98,7 @@ public class PaymentController {
             System.out.println("insert성공!!");
             cartService.deleteCartProduct(cartIds);
             System.out.println("delete성공!!");
+            stockService.updateStock(productIds,productCounts,productSize);
 
             return ResponseEntity.ok("결제 정보가 성공적으로 저장되었습니다");
         } catch (Exception e) {
