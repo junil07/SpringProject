@@ -91,7 +91,7 @@
                                             <div id="stock-container">
                                                 <div  class="input-group input-group-sm mb-3" style="float:left; width: 33%;" th:each="stock : ${stockList}" th:object="${stock}">
                                                     <span class="input-group-text" id="stockSize" name="stockSize" th:text="${stock.stockSize}"></span>
-                                                    <input type="number" class="form-control" placeholder="수량 입력" aria-describedby="inputGroup-sizing-sm" th:value="*{stockCount}">
+                                                    <input type="number" class="form-control stockSize" placeholder="수량 입력" aria-describedby="inputGroup-sizing-sm" th:value="*{stockCount}">
                                                     <button class="btn btn-outline-secondary" type="button" id="delStockBtn" name="delStockBtn">삭제</button>
                                                 </div>
                                             </div>
@@ -180,7 +180,7 @@
         function deleteProduct() {
             if (confirm('정말로 이 상품을 삭제하시겠습니까?')) {
                 var form = document.getElementById('productForm');
-                form.action = '/seller/pm/del';Add
+                form.action = '/seller/pm/del';
                 form.submit();
             }
         }

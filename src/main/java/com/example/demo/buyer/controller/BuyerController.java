@@ -3,7 +3,6 @@ package com.example.demo.buyer.controller;
 import com.example.demo.admin.Entity.Buyer;
 import com.example.demo.admin.repository.BuyerRepository1;
 import com.example.demo.admin.security.SecurityServiceImple;
-import com.example.demo.admin.service.BuyerService;
 import com.example.demo.admin.service.BuyerServiceImple;
 import com.example.demo.admin.service.SendMessageService;
 import com.example.demo.buyer.DTO.BuyerDTO;
@@ -19,16 +18,13 @@ import com.example.demo.seller.DTO.SellerDTO;
 import com.example.demo.seller.domain.Orderitem;
 import com.example.demo.seller.domain.Product;
 import com.example.demo.seller.domain.ProductImage;
-import com.example.demo.seller.repository.Order_listRepository;
+import com.example.demo.seller.domain.ProductRelation;
 import com.example.demo.seller.repository.OrderitemRepository;
-import com.example.demo.seller.service.OrderitemService;
 import com.example.demo.seller.service.ProductImageService;
+import com.example.demo.seller.service.ProductRelationService;
 import com.example.demo.seller.service.ProductService;
-import groovy.util.logging.Slf4j;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -101,6 +97,9 @@ public class BuyerController {
 	@Autowired
 	private OrderitemRepository orderitemRepository;
 
+	@Autowired
+	private ProductRelationService productRelationService;
+
 	@RequestMapping("buyer/index")
 	public String main
 			(@AuthenticationPrincipal User user, Principal principal,Model model) {
@@ -144,9 +143,14 @@ public class BuyerController {
 		model.addAttribute("stockList", stockList);
 		model.addAttribute("reviewList", reviewList);
 
+		//연관상품 사진
+		//해당 상품의 연관 상품 리스트
+		List<Product> productList = productRelationService.getRPListProduct(productId);
+		model.addAttribute("productList", productList);
+		//해당 상품의 연관 상품 이미지 리스트
+		List<ProductImage> productImageList = productImageService.getProductImageList(productList);
+		model.addAttribute("productImageList", productImageList);
 
-
-		////////////여기서 하면됨!!!!!!!!!111
 		return "buyer/product_detail";
 	}
 

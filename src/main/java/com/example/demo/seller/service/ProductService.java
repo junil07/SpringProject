@@ -181,6 +181,7 @@ public class ProductService{
 
     public List<ProductImage> getProductImagesByCategoryName(String categoryName) {
         return productImageRepository.findByProduct_Category_CategoryName(categoryName);
+    }
       
     //판매자 아이디 가져오기
     private String getSellerId(String origin) {
