@@ -24,5 +24,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT p FROM Product p WHERE p.seller.sellerId LIKE %:name%")
     List<Product> findBySellerNameContains(@Param("name") String name);
 
+    @Query("SELECT p FROM Product p WHERE p.productHashtag LIKE %:hashtag%")
+    List<Product> findByHashtagName(@Param("hashtag") String hashtag);
 }
 

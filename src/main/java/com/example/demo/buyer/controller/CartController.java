@@ -60,6 +60,7 @@ public class CartController {
             System.out.println(image.getProductImageExtension()); // 또는 image.toString()
             System.out.println(image.getProductImageSname()); // 또는 image.toString()
         }
+        model.addAttribute("buyerId", buyerId);
         model.addAttribute("categories", categories);
         model.addAttribute("productImageList", productImages);
         model.addAttribute("cartList", cartList);

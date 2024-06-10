@@ -64,6 +64,7 @@
                                             <input id="productId" type="hidden" th:value="${cart.product.productId}">
                                             <input id="productCount" type="hidden" th:value="${cart.cartProductCount}">
                                             <input id="cartId" type="hidden" th:value="${cart.cartId}">
+                                            <input id="productSize" type="hidden" th:value="${cart.cartProductSize}">
                                             <span th:text="${'상품명 : '+cart.product.productName}"></span><br>
                                             <span th:text="${'상품코드 : '+cart.product.productCode}"></span><br>
                                             <span th:text="${'사이즈 : '+cart.cartProductSize}"></span>
@@ -366,6 +367,7 @@
                                                     var productCounts = [];
                                                     var productPrices = [];
                                                     var cartIds=[];
+                                                    var productSizes=[];
                                                     $('input[id="productId"]').each(function() {
                                                         productIds.push($(this).val());
                                                     });
@@ -379,6 +381,9 @@
                                                     });
                                                     $('input[id="cartId"]').each(function(){
                                                         cartIds.push($(this).val());
+                                                    });
+                                                    $('input[id="productSize"]').each(function(){
+                                                        productSizes.push($(this).val());
                                                     });
 
                                                     IMP.init("imp41622675"); // 가맹점 식별코드
@@ -395,7 +400,8 @@
                                                         productIds: productIds,
                                                         productCounts: productCounts,
                                                         productPrices: productPrices,
-                                                        cartIds : cartIds
+                                                        cartIds : cartIds,
+                                                        productSize: productSizes
                                                     }, function(rsp) { // callback
                                                         if (rsp.success) { // 결제 성공시
                                                             console.log(rsp);
@@ -413,7 +419,8 @@
                                                                     productIds: productIds,
                                                                     productCounts: productCounts,
                                                                     productPrices: productPrices,
-                                                                    cartIds : cartIds
+                                                                    cartIds : cartIds,
+                                                                    productSize : productSizes
                                                                 }),
                                                                 success: function(response) {
                                                                     if (response.status === 'success') { // DB저장 성공시

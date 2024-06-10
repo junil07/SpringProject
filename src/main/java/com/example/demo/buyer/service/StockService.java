@@ -2,6 +2,7 @@ package com.example.demo.buyer.service;
 
 import com.example.demo.buyer.entity.Stock;
 import com.example.demo.buyer.repository.StockRepository;
+import com.example.demo.seller.domain.Product;
 import com.example.demo.seller.service.ProductService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,4 +61,13 @@ public class StockService {
         stockRepository.saveAll(resultStocks);
     }
 
+    public void updateStock(List<Long> productIds,List<Integer> productCounts,List<Integer> productSizes){
+        for(int i=0;i<productIds.size();i++){
+            Product product = productService.getProduct(productIds.get(i));
+            int productSize = productSizes.get(i);
+            Stock stocks = stockRepository.findByProductAndStockSize(product,productSize);
+            stocks.setStockCount(stocks.getStockCount()-productCounts.get(i));
+            stockRepository.save(stocks);
+        }
+    }
 }

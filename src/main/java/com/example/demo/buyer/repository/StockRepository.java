@@ -11,4 +11,6 @@ import java.util.List;
 public interface StockRepository extends JpaRepository<Stock, Integer> {
     List<Stock> findByProductProductIdOrderByStockSizeAsc(long productId);
     void deleteByProduct(Product product);
+
+    Stock findByProductAndStockSize(Product product, Integer stockSize);
 }
