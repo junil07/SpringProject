@@ -13,7 +13,7 @@ import java.time.LocalDate;
 public class Orderitem {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="ORDERITEM_ID")
     private Integer orderitemId;
     @Column(name="ORDERITEM_PSTATUS")
@@ -24,8 +24,8 @@ public class Orderitem {
     private int orderitemPcount;
     @Column(name="ORDERITEM_PRICE")
     private int orderitemPrice;
-    @Column(name="ORDERITEM_DATE")
-    private LocalDate orderitemDate;
+    @Column(name="ORDERITEM_DATE",nullable = false)
+    private LocalDate orderitemDate = LocalDate.now();
     @Column(name="ORDERITEM_CASE")
     private String orderitemCase;
 

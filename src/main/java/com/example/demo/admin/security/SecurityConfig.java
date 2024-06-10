@@ -79,9 +79,9 @@ public class SecurityConfig {
                                 .requestMatchers(
                                         "/css/**", "/assets/**"
                                         , "/demo/**", "/images/**", "/js/**", "/plugins/**"
-                                        ,"/buyer/**", "/buyer/detail", "/seller/**"
+                                        ,"/buyer/**","/buyer/productList/**", "/buyer/detail", "/seller/**"
                                         , "/error", "/error/**", "/errorpage/**", "/reviews/**"
-                                        ,"/cart/**","/updateCartProductCount", "/deleteSelectedCartItems"
+                                        ,"/cart/**","/updateCartProductCount", "/deleteSelectedCartItems","/save_payment","/cart/direct"
                                 ).permitAll()
                                 .requestMatchers("/buyer/detail").hasRole(Role.BUYER.name())
                                 .anyRequest().authenticated())

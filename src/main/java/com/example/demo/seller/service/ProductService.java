@@ -6,6 +6,8 @@ import java.util.List;
 import com.example.demo.buyer.DTO.StockDTO;
 import com.example.demo.buyer.entity.Stock;
 import com.example.demo.seller.DTO.ProductDetailDTO;
+import com.example.demo.seller.domain.ProductImage;
+import com.example.demo.seller.repository.ProductImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +36,8 @@ public class ProductService{
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private ProductImageRepository productImageRepository;
 //    @Override
     public List<Product> getProductList() {
         return productRepository.findAll();
@@ -165,6 +169,12 @@ public class ProductService{
         return String.join(",", hashtag);
     }
 
+    public List<Product> getProductsByCategoryName(String categoryName) {
+        return productRepository.findByCategory_CategoryName(categoryName);
+    }
 
+    public List<ProductImage> getProductImagesByCategoryName(String categoryName) {
+        return productImageRepository.findByProduct_Category_CategoryName(categoryName);
+    }
 
 }

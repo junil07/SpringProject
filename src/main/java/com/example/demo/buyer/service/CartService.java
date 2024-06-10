@@ -20,10 +20,10 @@ public class CartService {
     @Autowired
     private BuyerRepository buyerRepository;
 
-    public void insertCartItem(Cart items){
+    public void insertCartItem(Cart items,String buyerId){
         Cart cart = new Cart();
         cart.setProduct(items.getProduct());
-        cart.setBuyer(buyerRepository.findByBuyerId("jiwon15"));
+        cart.setBuyer(buyerRepository.findByBuyerId(buyerId));
         cart.setCartProductCount(items.getCartProductCount());
         cart.setCartProductSize(items.getCartProductSize());
 
@@ -48,5 +48,9 @@ public class CartService {
         for(int cartId:cartIds) {
             cartRepository.deleteById(cartId);
         }
+    }
+
+    public Integer selectMaxCartId(){
+        return cartRepository.findMaxCartId();
     }
 }

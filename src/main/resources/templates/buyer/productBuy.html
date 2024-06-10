@@ -1,10 +1,493 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{_layout/index}">
+<th:block layout:fragment="pageStyle">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .fixed{
+            position: fixed;
+            width:350px;
+            top:20px;;
+        }
+        /* 라디오 버튼 숨기기 */
+        input[type="radio"] {
+            display: none;
+        }
+        /* 라벨 기본 스타일링 */
+        .btn-group-customize label {
+            cursor: pointer;
+            border: 1px solid black;
+        }
 
-</body>
+        /* 라벨 스타일링 */
+        input[type="radio"] + label {
+            cursor: pointer;
+        }
+
+        /* 체크된 라벨 스타일링 */
+        input[type="radio"]:checked + label {
+            border:3px solid BLACK;
+        }
+    </style>
+    <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+</th:block>
+<th:block layout:fragment="pageContent">
+    <div class="page-wrapper">
+        <div class="checkout shopping">
+            <div class="container">
+                <div>
+                    <div style="margin-top:10px; margin-bottom:10px;">
+                        <h1>주문서 작성 / 결제</h1>
+                    </div>
+                    <div style="border-top:3px solid #000;">
+                        <table class="table" style="text-align:center;">
+                            <thead>
+                            <tr style="background:#f0f1f4;">
+                                <th scope="col">상품정보</th>
+                                <th scope="col">갯수</th>
+                                <th scope="col">상품금액</th>
+                                <th scope="col">배송비</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="cartGroup, groupStat : ${cartList}" style="height:100px;">
+                                <div th:each="cart, iterStat : ${cartGroup}">
+                                    <td class="d-flex">
+                                        <!-- 인덱스에 맞는 productImage 가져오기 -->
+                                        <div th:with="productImage=${productImages[groupStat.index * cartGroup.size() + iterStat.index]}">
+                                            <img th:src="@{'/assets/image/pMain/' + ${productImage.productImageSname} + ${productImage.productImageExtension}}" alt="Product Image" style="height:100px;">
+                                        </div>
+                                        <div style="text-align:left; vertical-align: middle;">
+                                            <input id="productId" type="hidden" th:value="${cart.product.productId}">
+                                            <input id="productCount" type="hidden" th:value="${cart.cartProductCount}">
+                                            <input id="cartId" type="hidden" th:value="${cart.cartId}">
+                                            <span th:text="${'상품명 : '+cart.product.productName}"></span><br>
+                                            <span th:text="${'상품코드 : '+cart.product.productCode}"></span><br>
+                                            <span th:text="${'사이즈 : '+cart.cartProductSize}"></span>
+                                        </div>
+                                    </td>
+                                    <td th:text="${cart.cartProductCount}" style="vertical-align: middle;">Product Count</td>
+                                    <td style="vertical-align: middle;">
+                                        <div th:if="${cart.product.productDiscount==0}">
+                                            <h5 class="product-price" th:data-price="${cart.product.productPrice * cart.cartProductCount}" th:text="${cart.product.productPrice * cart.cartProductCount} + '원'"></h5>
+                                        </div>
+                                        <div th:if="${cart.product.productDiscount!=0}" style="">
+                                            <h5 class="product-price" th:data-price="${cart.product.productPrice * cart.cartProductCount}" th:text="${cart.product.productPrice * cart.cartProductCount} + '원'" style="color:#666; margin-top:5px; position: relative; display: inline-block;"></h5>
+                                            <h5 class="product-discount" th:data-discount="${cart.cartProductCount * (cart.product.productDiscount * cart.product.productPrice / 100)}" th:text="${cart.cartProductCount * ((100 - cart.product.productDiscount) * cart.product.productPrice / 100)} + '원'" style="color:red;"></h5>
+                                            <h5 th:text="${'['+cart.product.productDiscount+'%]'}" style="margin-top:5px; color:red;"></h5>
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align: middle;">무료</td>
+                                </div>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <hr style="width: 100%; margin:20px;">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="block billing-details">
+                            <form class="checkout-form">
+                                <div class="buyer_info">
+                                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                                        <h3 class="widget-title">주문 고객정보</h3>
+                                        <div class="checkbox-label" style="margin-left:10px; display:flex; align-items:center;">
+                                            <input type="checkbox" id="buyer_info_checkbox" style="width:20px; height:20px;">
+                                            <label for="buyer_info_checkbox" style="margin-left: 5px; margin-bottom: 0rem; font-weight:600;">회원정보와 동일</label>
+                                        </div>
+                                    </div>
+                                    <hr style="border:2px solid BLACK; margin-top:20px; margin-bottom:20px;">
+                                    <div class="form-group">
+                                        <label for="full_name">이름</label>
+                                        <input type="hidden" id="buyerId" th:value="${buyer.buyerId}">
+                                        <input type="text" class="form-control" id="full_name" th:value="${buyer.buyerName}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="user_phoneNum">휴대폰 번호</label>
+                                        <input type="text" class="form-control" id="user_phoneNum" th:value="${buyer.buyerPhoneNum}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="user_email">이메일</label>
+                                        <input type="text" class="form-control" id="user_email" name="zipcode" th:value="${buyer.buyerEmail}">
+                                    </div>
+                                    <hr style="border:1px solid #e7e7e7;">
+                                </div>
+                                <script>
+                                    $(document).ready(function() {
+                                        const $checkbox = $('#buyer_info_checkbox');
+                                        const $nameInput = $('#full_name');
+                                        const $phoneNumInput = $('#user_phoneNum');
+                                        const $emailInput = $('#user_email');
+
+                                        const $deliveryCheckbox = $('#delivery_info_checkbox');
+                                        const $deliveryNameInput = $('#buyer_name');
+                                        const $deliveryPhoneInput = $('#buyer_phone');
+                                        const $deliveryAddressPostInput = $('#postcode');
+                                        const $deliveryAddressInput = $('#address');
+                                        const $deliveryAddressDetailInput = $('#detailAddress');
+
+                                        const buyerName = $nameInput.val();
+                                        const buyerPhoneNum = $phoneNumInput.val();
+                                        const buyerEmail = $emailInput.val();
+
+                                        const deliveryName = $deliveryNameInput.val();
+                                        const deliveryPhoneNum = $deliveryPhoneInput.val();
+                                        const deliveryAddressPost = $deliveryAddressPostInput.val();
+                                        const deliveryAddress = $deliveryAddressInput.val();
+                                        const deliveryAddressDetail = $deliveryAddressDetailInput.val();
+
+                                        // 페이지 로드 시 체크박스 체크
+                                        $checkbox.prop('checked', true);
+                                        $deliveryCheckbox.prop('checked', true);
+
+                                        $checkbox.change(function() {
+                                            if ($(this).is(':checked')) {
+                                                $nameInput.val(buyerName);
+                                                $phoneNumInput.val(buyerPhoneNum);
+                                                $emailInput.val(buyerEmail);
+                                            } else {
+                                                $nameInput.val('');
+                                                $phoneNumInput.val('');
+                                                $emailInput.val('');
+                                            }
+                                        });
+
+                                        $deliveryCheckbox.change(function() {
+                                            if ($(this).is(':checked')) {
+                                                $deliveryNameInput.val(deliveryName);
+                                                $deliveryPhoneInput.val(deliveryPhoneNum);
+                                                $deliveryAddressPostInput.val(deliveryAddressPost);
+                                                $deliveryAddressInput.val(deliveryAddress);
+                                                $deliveryAddressDetailInput.val(deliveryAddressDetail);
+
+                                            } else {
+                                                $deliveryNameInput.val('');
+                                                $deliveryPhoneInput.val('');
+                                                $deliveryAddressPostInput.val('');
+                                                $deliveryAddressInput.val('');
+                                                $deliveryAddressDetailInput.val('');
+
+                                            }
+                                        });
+                                    });
+                                </script>
+                                <div class="delivery_info">
+                                    <div class="buyer-info-header" style="display:flex; justify-content:space-between; align-items:center;">
+                                        <h3>배송지 정보</h3>
+                                        <div class="checkbox-label" style="margin-left:10px; display:flex; align-items:center;">
+                                            <input type="checkbox" id="delivery_info_checkbox" style="width:20px; height:20px;">
+                                            <label for="delivery_info_checkbox" style="margin-left: 5px; margin-bottom: 0rem; font-weight:600;">기존 배송지와 동일</label>
+                                        </div>
+                                    </div>
+                                    <hr style="border:2px solid BLACK; margin-top:20px; margin-bottom:20px;">
+                                    <div class="form-group">
+                                        <label for="buyer_name">이름</label>
+                                        <input type="text" class="form-control" id="buyer_name" th:value="${buyer.buyerName}">
+                                    </div>
+                                    <div style="margin-bottom:20px;">
+                                        <label for="buyer_phone">휴대폰번호</label>
+                                        <input type="text" class="form-control" id="buyer_phone" th:value="${buyer.buyerPhoneNum}" style="margin-bottom:10px;">
+                                    </div>
+                                    <div style="margin-bottom:20px;">
+                                        <div th:text="${buyer.buyerAddress}"></div>
+                                        <label for="postcode">주소</label>
+                                        <div style="display:flex;">
+                                            <input type="text" id="postcode" placeholder="우편번호" readonly="readonly" class="form-control" style="width:50%;margin-bottom:5px;"
+                                                   th:value="${#strings.arraySplit(buyer.buyerAddress, '/')[0]}">
+                                            <input type="button" onclick="daumPost()" class="btn btn-outline-dart" value="우편번호 찾기" style="margin-left:10px; margin-bottom:5px;">
+                                        </div>
+                                        <input type="text" id="address" placeholder="주소" class="form-control" style="margin-bottom:5px;" th:value="${#strings.arraySplit(buyer.buyerAddress, '/')[1]}">
+                                        <input type="text" id="detailAddress" placeholder="상세주소" class="form-control" style="margin-top:0px;" th:value="${#strings.arraySplit(buyer.buyerAddress, '/')[2]}">
+                                    </div>
+                                    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+                                    <script>
+                                        function daumPost(){
+                                            new daum.Postcode({
+                                                oncomplete: function(data) {
+                                                    // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
+                                                    // 예제를 참고하여 다양한 활용법을 확인해 보세요.
+
+                                                    //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                                                    if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                                                        addr = data.roadAddress;
+                                                    } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                                                        addr = data.jibunAddress;
+                                                    }
+                                                    document.getElementById('postcode').value = data.zonecode
+                                                    document.getElementById('address').value = addr
+                                                    document.getElementById('detailAddress').focus()
+                                                }
+                                            }).open();
+                                        }
+                                    </script>
+                                    <div>
+                                        <label for="buyer_req">배송시 요청사항</label>
+                                        <select class="form-control" id="delivery_req_select" aria-label="Default select example">
+                                            <option>배송 시 요청사항을 선택해주세요.</option>
+                                            <option>부재시 경비실에 맡겨주세요.</option>
+                                            <option>부재시 문앞에 놓아주세요.</option>
+                                            <option>배송전에 연락주세요.</option>
+                                            <option>직접 수령 하겠습니다.</option>
+                                            <option>직접 입력</option>
+                                        </select>
+                                        <input type="text" class="form-control" id="buyer_req" value="위에서 직접 입력을 선택해 주세요." style="margin-top:10px;">
+                                    </div>
+                                    <script>
+                                        $(document).ready(function(){
+                                            const $deliveryReqInput = $('#buyer_req');
+                                            const $deliveryReqSelect = $('#delivery_req_select');
+                                            const deliveryReq = $deliveryReqInput.val();
+
+                                            $deliveryReqSelect.change(function() {
+                                                const selectedOption = $(this).find('option:selected').text();
+                                                if (selectedOption === "직접 입력") {
+                                                    $deliveryReqInput.val('');
+                                                    $deliveryReqInput.prop('disabled', false);
+                                                } else {
+                                                    $deliveryReqInput.val(selectedOption);
+                                                    $deliveryReqInput.prop('disabled', true);
+                                                }
+                                            });
+
+                                            // 초기 상태 설정
+                                            $deliveryReqInput.val($deliveryReqInput.val());
+                                            if ($deliveryReqSelect.find('option:selected').text() !== "직접 입력") {
+                                                $deliveryReqInput.prop('disabled', true);
+                                            }
+                                        });
+                                    </script>
+                                    <hr style="border:1px solid #e7e7e7;">
+                                </div>
+                                <div class="payment_method">
+                                    <h3>결제수단 선택</h3>
+                                    <hr style="border:2px solid BLACK; margin-top:20px; margin-bottom:20px;">
+                                    <div class="d-flex justify-content-center">
+                                        <div data-toggle="buttons" class="btn-group btn-group-customize">
+                                            <input type="radio" id="seller-people" name="seller" value="tosspay.">
+                                            <label class="btn px-4 py-1 btn-sm d-flex align-items-center justify-content-center"
+                                                   for="seller-people" style="width:200px;">
+                                                <img src="/assets/image/Toss_Logo.png" alt="토스페이"
+                                                     style="max-width:50%; height:auto; vertical-align:middle;">
+                                            </label>
+                                            <input type="radio" id="kakao_pay" name="seller" value="kakaopay.">
+                                            <label class="btn px-4 py-1 btn-sm d-flex align-items-center justify-content-center"
+                                                   for="kakao_pay" style="width:200px;">
+                                                <img src="/assets/image/kakao_pay.png" alt="카카오페이"
+                                                     style="max-width:50%; height:auto; vertical-align:middle;">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <script>
+                                    $(document).ready(function() {
+                                        $('input[type="radio"]').on('change', function() {
+                                            // 모든 라벨에서 활성화 클래스 제거
+                                            $('.btn-group-customize label').removeClass('active');
+
+                                            // 해당 라디오 버튼에 연결된 라벨을 클릭한 것처럼 처리
+                                            $(this).next('label').addClass('active');
+
+                                            // 숨겨진 input의 값을 선택된 라디오 버튼의 값으로 설정
+                                            $('#PayG').val($(this).val());
+                                        });
+
+                                        $('.btn-group-customize label').on('click', function() {
+                                            // 현재 라벨에 연결된 라디오 버튼 체크
+                                            $(this).prev('input[type="radio"]').prop('checked', true).trigger('change');
+                                        });
+                                    });
+                                </script>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="product-checkout-details" >
+                            <div class="block">
+                                <div class="checkout-info" style="border:2px solid black; ">
+                                    <h2 style="margin:20px;">결제정보</h2>
+                                    <hr style="border:1px solid black; margin:20px;">
+                                    <div style="display:flex; justify-content:space-between; align-items:center; margin:20px;">
+                                        <h4>총 정상가</h4>
+                                        <h4 class="product_totalPrice"></h4>
+                                    </div>
+                                    <div style="display:flex; justify-content:space-between; align-items:center; margin:20px;">
+                                        <h4>총 할인금액</h4>
+                                        <h4 class="product_totalDiscount"></h4>
+                                    </div>
+                                    <hr style="border:1px solid black; margin:20px;">
+                                    <div style="display:flex; justify-content:space-between; align-items:center; margin:20px;">
+                                        <h4>총 결제예정금액</h4>
+                                        <h4 class="product_totalPay" style="color:RED;"></h4>
+                                    </div>
+                                    <div style="text-align:center; margin-bottom:20px;">
+                                        <input type="button" class="btn btn-dark" id="Pay" value="결제하기" style="width:200px;">
+                                        <input type="hidden" id="PayG" value="">
+                                    </div>
+                                    <script>
+                                    $(document).ready(function() {
+                                        // 구매자 정보
+                                        const response = {
+                                            req_user_email: 'user@example.com', // 예시 이메일
+                                            req_username: 'username', // 예시 사용자 이름
+                                            loggedIn: true // 예시: 로그인 상태 여부
+                                        };
+
+                                        const user_email = response.req_user_email;
+                                        const username = response.req_username;
+                                        const loggedIn = response.loggedIn;
+
+                                        // 결제창 함수 넣어주기
+                                        const buyButton = $('#Pay');
+                                        buyButton.on('click', kakaoPay);
+
+                                        var IMP = window.IMP;
+
+                                        function kakaoPay() {
+                                            if (confirm("구매 하시겠습니까?")) { // 구매 클릭시 한번 더 확인하기
+                                                if (loggedIn) { // 로그인 상태 확인
+                                                    var pg = $('#PayG').val();
+                                                    console.log(pg);
+                                                    var today = new Date();
+                                                    var hours = today.getHours(); // 시
+                                                    var minutes = today.getMinutes(); // 분
+                                                    var seconds = today.getSeconds(); // 초
+                                                    var milliseconds = today.getMilliseconds();
+                                                    var makeMerchantUid = `${hours}${minutes}${seconds}${milliseconds}`;
+                                                    var postCode = $('#postcode').val();
+                                                    var address = $('#address').val();
+                                                    var detailAddress = $('#detailAddress').val();
+                                                    var totalAddress = '('+postCode+') '+address+'/'+detailAddress;
+
+                                                    var productIds = [];
+                                                    var productCounts = [];
+                                                    var productPrices = [];
+                                                    var cartIds=[];
+                                                    $('input[id="productId"]').each(function() {
+                                                        productIds.push($(this).val());
+                                                    });
+
+                                                    $('input[id="productCount"]').each(function() {
+                                                        productCounts.push($(this).val());
+                                                    });
+
+                                                    $('h5.product-price').each(function() {
+                                                        productPrices.push($(this).data('price'));
+                                                    });
+                                                    $('input[id="cartId"]').each(function(){
+                                                        cartIds.push($(this).val());
+                                                    });
+
+                                                    IMP.init("imp41622675"); // 가맹점 식별코드
+                                                    IMP.request_pay({
+                                                        pg: pg,  // PG사 코드표에서 선택
+                                                        pay_method: 'card', // 결제 방식
+                                                        merchant_uid: "IMP" + makeMerchantUid, // 결제 고유 번호
+                                                        name: '상품명', // 제품명
+                                                        amount: 100, // 가격
+                                                        // 구매자 정보 ↓
+                                                        buyerId: $('#buyerId').val(),
+                                                        payPrice: $('.product_totalPay').val(),
+                                                        buyerAddress: totalAddress,
+                                                        productIds: productIds,
+                                                        productCounts: productCounts,
+                                                        productPrices: productPrices,
+                                                        cartIds : cartIds
+                                                    }, function(rsp) { // callback
+                                                        if (rsp.success) { // 결제 성공시
+                                                            console.log(rsp);
+                                                            // 결제 성공시 프로젝트 DB저장 요청
+                                                            // 여기에 DB저장 로직을 추가하십시오
+                                                            $.ajax({
+                                                                url: '/save_payment',
+                                                                type: 'POST',
+                                                                contentType: 'application/json',
+                                                                data: JSON.stringify({
+                                                                    payment_data: rsp,
+                                                                    buyerId: $('#buyerId').val(),
+                                                                    payPrice: $('.product_totalPay').val(),
+                                                                    buyerAddress: totalAddress,
+                                                                    productIds: productIds,
+                                                                    productCounts: productCounts,
+                                                                    productPrices: productPrices,
+                                                                    cartIds : cartIds
+                                                                }),
+                                                                success: function(response) {
+                                                                    if (response.status === 'success') { // DB저장 성공시
+                                                                        alert('결제 완료!');
+                                                                        window.location.reload();
+                                                                    } else { // 결제완료 후 DB저장 실패시
+                                                                        alert(`결제가 완료되었습니다.`);
+                                                                        window.location.href = '/buyer/index';
+                                                                    }
+                                                                },
+                                                                error: function(error) {
+                                                                    alert(`DB 저장 실패: ${error}`);
+                                                                }
+                                                            });
+                                                        } else { // 결제 실패시
+                                                            alert(rsp.error_msg);
+                                                        }
+                                                    });
+                                                } else { // 로그인되어 있지 않으면
+                                                    alert('로그인이 필요합니다!');
+                                                    // 로그인 페이지로 이동하거나 로그인 모달을 열도록 추가 작업 필요
+                                                }
+                                            } else { // 구매 확인 알림창 취소 클릭시 돌아가기
+                                                return false;
+                                            }
+                                        }
+                                    });
+                                </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                        $(document).ready(function() {
+                            var totalPrice = 0;
+                            var totalDiscount = 0;
+
+                            var $window = $(window);
+                            var $checkoutInfo = $('.checkout-info');
+                            var offsetTop = $checkoutInfo.offset().top;
+
+                            // 각 제품의 총 가격 계산
+                            $('.product-price').each(function() {
+                                var price = parseFloat($(this).data('price')); // data-price 속성 값을 가져옴
+                                if (!isNaN(price)) { // 값이 숫자인지 확인
+                                    totalPrice += price;
+                                }
+                            });
+
+                            // 각 제품의 총 할인가격 계산
+                            $('.product-discount').each(function(){
+                                var discount = parseFloat($(this).data('discount')); //data-discount 속성 값을 가져옴
+                                if (!isNaN(discount)){
+                                    totalDiscount += discount;
+                                }
+                            });
+
+                            $window.on('scroll', function() {
+                                if ($window.scrollTop() > offsetTop) {
+                                    $checkoutInfo.addClass('fixed');
+                                } else {
+                                    $checkoutInfo.removeClass('fixed');
+                                }
+                            });
+
+                            $('.product_totalDiscount').text('-'+totalDiscount + '원'); // 합산된 총 가격을 출력
+                            $('.product_totalPrice').text(totalPrice + '원'); // 합산된 총 가격을 출력
+                            $('.product_totalPay').val(totalPrice-totalDiscount);
+                            $('.product_totalPay').text((totalPrice-totalDiscount)+'원'); //총 결제 금액
+                        });
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
 </html>

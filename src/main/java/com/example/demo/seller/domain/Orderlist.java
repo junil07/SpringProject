@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -20,8 +21,8 @@ public class Orderlist {
     @Column(name = "ORDERLIST_TPRICE")
     private int orderlistTprice;
 
-    @Column(name = "ORDERLIST_DATE")
-    private LocalDate orderlistDate;
+    @Column(name = "ORDERLIST_DATE",nullable = false)
+    private LocalDateTime orderlistDate = LocalDateTime.now();;
 
     @Column(name = "ORDERLIST_ADDRESS")
     private String orderlistAddress;
@@ -35,7 +36,7 @@ public class Orderlist {
     public Orderlist(){
 
     }
-    public Orderlist(String orderlistAddress, LocalDate orderlistDate, int orderlistTprice,
+    public Orderlist(String orderlistAddress, LocalDateTime orderlistDate, int orderlistTprice,
                      Buyer buyer){
         this.orderlistAddress = orderlistAddress;
         this.orderlistDate = orderlistDate;
@@ -59,11 +60,11 @@ public class Orderlist {
         this.orderlistTprice = orderlistTprice;
     }
 
-    public LocalDate getOrderlistDate() {
+    public LocalDateTime getOrderlistDate() {
         return orderlistDate;
     }
 
-    public void setOrderlistDate(LocalDate orderlistDate) {
+    public void setOrderlistDate(LocalDateTime orderlistDate) {
         this.orderlistDate = orderlistDate;
     }
 

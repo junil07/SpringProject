@@ -24,7 +24,7 @@
                                     <div class="mb-3">
                                         <label for="file" class="form-label">이미지 업로드</label>
                                         <input type="file" name="file" class="form-control" id="file" onchange="previewImage(event);">
-                                        <div id="file-text" class="form-text" th:field="${productImage.productImageName} + ${productImage.productImageExtension}"></div>
+                                        <div id="file-text" class="form-text" th:field="${productImage.productImageSname} + ${productImage.productImageExtension}"></div>
                                     </div>
                                     <div class="mb-3">
                                         <label for="productname" class="form-label">이름</label>

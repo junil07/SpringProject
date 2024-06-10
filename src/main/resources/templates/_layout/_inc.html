@@ -49,10 +49,18 @@
             </div>
             <div class="col-sm-9 col-md-9">
                 <ul class="util-menu">
-                    <li>
-                        <a href="login" class="util-login" title="로그인"></a>
-                        <span>로그인</span>
-                    </li>
+                    <div th:if="${buyerId==null}">
+                        <li>
+                            <a href="login" class="util-login" title="로그인"></a>
+                            <span>로그인</span>
+                        </li>
+                    </div>
+                    <div th:if="${buyerId!=null}">
+                        <li>
+                            <a href="logout" class="util-login" title="로그아웃"></a>
+                            <span>로그아웃</span>
+                        </li>
+                    </div>
                     <li>
                         <a href="register" class="util-register" title="회원가입"></a>
                         <span>회원가입</span>
@@ -60,6 +68,10 @@
                     <li>
                         <a href="/buyer/cart" class="util-cart" title="장바구니"></a>
                         <span>장바구니</span>
+                    </li>
+                    <li>
+                        <a href="/buyer/productBuyList" class="util-buyList" title="구매내역"></a>
+                        <span>구매내역</span>
                     </li>
                 </ul>
             </div>
@@ -90,7 +102,7 @@
                                             <a class="dropdown-item nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="${child.categoryName}"></a>
                                             <ul th:if="${child.children != null and child.children.size() > 0}" class="list-unstyled pl-3 dropmenu3" style="display:none;">
                                                 <li th:each="grandchild : ${child.children}">
-                                                    <a class="dropdown-item" href="#" th:text="${grandchild.categoryName}"></a>
+                                                    <a class="dropdown-item" th:href="@{'/buyer/productList/' + ${grandchild.categoryName}}" th:text="${grandchild.categoryName}"></a>
                                                 </li>
                                             </ul>
                                         </li>
