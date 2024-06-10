@@ -270,16 +270,17 @@ saveButton.addEventListener('click', function() {
         }
     });
 
-    //재고 하나 이상
-    const stockElements = document.querySelectorAll('.stockClass');
-    var num = 0;
-    stockElements.forEach(element => {
-            num++;
-        });
-    if(num === 0) {
-        alert('치수를 하나 이상 추가해주세요.');
-        event.preventDefault();
-    }
+//    //재고 하나 이상
+//    const stockElements = document.querySelectorAll('.stockClass');
+//    var num = 0;
+//    stockElements.forEach(element => {
+//            num++;
+//        });
+//    console.log(num);
+//    if(num === 0) {
+//        alert('치수를 하나 이상 추가해주세요.');
+//        event.preventDefault();
+//    }
 
     // 세 번째 카테고리 선택값 확인
     const selectedCategoryId = subSubCategorySelect.value;

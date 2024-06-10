@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ProductRelationService {
@@ -54,6 +53,27 @@ public class ProductRelationService {
     //code로 productRelation 하나 가져옴
     public ProductRelation getRelationProductByCode(String productRelationCode) {
         return productRelationRepository.findByProductRelationCode(productRelationCode);
+    }
+
+    //해당 상품과 연결된 연관상품 리스트 뽑기
+    public List<Product> getRPListProduct(long productId) {
+        //product 객체 불러옴
+        Product product = productService.getProduct(productId);
+        //product에 해당하는 연관상품 객체 불러옴
+        ProductRelation productRelation = productRelationRepository.findByProduct(product);
+        //이에 해당하는 연관상품 리스트 불러옴
+        List<ProductRelation> productRelationList = productRelationRepository.findByProductRelationOne(productRelation.getProductRelationOne());
+
+        //productRelation의 productId 뽑아내기
+        List<Product> productList = new ArrayList<>();
+        for(int i = 0; i < productRelationList.size(); i++) {
+            //해당 상품은 제외하고 출력
+            if(productRelationList.get(i).getProduct().getProductId() != product.getProductId()) {
+                Product converProduct = productRelationList.get(i).getProduct();
+                productList.add(converProduct);
+            }
+        }
+        return productList;
     }
 
     //연관상품 추가 & 수정- 코드 변경

@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -69,26 +70,17 @@ public class ProductImageService {
         productImageRepository.deleteById(productImage.getProductImageSname());
     }
 
-    //업데이트
-//    @Transactional
-//    public void updateProductImage(MultipartFile file, ProductImage productImage) {
-//        if (!file.isEmpty()) {
-//            productImage.setProductImageSname(productImage.getProductImageSname());
-//            productImage.setProduct(productImage.getProduct());
-//            String fileName = file.getOriginalFilename(); // 파일 이름 가져오기
-//            productImage.setProductImageSname(fileName);
-//            productImage.setProductImageExtension("."+getFileExtension(fileName)); // 파일 확장자명 가져오기
-//            productImage.setProductImageSize((int) file.getSize()); // 파일 크기 가져오기 (바이트 단위)
-//
-//            try{
-//                Path path = Paths.get("src/main/resources/static/assets/image/pMain" + File.separator + productImage.getProductImageSname() + productImage.getProductImageExtension());
-//                Files.write(path, file.getBytes());
-//                productImageRepository.save(productImage);
-//            } catch (IOException e) {
-//
-//            }
-//        }
-//    }
+    //product 리스트로 product 이미지 리스트 반환 (=연관상품 리스트 찾기)
+    public List<ProductImage> getProductImageList(List<Product> productList) {
+        List<ProductImage> productImageList = new ArrayList<>();
+
+        for(int i = 0; i < productList.size(); i++) {
+            Product product = productList.get(i);
+            ProductImage productImage = getProductImage(product);
+            productImageList.add(productImage);
+        }
+        return productImageList;
+    }
 
     private String getFileExtension(String fileName) {
         int dotIndex = fileName.lastIndexOf('.');
