@@ -24,9 +24,12 @@ public class OrderitemService {
         this.orderitemRepository = orderitemRepository;
     }
 
+    public List<Orderitem> getAllOrderItems() {
+        return orderitemRepository.findAll();
+    }
 
-    public Map<String, Integer> findDisBuyer(){
-        List<Object[]> resultsBuyer = orderitemRepository.findBuyerDate();
+    public Map<String, Integer> findDisBuyer(String userId){
+        List<Object[]> resultsBuyer = orderitemRepository.findBuyerDate(userId);
         Map<String, Integer> buyer = new HashMap<>();
         for(Object[] result: resultsBuyer){
             String date = result[0].toString();
@@ -35,19 +38,24 @@ public class OrderitemService {
         }
         return buyer;
     }
-    public Map<String, Integer> findTotalCount(){
-        List<Object[]> resultsCount = orderitemRepository.findCountDate();
+
+    public Map<String, Integer> findTotalCountByUserId(String userId) {
+        List<Object[]> resultsCount = orderitemRepository.findCountDateByUserId(userId);
         Map<String, Integer> count = new HashMap<>();
-        for(Object[] result: resultsCount){
-            String date = result[0].toString();
-            Integer totalCount = ((Number) result[1]).intValue();
-            count.put(date, totalCount);
+        for (Object[] result : resultsCount) {
+            try {
+                String date = result[0].toString();
+                Integer totalCount = ((Number) result[1]).intValue();
+                count.put(date, totalCount);
+            } catch (Exception e) {
+                logger.error("Error processing result: {}", Arrays.toString(result), e);
+            }
         }
         return count;
     }
 
-    public Map<String, Integer> getTotalPricePerDate() {
-        List<Object[]> resultsPrice = orderitemRepository.findTotalPricePerDate();
+    public Map<String, Integer> getTotalPricePerDate(String userId) {
+        List<Object[]> resultsPrice = orderitemRepository.findTotalPricePerDate(userId);
         Map<String, Integer> price = new HashMap<>();
         for (Object[] result : resultsPrice) {
             String date = result[0].toString();
@@ -57,8 +65,8 @@ public class OrderitemService {
         return price;
     }
 
-    public Map<String, Integer> countsellproduct(){
-        List<Object[]> resultssellproduct = orderitemRepository.findsellProduct();
+    public Map<String, Integer> countsellproduct(String userId){
+        List<Object[]> resultssellproduct = orderitemRepository.findsellProduct(userId);
         Map<String, Integer> product = new HashMap<>();
         for(Object[] result: resultssellproduct){
             String date = result[0].toString();
@@ -124,7 +132,8 @@ public class OrderitemService {
             Optional<Orderitem> optionalOrderitem = orderitemRepository.findById(orderItemDTO.getOrderitemId());
             if (optionalOrderitem.isPresent()) {
                 Orderitem orderitem = optionalOrderitem.get();
-                orderitem.setOrderitemDstatus("배송중"); // orderitemCase를 "정상처리"으로 변경
+                orderitem.setOrderitemDstatus("배송중");
+                orderitem.setOrderitemDate(LocalDate.now());
                 orderitemRepository.save(orderitem);
             } else {
                 throw new RuntimeException("Orderitem not found: " + orderItemDTO.getOrderitemId());
@@ -139,6 +148,7 @@ public class OrderitemService {
             if (optionalOrderitem.isPresent()) {
                 Orderitem orderitem = optionalOrderitem.get();
                 orderitem.setOrderitemDstatus("배송완료"); //
+                orderitem.setOrderitemDate(LocalDate.now());
                 orderitemRepository.save(orderitem);
             } else {
                 throw new RuntimeException("Orderitem not found: " + orderItemDTO.getOrderitemId());
@@ -196,6 +206,7 @@ public class OrderitemService {
             if (optionalOrderitem.isPresent()) {
                 Orderitem orderitem = optionalOrderitem.get();
                 orderitem.setOrderitemCase("반품수거중"); // orderitemCase를 "반품수거중"으로 변경
+                orderitem.setOrderitemDate(LocalDate.now());
                 orderitemRepository.save(orderitem);
             } else {
                 throw new RuntimeException("Orderitem not found: " + orderItemDTO.getOrderitemId());
@@ -210,6 +221,7 @@ public class OrderitemService {
             if (optionalOrderitem.isPresent()) {
                 Orderitem orderitem = optionalOrderitem.get();
                 orderitem.setOrderitemCase("반품완료"); // orderitemCase를 "반품완료"으로 변경
+                orderitem.setOrderitemDate(LocalDate.now());
                 orderitemRepository.save(orderitem);
             } else {
                 throw new RuntimeException("Orderitem not found: " + orderItemDTO.getOrderitemId());
@@ -224,6 +236,7 @@ public class OrderitemService {
             if (optionalOrderitem.isPresent()) {
                 Orderitem orderitem = optionalOrderitem.get();
                 orderitem.setOrderitemCase("정상처리"); // orderitemCase를 "반품완료"으로 변경
+                orderitem.setOrderitemDate(LocalDate.now());
                 orderitemRepository.save(orderitem);
             } else {
                 throw new RuntimeException("Orderitem not found: " + orderItemDTO.getOrderitemId());
@@ -239,6 +252,7 @@ public class OrderitemService {
             if (optionalOrderitem.isPresent()) {
                 Orderitem orderitem = optionalOrderitem.get();
                 orderitem.setOrderitemCase("교환수거중"); // orderitemCase를 "반품완료"으로 변경
+                orderitem.setOrderitemDate(LocalDate.now());
                 orderitemRepository.save(orderitem);
             } else {
                 throw new RuntimeException("Orderitem not found: " + orderItemDTO.getOrderitemId());
@@ -253,6 +267,7 @@ public class OrderitemService {
             if (optionalOrderitem.isPresent()) {
                 Orderitem orderitem = optionalOrderitem.get();
                 orderitem.setOrderitemCase("교환완료"); // orderitemCase를 "반품완료"으로 변경
+                orderitem.setOrderitemDate(LocalDate.now());
                 orderitemRepository.save(orderitem);
             } else {
                 throw new RuntimeException("Orderitem not found: " + orderItemDTO.getOrderitemId());
@@ -267,6 +282,7 @@ public class OrderitemService {
             if (optionalOrderitem.isPresent()) {
                 Orderitem orderitem = optionalOrderitem.get();
                 orderitem.setOrderitemCase("정상처리"); // orderitemCase를 "반품완료"으로 변경
+                orderitem.setOrderitemDate(LocalDate.now());
                 orderitemRepository.save(orderitem);
             } else {
                 throw new RuntimeException("Orderitem not found: " + orderItemDTO.getOrderitemId());
@@ -281,6 +297,7 @@ public class OrderitemService {
             if (optionalOrderitem.isPresent()) {
                 Orderitem orderitem = optionalOrderitem.get();
                 orderitem.setOrderitemCase("반품요청"); // orderitemCase를 "반품완료"으로 변경
+                orderitem.setOrderitemDate(LocalDate.now());
                 orderitemRepository.save(orderitem);
             } else {
                 throw new RuntimeException("Orderitem not found: " + orderItemDTO.getOrderitemId());

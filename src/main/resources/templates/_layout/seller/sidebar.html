@@ -24,11 +24,6 @@
 							<i class="bi bi-circle"></i><span>연관상품 관리</span>
 						</a>
 					</li>
-					<li>
-						<a th:href="@{/seller/pm/deliver}">
-							<i class="bi bi-circle"></i><span>배송정보 관리</span>
-						</a>
-					</li>
 				</ul>
 			</li><!-- End Components Nav -->
 			<!-- 상품 관리 사이드바 끝-->
@@ -84,48 +79,54 @@
 			</li><!-- End Forms Nav -->
 			<!-- 판매 관리 사이드바 끝-->
 			
-			<!-- 정산 관리 사이드바 시작-->
-			<li class="nav-item">
-				<a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-					<i class="bi bi-layout-text-window-reverse"></i><span>정산관리</span><i
-						class="bi bi-chevron-down ms-auto"></i>
-				</a>
-				<ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-					<li>
-						<a th:href="@{/seller/so/calculate}">
-							<i class="bi bi-circle"></i><span>정산 내역</span>
-						</a>
-					</li>
-					<li>
-						<a th:href="@{/seller/so/dcalculate}">
-							<i class="bi bi-circle"></i><span>항목별 정산 내역</span>
-						</a>
-					</li>
-				</ul>
-			</li><!-- End Tables Nav -->
-			<!-- 정산 관리 사이드바 끝-->
+<!--			&lt;!&ndash; 정산 관리 사이드바 시작&ndash;&gt;-->
+<!--			<li class="nav-item">-->
+<!--				<a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">-->
+<!--					<i class="bi bi-layout-text-window-reverse"></i><span>정산관리</span><i-->
+<!--						class="bi bi-chevron-down ms-auto"></i>-->
+<!--				</a>-->
+<!--				<ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">-->
+<!--					<li>-->
+<!--						<a th:href="@{/seller/so/calculate}">-->
+<!--							<i class="bi bi-circle"></i><span>정산 내역</span>-->
+<!--						</a>-->
+<!--					</li>-->
+<!--					<li>-->
+<!--						<a th:href="@{/seller/so/dcalculate}">-->
+<!--							<i class="bi bi-circle"></i><span>항목별 정산 내역</span>-->
+<!--						</a>-->
+<!--					</li>-->
+<!--				</ul>-->
+<!--			</li>&lt;!&ndash; End Tables Nav &ndash;&gt;-->
+<!--			&lt;!&ndash; 정산 관리 사이드바 끝&ndash;&gt;-->
 			
 			<!-- 문의/리뷰 관리 사이드바 시작-->
+<!--			<li class="nav-item">-->
+<!--				<a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">-->
+<!--					<i class="bi bi-bar-chart"></i><span>문의/리뷰관리</span><i class="bi bi-chevron-down ms-auto"></i>-->
+<!--				</a>-->
+<!--				<ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">-->
+<!--					<li class="nav-heading">문의 관리</li>-->
+<!--					<li>-->
+<!--						<a th:href="@{/seller/ir/inquiries}">-->
+<!--							<i class="bi bi-circle"></i><span>문의관리</span>-->
+<!--						</a>-->
+<!--					</li>-->
+<!--					<li class="nav-heading">리뷰 관리</li>-->
+<!--					<li>-->
+<!--						<a th:href="@{/seller/ir/reviews}">-->
+<!--							<i class="bi bi-circle"></i><span>리뷰관리</span>-->
+<!--						</a>-->
+<!--					</li>-->
+<!--				</ul>-->
+<!--			</li>&lt;!&ndash; End Charts Nav &ndash;&gt;-->
+<!--			&lt;!&ndash; 문의/리뷰 관리 사이드바 끝&ndash;&gt;-->
 			<li class="nav-item">
-				<a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
-					<i class="bi bi-bar-chart"></i><span>문의/리뷰관리</span><i class="bi bi-chevron-down ms-auto"></i>
+				<a class="nav-link collapsed" th:href="@{/seller/ir/reviews}">
+					<i class="bi bi-bar-chart"></i>
+					<span>리뷰관리</span>
 				</a>
-				<ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-					<li class="nav-heading">문의 관리</li>
-					<li>
-						<a th:href="@{/seller/ir/inquiries}">
-							<i class="bi bi-circle"></i><span>문의관리</span>
-						</a>
-					</li>
-					<li class="nav-heading">리뷰 관리</li>
-					<li>
-						<a th:href="@{/seller/ir/reviews}">
-							<i class="bi bi-circle"></i><span>리뷰관리</span>
-						</a>
-					</li>
-				</ul>
-			</li><!-- End Charts Nav -->
-			<!-- 문의/리뷰 관리 사이드바 끝-->
+			</li><!-- End Profile Page Nav -->
 
 			<li class="nav-heading">Pages</li>
 
@@ -145,9 +146,9 @@
 
 			<li class="nav-item">
 				<!-- 로그아웃으로 변경 및 로그아웃 작동-->
-				<a class="nav-link collapsed" href="/seller/login">
+				<a class="nav-link collapsed" href="/seller/logout">
 					<i class="bi bi-box-arrow-in-right"></i>
-					<span>Login</span>
+					<span>Logout</span>
 				</a>
 			</li><!-- End Login Page Nav -->
 		</ul>

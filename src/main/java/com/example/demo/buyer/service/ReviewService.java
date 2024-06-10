@@ -5,6 +5,7 @@ import com.example.demo.buyer.entity.Review;
 import com.example.demo.buyer.entity.ReviewImage;
 import com.example.demo.buyer.repository.ReviewImageRepository;
 import com.example.demo.buyer.repository.ReviewRepository;
+import com.example.demo.seller.domain.Product;
 import com.example.demo.seller.repository.BuyerRepository;
 import com.example.demo.seller.service.ProductService;
 import jakarta.transaction.Transactional;
@@ -92,5 +93,10 @@ public class ReviewService {
     private String getFileExtension(String fileName) {
         int dotIndex = fileName.lastIndexOf('.');
         return (dotIndex == -1) ? "" : fileName.substring(dotIndex + 1);
+    }
+
+    ////박승섭 판매자 리뷰 들고오기
+    public List<Review> getreivewlist(){
+        return reviewRepository.findAll();
     }
 }

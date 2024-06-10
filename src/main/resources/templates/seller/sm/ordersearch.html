@@ -10,10 +10,31 @@
 		<section>
 			<div class="container-fluid px-4">
 				<h1 class="mt-4">주문통합검색</h1>
-				<ol class="breadcrumb mb-4">
-					<li class="breadcrumb-item"><a href="index">Dashboard</a></li>
-					<li class="breadcrumb-item active">Tables</li>
-				</ol>
+				<section class="section dashboard">
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="row">
+								<!-- Sales Card -->
+								<div class="col-xxl-12 col-md-12">
+									<div class="card info-card sales-card">
+										<div class="card-body">
+											<div>
+												<h5 class="card-title fw-bold border-bottom" style="padding-top: 10px; margin-bottom:0px;">
+													스마트스토어의 모든 주문건을 조회할 수 있는 통합 주문조회 메뉴입니다.
+												</h5>
+												<ul class="mb-3 mt-3" style="list-style-type:disc;">
+													<li class="mb-1">주문조회 기간은 시작일~종료일을 최대 1년 범위로 조회가 가능하며, 상세조건을 설정하지 않은 경우 최대 1개월까지 조회 가능합니다.</li>
+													<li class="mb-1">주문건을 선택하시면 주문목록 하단에 주문상태에 따라 처리 가능한 버튼이 활성화 됩니다.(클릭 시 관련 메뉴로 이동하여 주문건 처리 가능)</li>
+													<li class="mb-1">해당 메뉴에서는 모든 상태의 주문건 조회만 가능하며, 주문확인/상품발송/클레임 처리는 대상 메뉴들에서 진행하실 수 있습니다.</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</div><!-- End Sales Card -->
+							</div>
+						</div>
+					</div>
+				</section>
 				<div class="card mb-4 d-flex">
 					<div class="card-body border-bottom">조회기간</div>
 					<div class="card-body">
@@ -59,37 +80,44 @@
 					</div>
 				</div>
 				<div class="card mb-4" id="listtable">
-					<div class="card-header">
+					<div class="card-header d-flex">
 						<i class="fas fa-table me-1">
-							목록 (총<span th:text="${orderitem.size()}"></span> 개)
+							목록 (총<span th:text="${privateorder.size()}"></span> 개)
 						</i>
+						<div style="margin-left:auto;">
+							<button type="button" class="btn btn-info btn-sm btn-no-radius" id="downloadExcel" style="margin-left:5px;">엑셀 다운로드</button>
+						</div>
 					</div>
 					<div class="card-body">
 						<table id="datatablesSimple" class="table table-striped">
 							<thead>
 							<tr>
-								<th>목록</th>
-								<th style="width:8%;">주문번호</th>
-								<th>상품번호</th>
+								<th style="width:5%;">목록</th>
+								<th style="width:8%;">상품주문번호</th>
+								<th>상품코드</th>
 								<th>상품명</th>
+								<th>개수</th>
 								<th>가격</th>
 								<th>주문일시</th>
 								<th>주문상태</th>
 								<th>배송상태</th>
+								<th>처리상태</th>
 							</tr>
 							</thead>
 							<tbody>
 								<!-- Thymeleaf 코드로 상품 목록을 반복하여 출력합니다 -->
-								<tr th:each="o, stat : ${orderitem}" id="orderlist" class="orderitem-row"
+								<tr th:each="o, stat : ${privateorder}" id="orderlist" class="orderitem-row"
 									th:data-orderitem-id="${o.orderitemId}">
 									<td th:text="${stat.count}"></td>
-									<td th:text="${o.orderitemId}"></td>
-									<td th:text="${o.product.productId}"></td>
+									<td th:text="${o.orderlist.orderlistId}"></td>
+									<td th:text="${o.product.productCode}"></td>
 									<td th:text="${o.product.productName}"></td>
+									<td th:text="${o.orderitemPcount}"></td>
 									<td th:text="${o.product.productPrice}"></td>
 									<td th:text="${o.orderlist.orderlistDate}"></td>
 									<td th:text="${o.orderitemPstatus}"></td>
 									<td th:text="${o.orderitemDstatus}"></td>
+									<td th:text="${o.orderitemCase}"></td>
 								</tr>
 							</tbody>
 						</table>
@@ -222,6 +250,52 @@
         });
 	</script>
 
+	<!--테이블 엑셀 다운로드-->
+	<script>
+		document.getElementById('downloadExcel').addEventListener('click', function() {
+            // 현재 페이지 데이터 수집
+            var tableRows = document.querySelectorAll('#datatablesSimple tbody tr');
+            var rowData = Array.from(tableRows).map(function(row) {
+                return {
+                    orderlistId: row.cells[1].innerText,
+                    productCode: row.cells[2].innerText,
+                    productName: row.cells[3].innerText,
+                    orderitemPcount: row.cells[4].innerText,
+                    productPrice: row.cells[5].innerText,
+                    orderlistDate: row.cells[6].innerText,
+                    orderitemPstatus: row.cells[7].innerText,
+                    orderitemDstatus: row.cells[8].innerText,
+                    orderitemCase: row.cells[9].innerText
+                };
+            });
+
+            // 서버로 데이터 전송
+            fetch('/api/ordersearch/download', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(rowData)
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                var url = window.URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url;
+
+                // 파일명에 오늘 날짜를 포함시킴
+				const today = new Date();
+				const formattedDate = today.toISOString().split('T')[0];
+				const fileName = formattedDate + " 주문통합.xlsx";
+
+                a.download = fileName;
+                document.body.appendChild(a); // Firefox에서 필요
+                a.click();
+                a.remove();
+            })
+            .catch(error => console.error('Error downloading the file:', error));
+        });
+	</script>
 
 	<style>
 		input[type="radio"] {

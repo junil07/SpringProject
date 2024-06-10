@@ -9,10 +9,6 @@
 		<section>
 			<div class="container-fluid px-4">
 				<h1 class="mt-4">반품관리</h1>
-				<ol class="breadcrumb mb-4">
-					<li class="breadcrumb-item"><a href="index">Dashboard</a></li>
-					<li class="breadcrumb-item active">Tables</li>
-				</ol>
 				<section class="section dashboard">
 					<div class="row">
 						<div class="col-lg-12">
@@ -119,6 +115,7 @@
 							<button type="button" class="btn btn-info btn-sm btn-no-radius" id="preturn">반품처리</button>
 							<button type="button" class="btn btn-info btn-sm btn-no-radius" id="returnsucess" style="margin-left:5px;">반품 완료처리</button>
 							<button type="button" class="btn btn-info btn-sm btn-no-radius" id="returncancel" style="margin-left:5px;">반품 거부(철회)처리</button>
+							<button type="button" class="btn btn-info btn-sm btn-no-radius" id="downloadExcel" style="margin-left:auto;">엑셀 다운로드</button>
 						</div>
 					</div>
 					<div class="card-body">
@@ -127,7 +124,7 @@
 							<tr>
 								<th data-sortable="false" class="text-center"><input type="checkbox" id="allcheck"></th>
 								<th>상품주문번호</th>
-								<th>제품ID</th>
+								<th>제품CODE</th>
 								<th>제품명</th>
 								<th>제품가격</th>
 								<th>주문일</th>
@@ -141,7 +138,7 @@
 							<tr th:each="o, stat : ${orderitem}" id="orderlist" class="orderitem-row" th:data-orderitem-id="${o.orderitemId}">
 								<td class="text-center"><input type="checkbox" class="row-checkbox"></td>
 								<td th:text="${o.orderitemId}"></td>
-								<td th:text="${o.product.productId}"></td>
+								<td th:text="${o.product.productCode}"></td>
 								<td th:text="${o.product.productName}"></td>
 								<td th:text="${o.product.productPrice}"></td>
 								<td th:text="${o.orderlist.orderlistDate}"></td>
@@ -311,6 +308,11 @@
 	<script>
 		document.getElementById('preturn').addEventListener('click', function() {
 			var checkedRows = document.querySelectorAll('.row-checkbox:checked');
+			// 체크된 값이 없으면 경고창을 띄움
+				if (checkedRows.length === 0) {
+					alert('선택된 항목이 없습니다.');
+					return;
+				}
 			var data = [];
 			var hasReturnOrder = false;
 
@@ -343,7 +345,7 @@
 						console.log('전송성공');
 						console.log(data);
 						// 데이터 전송 성공 후 테이블 업데이트
-						updatepreutrn(checkedRows, '반품수거중');
+						updatepreutrn(checkedRows);
 					} else {
 						console.error('Failed to send data');
 					}
@@ -352,9 +354,12 @@
 			xhr.send(JSON.stringify(data));
 		});
 		function  updatepreutrn(checkedRows){
-		  checkedRows.forEach(function(rowCheckbox) {
+			const today = formatDate(new Date());
+		  	checkedRows.forEach(function(rowCheckbox) {
 				var row = rowCheckbox.closest('tr');
 				var statusCell = row.querySelector('td:nth-child(9)');
+				var statusDate = row.querySelector('td:nth-child(8)');
+				statusDate.textContent = today;
 				statusCell.textContent = '반품수거중';
 			});
 
@@ -373,6 +378,11 @@
 	<script>
 		document.getElementById('returnsucess').addEventListener('click', function() {
 			var checkedRows = document.querySelectorAll('.row-checkbox:checked');
+			// 체크된 값이 없으면 경고창을 띄움
+				if (checkedRows.length === 0) {
+					alert('선택된 항목이 없습니다.');
+					return;
+				}
 			var data = [];
 			var hasReturnOrder = false;
 
@@ -405,7 +415,7 @@
 						console.log('전송성공');
 						console.log(data);
 						// 데이터 전송 성공 후 테이블 업데이트
-						updatesucess(checkedRows, '반품완료');
+						updatesucess(checkedRows);
 					} else {
 						console.error('Failed to send data');
 					}
@@ -414,9 +424,12 @@
 			xhr.send(JSON.stringify(data));
 		});
 		function  updatesucess(checkedRows){
+		const today = formatDate(new Date());
 		  checkedRows.forEach(function(rowCheckbox) {
 				var row = rowCheckbox.closest('tr');
 				var statusCell = row.querySelector('td:nth-child(9)');
+				var statusDate = row.querySelector('td:nth-child(8)');
+				statusDate.textContent = today;
 				statusCell.textContent = '반품완료';
 			});
 
@@ -435,14 +448,30 @@
 	<script>
 		document.getElementById('returncancel').addEventListener('click', function() {
 			var checkedRows = document.querySelectorAll('.row-checkbox:checked');
+			// 체크된 값이 없으면 경고창을 띄움
+			if (checkedRows.length === 0) {
+				alert('선택된 항목이 없습니다.');
+				return;
+			}
 			var data = [];
+			var hasReturnOrder = false;
 
 			checkedRows.forEach(function(rowCheckbox) {
 				var row = rowCheckbox.closest('tr');
 				var orderitemId = row.querySelector('td:nth-child(2)').textContent;
-				data.push({ "orderitemId": orderitemId });
-				console.log(data);
+				var status = row.querySelector('td:nth-child(9)').textContent;
+				if (status === '반품완료') {
+					hasReturnOrder = true;
+				} else {
+					data.push({ "orderitemId": orderitemId });
+					console.log(data);
+				}
 			});
+
+			if (hasReturnOrder) {
+				alert('이미 반품이 완료된 항목이 있습니다.');
+				return;
+			}
 
 			// AJAX로 데이터를 서버로 전송
 			var xhr = new XMLHttpRequest();
@@ -479,6 +508,52 @@
 			alert('반품이 거부(철회)되었습니다.');
 			reloadSection();
 		}
+	</script>
+
+	<!--테이블 엑셀 다운로드-->
+	<script>
+		document.getElementById('downloadExcel').addEventListener('click', function() {
+            // 현재 페이지 데이터 수집
+            var tableRows = document.querySelectorAll('#datatablesSimple tbody tr');
+            var rowData = Array.from(tableRows).map(function(row) {
+                return {
+                    orderitemId: row.cells[1].innerText,
+                    productCode: row.cells[2].innerText,
+                    productName: row.cells[3].innerText,
+                    productPrice: row.cells[4].innerText,
+                    orderlistDate: row.cells[5].innerText,
+                    orderitemDstatus: row.cells[6].innerText,
+                    orderitemDate: row.cells[7].innerText,
+                    orderitemCase: row.cells[8].innerText
+                };
+            });
+
+            // 서버로 데이터 전송
+            fetch('/api/pereturn/download', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(rowData)
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                var url = window.URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url;
+
+                // 파일명에 오늘 날짜를 포함시킴
+				const today = new Date();
+				const formattedDate = today.toISOString().split('T')[0];
+				const fileName = formattedDate + " 반품내역.xlsx";
+
+                a.download = fileName;
+                document.body.appendChild(a); // Firefox에서 필요
+                a.click();
+                a.remove();
+            })
+            .catch(error => console.error('Error downloading the file:', error));
+        });
 	</script>
 	<style>
 		input[type="radio"] {

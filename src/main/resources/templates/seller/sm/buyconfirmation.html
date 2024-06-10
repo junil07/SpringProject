@@ -78,8 +78,11 @@
 					</div>
 				</div>
 				<div class="card mb-4" id="listtable">
-					<div class="card-header">
+					<div class="card-header d-flex">
 						<div class="fas fa-table me-1">목록 (총<span id="itemCountSpan" th:text="${orderitem.size()}"></span> 개)</div>
+						<div style="margin-left:auto">
+							<button type="button" class="btn btn-info btn-sm btn-no-radius" id="downloadExcel" style="margin-left:auto;">엑셀 다운로드</button>
+						</div>
 					</div>
 					<div class="card-body">
 						<table id="datatablesSimple" class="table table-striped">
@@ -87,7 +90,7 @@
 							<tr>
 								<th data-sortable="false"></th>
 								<th>상품주문번호</th>
-								<th>주문번호</th>
+								<th>통합주문번호</th>
 								<th>구매확정일</th>
 								<th>제품CODE</th>
 								<th>제품명</th>
@@ -259,7 +262,51 @@
             }
         });
 	</script>
+	<!--테이블 엑셀 다운로드-->
+	<script>
+		document.getElementById('downloadExcel').addEventListener('click', function() {
+            // 현재 페이지 데이터 수집
+            var tableRows = document.querySelectorAll('#datatablesSimple tbody tr');
+            var rowData = Array.from(tableRows).map(function(row) {
+                return {
+                    orderitemId: row.cells[1].innerText,
+                    orderlistId: row.cells[2].innerText,
+                    orderitemDate: row.cells[3].innerText,
+                    productCode: row.cells[4].innerText,
+                    productName: row.cells[5].innerText,
+                    productPrice: row.cells[6].innerText,
+                    buyerId: row.cells[7].innerText,
+                    buyerName: row.cells[8].innerText
+                };
+            });
 
+            // 서버로 데이터 전송
+            fetch('/api/buyconfirmation/download', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(rowData)
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                var url = window.URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url;
+
+                // 파일명에 오늘 날짜를 포함시킴
+				const today = new Date();
+				const formattedDate = today.toISOString().split('T')[0];
+				const fileName = formattedDate + " 구매확정내역.xlsx";
+
+                a.download = fileName;
+                document.body.appendChild(a); // Firefox에서 필요
+                a.click();
+                a.remove();
+            })
+            .catch(error => console.error('Error downloading the file:', error));
+        });
+	</script>
 	<style>
 		input[type="radio"] {
             display: none;

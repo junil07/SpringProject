@@ -3,15 +3,20 @@ package com.example.demo.admin.service;
 import com.example.demo.admin.Entity.Buyer;
 import com.example.demo.admin.Entity.Seller;
 import com.example.demo.admin.repository.SellerRepository1;
+import com.example.demo.seller.DTO.OrderitemDTO;
+import com.example.demo.seller.DTO.SellerDTO;
+import com.example.demo.seller.domain.Orderitem;
 import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SellerServiceImple implements SellerService {
@@ -175,6 +180,44 @@ public class SellerServiceImple implements SellerService {
 //            sellerRepository1.save(test);
         }
         return true;
+    }
+
+    //박승섭 추가내용
+    @Override
+    public List<Seller> getSellersList(String sellerId) {
+        return sellerRepository1.findBySellerId(sellerId);
+    }
+
+    public void updateMypage(String userId, List<SellerDTO> sellers) {
+        try {
+            System.out.println("Updating mypage for userId: " + userId); // 로그 추가
+            System.out.println("SellerDTOs: " + sellers); // 로그 추가
+
+            List<Seller> sellerList = sellerRepository1.findBySellerId(userId);
+
+            if (!sellerList.isEmpty()) {
+                for (SellerDTO sellerDTO : sellers) {
+                    Seller seller = sellerList.stream()
+                            .filter(s -> s.getSellerId().equals(userId))
+                            .findFirst()
+                            .orElseThrow(() -> new RuntimeException("해당 셀러를 찾을 수 없습니다."));
+
+                    // SellerDTO의 정보를 사용하여 기존 셀러 정보를 업데이트합니다.
+                    seller.setSellerAddress(sellerDTO.getSellerAddress());
+                    seller.setSellerPhoneNum(sellerDTO.getSellerPhonenum());
+                    seller.setSellerEmail(sellerDTO.getSellerEmail());
+                    // 필요에 따라 다른 필드들도 업데이트합니다.
+
+                    // 업데이트된 셀러 정보를 저장합니다.
+                    sellerRepository1.save(seller);
+                }
+            } else {
+                throw new RuntimeException("해당 셀러를 찾을 수 없습니다.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("업데이트 중 오류가 발생했습니다: " + e.getMessage());
+        }
     }
 
 }

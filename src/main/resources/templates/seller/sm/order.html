@@ -9,10 +9,6 @@
 		<section>
 			<div class="container-fluid px-4">
 				<h1 class="mt-4">배송(주문)확인/발송관리</h1>
-				<ol class="breadcrumb mb-4">
-					<li class="breadcrumb-item"><a href="index">Dashboard</a></li>
-					<li class="breadcrumb-item active">Tables</li>
-				</ol>
 				<section class="section dashboard">
 					<div class="row">
 						<div class="col-lg-12">
@@ -34,7 +30,7 @@
 												<section class="col-lg-12 d-flex mt-3">
 													<div class="col-xxl-3 col-md-3 d-flex">
 														<div class="col-xxl-2 col-md-2 card-icon rounded-circle d-flex align-items-center justify-content-center">
-															<i class="bi bi-bag-x"></i>
+															<i class="bi bi-cart-check"></i>
 														</div>
 														<ul class="col-xxl-8 col-md-8 list-group border-0 mt-1">
 															<li class="list-group-item border-0">
@@ -56,7 +52,7 @@
 													</div>
 													<div class="col-xxl-3 col-md-3 d-flex">
 														<div class="col-xxl-2 col-md-2 card-icon rounded-circle d-flex align-items-center justify-content-center">
-															<i class="bi bi-truck"></i>
+															<i class="bi bi-box2"></i>
 														</div>
 														<ul class="col-xxl-8 col-md-8 list-group border-0 mt-1">
 															<li class="list-group-item border-0">
@@ -101,32 +97,34 @@
 					</div>
 				</div>
 				<div class="card mb-4" id="listtable">
-					<div class="card-header">
+					<div class="card-header d-flex">
 						<div class="fas fa-table me-1">목록 (총<span id="itemCountSpan" th:text="${orderitem.size()}"></span> 개)</div>
+						<div style="margin-left:auto">
+							<button type="button" class="btn btn-info btn-sm btn-no-radius" id="downloadExcel" style="margin-left:auto;">엑셀 다운로드</button>
+						</div>
 					</div>
 					<div class="card-body">
 						<table id="datatablesSimple" class="table table-striped">
 							<thead>
 							<tr>
-								<th data-sortable="false"></th>
 								<th>상품주문번호</th>
-								<th>주문번호</th>
+								<th>통합주문번호</th>
 								<th>구매자이름</th>
 								<th>구매자ID</th>
 								<th>제품CODE</th>
 								<th>제품명</th>
 								<th>제품가격</th>
-								<th>결제상황</th>
 								<th>주문일</th>
+								<th>결제상태</th>
 								<th>배송상태</th>
 								<th>주문처리일</th>
 								<th>주소</th>
+								<!--<th>세부주소<th>-->
 							</tr>
 							</thead>
 							<tbody>
 							<!--반품요청, 반품지연, 반품승인, 반품-->
 							<tr th:each="o, stat : ${orderitem}" id="orderlist" class="orderitem-row" th:data-orderitem-id="${o.orderitemId}">
-								<td ></td>
 								<td th:text="${o.orderitemId}" style="width:10%"></td>
 								<td th:text="${o.orderlist.orderlistId}"></td>
 								<td th:text="${o.orderlist.buyer.buyerName}"></td>
@@ -286,5 +284,54 @@
             border-radius: 0 !important;
         }
 	</style>
+	<!--테이블 엑셀 다운로드-->
+	<script>
+		document.getElementById('downloadExcel').addEventListener('click', function() {
+            // 현재 페이지 데이터 수집
+            var tableRows = document.querySelectorAll('#datatablesSimple tbody tr');
+            var rowData = Array.from(tableRows).map(function(row) {
+                return {
+                    orderitemId: row.cells[0].innerText,
+                    orderlistId: row.cells[1].innerText,
+                    buyerName: row.cells[2].innerText,
+                    buyerId: row.cells[3].innerText,
+                    productCode: row.cells[4].innerText,
+                    productName: row.cells[5].innerText,
+                    productPrice: row.cells[6].innerText,
+                    orderlistDate: row.cells[7].innerText,
+                    orderitemPstatus: row.cells[8].innerText,
+                    orderitemDstatus: row.cells[9].innerText,
+                    orderitemDate: row.cells[10].innerText,
+                    orderlistAddress: row.cells[11].innerText
+                };
+            });
+
+            // 서버로 데이터 전송
+            fetch('/api/order/download', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(rowData)
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                var url = window.URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url;
+
+                // 파일명에 오늘 날짜를 포함시킴
+				const today = new Date();
+				const formattedDate = today.toISOString().split('T')[0];
+				const fileName = formattedDate + " 배송확인.xlsx";
+
+                a.download = fileName;
+                document.body.appendChild(a); // Firefox에서 필요
+                a.click();
+                a.remove();
+            })
+            .catch(error => console.error('Error downloading the file:', error));
+        });
+	</script>
 </th:block>
 </html>
