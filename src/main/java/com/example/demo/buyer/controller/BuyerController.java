@@ -135,6 +135,10 @@ public class BuyerController {
 		model.addAttribute("productSize", productSize);
 		model.addAttribute("stockList", stockList);
 		model.addAttribute("reviewList", reviewList);
+
+
+
+		////////////여기서 하면됨!!!!!!!!!111
 		return "buyer/product_detail";
 	}
 

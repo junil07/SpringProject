@@ -56,7 +56,7 @@ public class ProductImageService {
     }
 
     //삭제
-    public void delProductImage(String pk, ProductImage productImage) {
+    public void delProductImage(ProductImage productImage) {
         //파일 삭제
         File file = new File("src/main/resources/static/assets/image/pMain" + File.separator + productImage.getProductImageSname() + productImage.getProductImageExtension());
         if (file.delete()) {
@@ -66,7 +66,7 @@ public class ProductImageService {
         }
 
         //DB 삭제
-        productImageRepository.deleteById(pk);
+        productImageRepository.deleteById(productImage.getProductImageSname());
     }
 
     //업데이트
