@@ -3,9 +3,9 @@ package com.example.demo.seller.service;
 import java.util.Arrays;
 import java.util.List;
 
-import com.example.demo.buyer.DTO.StockDTO;
-import com.example.demo.buyer.entity.Stock;
 import com.example.demo.seller.DTO.ProductDetailDTO;
+import com.example.demo.seller.domain.ProductImage;
+import com.example.demo.seller.repository.ProductImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +19,7 @@ import com.example.demo.seller.repository.Product_detailRepository;
 import jakarta.transaction.Transactional;
 
 @Service
+@Transactional
 public class ProductService{
 
     private final ProductRepository productRepository;
@@ -34,9 +35,11 @@ public class ProductService{
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private ProductImageRepository productImageRepository;
 //    @Override
-    public List<Product> getProductList() {
-        return productRepository.findAll();
+    public List<Product> getProductList(String sellerId) {
+        return productRepository.findBySellerNameContains(sellerId);
     }
 
     //상품 하나 조회
@@ -44,8 +47,13 @@ public class ProductService{
         return productRepository.findByProductId(productId);
     }
 
+    //상품 삭제
+    public void delProduct(long productId) {
+        productRepository.deleteById(productId);
+    }
+
     //상품 등록할때 pk 조회
-    public Product getProductPK(String productCode) {
+    public Product getProductByCode(String productCode) {
         return productRepository.findByProductCode(productCode);
     }
 
@@ -76,6 +84,12 @@ public class ProductService{
         product_detailRepository.save(productDetail);
     }
 
+    //상품코드 생성
+    public String getCode(String sellerId) {
+        long fkNum = productRepository.findMaxPrimaryKey() + 1;
+        return "N" + fkNum + "-" + sellerId;
+    }
+
     private Product CToEProduct(ProductDTO productDTO) {
         Product product = new Product();
 
@@ -89,7 +103,7 @@ public class ProductService{
         product.setProductActivation(productDTO.getProductActivation());
 
         // 나머지 필드 설정 (Seller, Category 등)
-        product.setSeller(sellerService.getSeller("xx"));
+        product.setSeller(sellerService.getSeller(productDTO.getSellerId()));
         product.setCategory(categoryService.getCategory(productDTO.getCategoryId()));
         return product;
     }
@@ -151,20 +165,37 @@ public class ProductService{
         return productDetailDTO;
     }
 
-    private String generateUniqueId(String seller, String id) {
-        //중복방지 예외처리 할 것
-        seller = "xx";
-        return seller + id;
-    }
-
+    //리스트로 변경
     private List<String> CToL(String hashtag) {
         return Arrays.asList(hashtag.split(","));
     }
 
+    //문자열로 변경
     private String CToS(List<String> hashtag) {
         return String.join(",", hashtag);
     }
 
+    public List<Product> getProductsByCategoryName(String categoryName) {
+        return productRepository.findByCategory_CategoryName(categoryName);
+    }
 
+    public List<ProductImage> getProductImagesByCategoryName(String categoryName) {
+        return productImageRepository.findByProduct_Category_CategoryName(categoryName);
+      
+    //판매자 아이디 가져오기
+    private String getSellerId(String origin) {
 
+            String delimiter = "-";
+            // 특정 문자(-) 이후의 문자열 추출
+            return getStringAfterDelimiter(origin, delimiter);
+    }
+
+    private static String getStringAfterDelimiter (String text, String delimiter){
+        int index = text.indexOf(delimiter);
+        if (index != -1 && index + delimiter.length() < text.length()) {
+            return text.substring(index + delimiter.length());
+        }
+        System.out.println("Delimiter not found, or delimiter at the end of the string.");
+        return "";
+    }
 }
