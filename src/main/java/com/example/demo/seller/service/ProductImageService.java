@@ -46,7 +46,7 @@ public class ProductImageService {
             productImage.setProductImageSize((int) file.getSize()); // 파일 크기 가져오기 (바이트 단위)
 
             try{
-                Path path = Paths.get("src/main/resources/static/assets/image/reviewImage" + File.separator + productImage.getProductImageSname() + productImage.getProductImageExtension());
+                Path path = Paths.get("src/main/resources/static/assets/image/pMain" + File.separator + productImage.getProductImageSname() + productImage.getProductImageExtension());
                 Files.write(path, file.getBytes());
                 productImageRepository.save(productImage);
             } catch (IOException e) {
@@ -56,7 +56,7 @@ public class ProductImageService {
     }
 
     //삭제
-    public void delProductImage(String pk, ProductImage productImage) {
+    public void delProductImage(ProductImage productImage) {
         //파일 삭제
         File file = new File("src/main/resources/static/assets/image/pMain" + File.separator + productImage.getProductImageSname() + productImage.getProductImageExtension());
         if (file.delete()) {
@@ -66,7 +66,7 @@ public class ProductImageService {
         }
 
         //DB 삭제
-        productImageRepository.deleteById(pk);
+        productImageRepository.deleteById(productImage.getProductImageSname());
     }
 
     //업데이트

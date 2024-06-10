@@ -1,20 +1,241 @@
-<html layout:decorate="~{_layout/seller/index}">
-<!--
-<th:block layout:fragment="pageHead">
-	<title th:text="${pageName}"></title>
-</th:block>
--->
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml"
+	  layout:decorate="~{_layout/seller/index}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <th:block layout:fragment="pageContent">
 	<main id="main" class="main">
-		<div class="pagetitle">
-			<h1>Dashboard</h1>
-			<nav>
-				<ol class="breadcrumb">
-					<li class="breadcrumb-item"><a href="index">Home</a></li>
-					<li class="breadcrumb-item active">Dashboard</li>
-				</ol>
-			</nav>
-		</div><!-- End Page Title -->
-	</main><!-- End #main -->
+		<div class="container-fluid px-4">
+			<h1 class="mt-4">연관상품 관리</h1>
+			<ol class="breadcrumb mb-4">
+				<li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+				<li class="breadcrumb-item active">Tables</li>
+			</ol>
+			<form id="relationForm" method="post" action="/relationProduct" th:action="@{relationProduct}" enctype="multipart/form-data">
+				<input type="hidden" id="relationList" name="relationList" value="">
+				<input type="hidden" id="relationNum" name="relationNum" value="">
+				<div class="card mb-4">
+					<div class="card-body">
+						<div class="input-group mb-3">
+							<input type="text" id="relationName" name="relationName" style="width: 50%;" class="form-control" placeholder="연관상품명 입력" aria-describedby="button-addon2">
+							<button class="btn btn-outline-secondary" type="submit" id="relationBtn" name="relationBtn">저장</button>
+							<button class="btn btn-outline-secondary" type="submit" id="relationDelBtn" name="relationDelBtn">삭제</button>
+							<button class="btn btn-outline-secondary" id="relationClear" name="relationClear" type="button">테이블 비우기</button>
+						</div>
+						<div class="card mb-4">
+							<div class="card-header">
+								<i class="fas fa-table me-1"></i>
+								연관상품 리스트
+							</div>
+							<div class="card-body">
+								<table id="a" class="datatablesSimple table table-striped productConn">
+									<thead>
+									<tr>
+										<th>상품코드</th>
+										<th>카테고리</th>
+										<th>상품명</th>
+										<th style="width: 10%;">삭제</th>
+									</tr>
+									</thead>
+									<tbody>
+									<!-- Thymeleaf 코드로 상품 목록을 반복하여 출력합니다 -->
+									<tr th:each="products : ${products}" class="product-row" th:id="${products.productId}">
+
+									</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+			<div class="card mb-4" style="float: left; width: 40%;">
+				<div class="card-header">
+					<i class="fas fa-table me-1"></i>
+					연관상품 리스트
+				</div>
+				<div class="card-body">
+					<table id="b" class="datatablesSimple table table-striped productRelation">
+						<thead>
+						<tr>
+							<th>번호</th>
+							<th>연관상품명</th>
+						</tr>
+						</thead>
+						<tbody>
+						<!-- Thymeleaf 코드로 상품 목록을 반복하여 출력합니다 -->
+						<tr th:each="relationProductList, iterStat: ${relationProductList}" class="product-row" th:id="${relationProductList.productRelationId}">
+							<td th:text="${iterStat.index + 1}"></td>
+							<td th:text="${relationProductList.productRelationName}"></td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="card mb-4" style="width: 60%;">
+				<div class="card-header">
+					<i class="fas fa-table me-1"></i>
+					상품 리스트
+				</div>
+				<div class="card-body">
+					<table id="c" class="datatablesSimple table table-striped product">
+						<thead>
+						<tr>
+							<th>상품코드</th>
+							<th>카테고리</th>
+							<th>상품명</th>
+							<th style="width: 10%;">추가</th>
+						</tr>
+						</thead>
+						<tbody>
+						<!-- Thymeleaf 코드로 상품 목록을 반복하여 출력합니다 -->
+						<tr th:each="product,iterStat : ${product}" class="product-row" th:id="${product.productId}"
+							th:if="${!#strings.startsWith(product.productCode, 'C')}">
+							<td th:text="${product.productCode}"></td>
+							<td th:text="${product.category.categoryName}"></td>
+							<td th:text="${product.productName}"></td>
+							<td>
+								<button class="btn btn-primary btn-sm add-conn-btn" style="height: 25px; font-size: 10px;" type="button" th:id="${iterStat.index}">ADD</button>
+							</td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</main>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+	<script src="/js/pdRelation.js"></script>
+	<script>
+		// 이벤트 핸들러 함수 정의
+    function deleteRelation(event) {
+        event.preventDefault();
+        if (confirm('정말로 연관상품을 삭제하시겠습니까?')) {
+            const relationName = document.getElementById('relationName').value;
+
+            var productRelationCells = document.querySelectorAll('.productConn tbody td:first-child'); // 연관상품 리스트 코드 열
+            if (productRelationCells.length > 0) {
+                var code = productRelationCells[0].textContent.trim();
+                const relationNum = document.getElementById('relationNum');
+                relationNum.value = code;
+                var form = document.getElementById('relationForm');
+                form.action = '/seller/pm/delRelation';
+                form.submit();
+            } else {
+                alert('삭제할 연관상품이 없습니다.');
+            }
+        }
+    }
+
+    function relationClear(event) {
+        event.preventDefault();
+        if (confirm('테이블을 비우시겠습니까?')) {
+            var tableABody = document.querySelector('#a tbody');
+            const relationName = document.getElementById('relationName');
+            const relationNum = document.getElementById('relationNum');
+            const relationList = document.getElementById('relationList');
+            relationName.value = '';
+            relationNum.value = '';
+            relationList.value = '';
+            tableABody.innerHTML = '';
+            document.getElementById('relationBtn').disabled = true;
+        }
+    }
+
+    function saveRelation(event) {
+        event.preventDefault();
+        if (confirm('연관상품을 저장하시겠습니까?')) {
+            const relationName = document.getElementById('relationName').value; // 변수에 값 저장
+            if (relationName.trim() === '') {
+                alert('연관상품명을 입력해주세요.');
+                return;
+            }
+            var form = document.getElementById('relationForm');
+            form.submit();
+        }
+    }
+
+    // DOMContentLoaded 이벤트를 사용해 이벤트 핸들러를 등록
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('relationClear').addEventListener('click', relationClear);
+        document.getElementById('relationBtn').addEventListener('click', saveRelation);
+        document.getElementById('relationDelBtn').addEventListener('click', deleteRelation);
+
+        var datatableElements = document.querySelectorAll('.datatablesSimple');
+        datatableElements.forEach(function (datatableElement) {
+            new simpleDatatables.DataTable(datatableElement);
+        });
+
+        var productCodeCells = document.querySelectorAll('.product tbody td:first-child'); // 상품 코드 열
+        var productRelationCells = document.querySelectorAll('.productRelation tbody td:first-child'); // 연관상품 리스트 코드 열
+
+        productCodeCells.forEach(function (productCodeCell) {
+            productCodeCell.addEventListener('click', function (event) {
+                var productId = productCodeCell.closest('tr').getAttribute('id');
+                if (productId) {
+                    window.location.href = '/seller/pm/' + productId; // 예시 URL로 이동
+                }
+            });
+        });
+
+        productRelationCells.forEach(function (productRelationCell) {
+            productRelationCell.addEventListener('click', function (event) {
+                var pk = productRelationCell.closest('tr').getAttribute('id');
+                var nameCell = productRelationCell.parentNode.querySelector('td:nth-child(2)');
+                var name = nameCell.innerText.trim();
+                if (pk) {
+                    addListToTable(pk, name);
+                    const relationName = document.getElementById('relationName');
+                    const relationNum = document.getElementById('relationNum');
+                    relationName.value = name;
+                    relationNum.value = pk;
+                }
+            });
+        });
+    });
+	</script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			document.getElementById('relationClear').addEventListener('click', relationClear);
+			document.getElementById('relationBtn').addEventListener('click', saveRelation);
+			document.getElementById('relationDelBtn').addEventListener('click', deleteRelation);
+
+            var datatableElements = document.querySelectorAll('.datatablesSimple');
+            datatableElements.forEach(function (datatableElement) {
+                new simpleDatatables.DataTable(datatableElement);
+            });
+
+            // 테이블의 상품 코드 열 클릭 이벤트 설정
+            var productCodeCells = document.querySelectorAll('.product tbody td:first-child'); // 상품 코드 열
+            var productRelationCells = document.querySelectorAll('.productRelation tbody td:first-child'); // 연관상품 리스트 코드 열
+
+            productCodeCells.forEach(function(productCodeCell) {
+                productCodeCell.addEventListener('click', function(event) {
+                    // 필요한 동작 추가 (예: 페이지 이동)
+                    var productId = productCodeCell.closest('tr').getAttribute('id');
+                    if (productId) {
+                        window.location.href = '/seller/pm/' + productId; // 예시 URL로 이동
+                    }
+                });
+            });
+
+            productRelationCells.forEach(function(productRelationCell) {
+				productRelationCell.addEventListener('click', function(event) {
+					// 필요한 동작 추가 (예: 페이지 이동)
+					var pk = productRelationCell.closest('tr').getAttribute('id');
+					var nameCell = productRelationCell.parentNode.querySelector('td:nth-child(2)');
+					var name = nameCell.innerText.trim();
+					if (pk) {
+						//a 테이블에 선택한 연관상품 리스트 추가
+						addListToTable(pk, name);
+						//연관상품 이름 불러옴
+            			const relationName = document.getElementById('relationName');
+            			const relationNum = document.getElementById('relationNum');
+            			relationName.value = name;
+            			relationNum.value = pk
+					}
+				});
+			});
+        });
+	</script>
 </th:block>
 </html>
