@@ -18,6 +18,9 @@ public interface SellerService {
     public boolean sellerBNumUpdate(String sellerId, String sellerBNum);
     public int idCheck(String sellerId);
     public Seller register(Seller seller);
+    public Seller idFind(String sellerName, String sellerEmail);
+    public Seller sellerFind(String sellerId, String sellerEmail);
+    public boolean sellerPwdUpdate(String sellerId, String sellerPwd);
 
     //박승섭 사용중
     List<Seller> getSellersList(String sellerId);

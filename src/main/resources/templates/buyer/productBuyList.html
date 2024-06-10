@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{_layout/index}">
+<th:block layout:fragment="pageStyle">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+    </style>
+</th:block>
+<th:block layout:fragment="pageContent">
+    <div class="page-wrapper">
+        <div class="checkout shopping">
+            <div class="container">
+                <div>
+                    <div style="margin-top:10px; margin-bottom:10px;">
+                        <h1>주문내역</h1>
+                    </div>
+                    <div style="border-top:3px solid #000;">
+                        <table class="table" style="text-align:center">
+                            <thead>
+                                <tr>
+                                    <th scope="col">상품정보</th>
+                                    <th scope="col">갯수</th>
+                                    <th scope="col">결제금액</th>
+                                    <th scope="col">배송상태</th>
+                                    <th scope="col">주문날짜</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="order, iterStat : ${orderList}" style="height:100px;">
+                                <td class="d-flex">
+                                    <div th:with="productImage=${productImages[iterStat.index]}" style="width:100px;height:100px;">
+                                        <img th:src="@{'/assets/image/pMain/' + ${productImage.productImageSname} + ${productImage.productImageExtension}}" alt="Product Image" style="height:100%; width:100%;">
+                                    </div>
+                                    <div style="text-align:left; margin-left: 10px;">
+                                        <span style="vertical-align:middle; display: block;" th:text="${'상품명 : ' + order.product.productName}"></span>
+                                        <span style="vertical-align:middle; display: block;" th:text="${'상품코드 : ' + order.product.productCode}"></span>
+                                    </div>
+                                </td>
+                                <td style="vertical-align:middle;" th:text="${order.orderitemPcount}"></td>
+                                <td style="vertical-align:middle;" th:text="${order.orderitemPrice}"></td>
+                                <td style="vertical-align:middle;" th:text="${order.orderitemDstatus}"></td>
+                                <td style="vertical-align:middle;" th:text="${order.orderitemDate}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <hr style="border:1px solid gray;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+</html>

@@ -6,6 +6,7 @@ import com.example.demo.admin.security.SecurityServiceImple;
 import com.example.demo.admin.service.BuyerService;
 import com.example.demo.admin.service.BuyerServiceImple;
 import com.example.demo.admin.service.SellerServiceImple;
+import com.example.demo.admin.service.SendMessageService;
 import com.example.demo.buyer.DTO.BuyerDTO;
 import com.example.demo.seller.DTO.OrderitemDTO;
 import com.example.demo.seller.DTO.SellerDTO;
@@ -13,7 +14,11 @@ import com.example.demo.seller.domain.Orderitem;
 import com.example.demo.seller.service.OrderitemService;
 import com.example.demo.seller.service.ProductService;
 import com.example.demo.seller.service.SellerService;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import net.nurigo.sdk.message.response.SingleMessageSentResponse;
+import net.nurigo.sdk.message.service.DefaultMessageService;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,8 +29,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.Comparator;
+import java.util.*;
 import java.security.Principal;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,11 +50,13 @@ public class SellerController {
 	private SellerDTO sellerDTO;
 	private SecurityServiceImple securityService;
 	private PasswordEncoder passwordEncoder;
+	private SendMessageService sendMessageService;
 //	OrderitemService orderitemService
 	public SellerController(OrderitemService orderitemService, SellerService sellerService,
 							ProductService productService, BuyerDTO buyerDTO
 							,SellerDTO sellerDTO, SecurityServiceImple securityService,
-							SellerServiceImple sellerServiceImple, PasswordEncoder passwordEncoder){
+							SellerServiceImple sellerServiceImple, PasswordEncoder passwordEncoder,
+							SendMessageService sendMessageService){
 		this.orderitemService = orderitemService;
 		this.sellerService = sellerService;
 		this.productService = productService;
@@ -57,6 +65,7 @@ public class SellerController {
 		this.securityService = securityService;
 		this.sellerServiceImple = sellerServiceImple;
 		this.passwordEncoder = passwordEncoder;
+		this.sendMessageService = sendMessageService;
 	}
 
 	//메인 페이지 메핑
@@ -289,12 +298,73 @@ public class SellerController {
 		return "redirect:/seller/login";
 	}
 
-	// ID 중복확인 - ajax용
+	// ID 중복확인 - ajax
 	@RequestMapping("idCheck")
 	@ResponseBody
 	public int idDuplicate(@RequestBody String sellerId) {
 		int idCheck = sellerServiceImple.idCheck(sellerId);
 		return idCheck;
 	}
+
+	// 이름과 이메일로 사용자 있는지 확인 - ajax
+	@RequestMapping("idFind")
+	@ResponseBody
+	public Seller findId(@RequestBody SellerDTO request) {
+		Seller seller = sellerServiceImple.idFind(request.getSellerName(), request.getSellerEmail());
+		System.out.println("나 호출 되었소");
+		return seller;
+	}
+
+	// 아이디와 이메일로 있는지 확인 - ajax
+	@RequestMapping("sellerFind")
+	@ResponseBody
+	public Map<String, String> findSeller(@RequestBody SellerDTO request) {
+		String verificationCode = "";
+		Map<String, Object> responseData = new HashMap<>();
+
+		Seller seller = sellerServiceImple.sellerFind(request.getSellerId(), request.getSellerEmail());
+
+		if (seller != null) {
+			Random random = new Random();
+			StringBuilder sb = new StringBuilder();
+
+			for (int i = 0; i < 6; i++) {
+				int digit = random.nextInt(10);
+				sb.append(digit);
+			}
+			verificationCode = sb.toString();
+			String messageText = "인증 번호는 [" + verificationCode + "] 입니다.";
+			// 메세지 보내는거 일단 잘못보내는거 무서워서 내 번호로 고정해놓음
+			sendMessageService.sendMessage("tetest", messageText);
+		}
+
+		Map<String, String> response = new HashMap<>();
+		response.put("verificationCode", verificationCode);
+		System.out.println("호출 되었다");
+		System.out.println(verificationCode);
+		return response;
+	}
+
+	// 새 비밀번호 설정 - ajax
+	@RequestMapping("newPwd")
+	@ResponseBody
+	public int newPwd(@RequestBody SellerDTO request) {
+		int result = 0;
+		boolean flag = sellerServiceImple.sellerPwdUpdate(request.getSellerId(), request.getSellerPassword());
+
+		if (flag) {
+			result = 1;
+		}
+		return result;
+	}
+
+	// 메세지 요청 - ajax
+	/*
+	@RequestMapping(value = "/seller/sendSMS", method = RequestMethod.POST)
+	@ResponseBody
+	public SingleMessageSentResponse sendSMS() {
+		return "ss";
+	}
+	 */
 
 }

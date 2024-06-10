@@ -11246,6 +11246,12 @@ body {
     background-color: #d0e7ff; /* 마우스오버 시 강조할 색상 */
 }
 
+/*연관상품 마우스 오버*/
+.datatablesSimple tbody td:first-child:hover {
+			background-color: #d0e7ff; /* Change to the color you want on hover */
+			cursor: pointer; /* Optional: Change cursor to pointer to indicate interactivity */
+		}
+
 /*해시태그*/
 body {
     font-family: Arial, sans-serif;
@@ -11268,11 +11274,11 @@ body {
 .hashtag-box {
     display: inline-block;
     padding: 3px 8px;
-    background-color: #e0f7fa;
-    border: 1px solid #00acc1;
+    background-color: #e3f2fd; /* 밝은 배경색 */
+    border: 1px solid #64b5f6; /* 밝은 테두리 색 */
     border-radius: 12px;
     font-size: 12px;
-    color: #007c91;
+    color: #1976d2; /* 밝은 글자 색 */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s, transform 0.3s;
 }

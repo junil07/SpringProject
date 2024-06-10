@@ -24,15 +24,15 @@ public class CustomProductService {
 
         for (Object[] row : productList) {
             Map<String, Object> productSummary = new HashMap<>();
-
             productSummary.put("productId", ((Number) row[0]).intValue()); // 제품 ID
             productSummary.put("productCode", (String) row[1]);
             productSummary.put("productName", (String) row[2]); // 제품 이름
             productSummary.put("productPrice", ((Number) row[3]).intValue()); // 제품 가격
-            productSummary.put("totalCount", ((Number) row[4]).intValue()); // 총 수량
-            productSummary.put("productImageSname", (String) row[5]); // 제품 이미지 이름
-            productSummary.put("productImageExtension", (String) row[6]); // 제품 이미지 확장자
-            productSummary.put("productDetailMaker", (String) row[7]);
+            productSummary.put("productDiscount", ((Number) row[4]).intValue());
+            productSummary.put("totalCount", ((Number) row[5]).intValue()); // 총 수량
+            productSummary.put("productImageSname", (String) row[6]); // 제품 이미지 이름
+            productSummary.put("productImageExtension", (String) row[7]); // 제품 이미지 확장자
+            productSummary.put("productDetailMaker", (String) row[8]);
 
             // 필요한 필드들을 추출하여 Map에 저장
             productSummaryList.add(productSummary);

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{_layout/index}">
+<th:block layout:fragment="pageStyle">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .contents-width{
+            width:1200px;
+            margin : auto;
+        }
+         .card {
+            max-width: 200px; /* 카드 크기를 조절 */
+            margin: 0 auto; /* 중앙 정렬 */
+        }
+        .site_pick_product{
+            margin-top: 20px;
+            margin-left: 400px;
+            width: 400px;
+        }
+
+        /* 상품 간의 간격 조정 */
+        .row.g-2 {
+            gap: 0.5rem; /* 상품 간의 간격을 줄이기 위해 0.5rem로 설정 */
+        }
+
+        .product-card {
+            margin-bottom: 20px;
+        }
+    </style>
+</th:block>
+<th:block layout:fragment="pageContent">
+    <div class="contents-width">
+        <h1 th:text="${hashtag + ' 검색'}" style="text-align: center; margin-top:20px; margin-bottom:20px;"></h1>
+        <div th:if="${productflag=='false'}">
+            <h2 style="text-align:center;">검색 결과에 맞는 상품이 없습니다.</h2>
+        </div>
+        <div th:if="${productList!=null and productImage!=null}" class="row">
+            <div th:each="productList, iterStat : ${productList}" class="col-md-3 product-card">
+                <div th:with="productImage=${productImage[iterStat.index]}">
+                    <div class="card h-100">
+                        <a href="javascript:void(0);" class="product-list-item" th:data-product-id="${productList.productId}">
+                            <img class="card-img-top" th:src="@{'/assets/image/pMain/' + ${productImage.productImageSname} + ${productImage.productImageExtension}}" alt="shoes"/>
+                            <div class="card-body">
+                                <h4 class="card-title" th:text="${productList.productName}"></h4>
+                                <div th:if="${productList.productDiscount==0}">
+                                    <h5 th:text="${productList.productPrice}"></h5>
+                                </div>
+                                <div th:if="${productList.productDiscount!=0}" style="">
+                                    <h5 class="line-through" th:text="${productList.productPrice +'원'}"
+                                        style="color:#666; margin-top:5px; position: relative; display: inline-block;"></h5>
+                                    <h5 th:text="${((100 - productList.productDiscount) * productList.productPrice / 100) + '원'}" style="color:red;"></h5>
+                                    <h5 th:text="${'['+productList.productDiscount+'%]'}" style="margin-top:5px; color:red;"></h5>
+                                </div>
+                            </div>
+                            <form id="productForm" action="/buyer/detail" method="POST">
+                                <input type="hidden" name="productId" id="productId" value="">
+                            </form>
+                            <script>
+                                $(document).ready(function() {
+                                    $("a.product-list-item").on("click", function() {
+                                        var this_val = $(this).data("product-id");
+                                        $("#productId").val(this_val);
+                                        $("#productForm").submit();
+                                    });
+                                });
+                            </script>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+</html>

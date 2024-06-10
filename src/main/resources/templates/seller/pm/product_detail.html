@@ -7,14 +7,14 @@
                 <div class="card" style="min-width: 920px;">
                     <div class="card-body">
                         <h1 class="card-title fw-semibold mb-4" style="font-size:30px;">  상품 조회/수정  </h1>
-                        <form method="post" action="/productsUpdate" th:action="@{productsUpdate}" enctype="multipart/form-data">
+                        <form id="productForm" method="post" action="/productsUpdate" th:action="@{productsUpdate}" enctype="multipart/form-data">
                             <div class="card mb-0" style="float:left; width: 50%; height: 100%;" th:object="${productDTO}">
                                 <div class="card-body">
                                     <input type="hidden" id="productIdHi" name="productIdHi" th:field="*{productId}">
                                     <input type="hidden" id="categoryIdHi" name="categoryIdHi" th:field="*{categoryId}">
                                     <div class="mb-3">
                                         <label for="productcode" class="form-label">Code</label>
-                                        <input type="text" class="form-control" id="productcode" aria-describedby="emailHelp" th:field="*{productCode}">
+                                        <input type="text" class="form-control" id="productcode" aria-describedby="emailHelp" th:field="*{productCode}" readonly>
                                         <div id="emailHelp" class="form-text">상품 코드 작성 양식 : {판매자 아이디}{상품 코드}{상품 색상}</div>
                                     </div>
                                     <div style="width: 430px; height: 450px;">
@@ -24,7 +24,7 @@
                                     <div class="mb-3">
                                         <label for="file" class="form-label">이미지 업로드</label>
                                         <input type="file" name="file" class="form-control" id="file" onchange="previewImage(event);">
-                                        <div id="file-text" class="form-text" th:field="${productImage.productImageName} + ${productImage.productImageExtension}"></div>
+                                        <div id="file-text" class="form-text"></div>
                                     </div>
                                     <div class="mb-3">
                                         <label for="productname" class="form-label">이름</label>
@@ -32,11 +32,11 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="productprice" class="form-label">가격</label>
-                                        <input type="text" class="form-control" id="productprice" th:field="*{productPrice}">
+                                        <input type="number" class="form-control" id="productprice" th:field="*{productPrice}">
                                     </div>
                                     <div class="mb-3">
                                         <label for="productdiscount" class="form-label">할인율</label>
-                                        <input type="text" class="form-control" id="productdiscount" th:field="*{productDiscount}">
+                                        <input type="number" class="form-control" id="productdiscount" th:field="*{productDiscount}">
                                     </div>
                                     <div class="mb-3">
                                         <label for="hashText" class="form-label">해시태그</label>
@@ -91,7 +91,7 @@
                                             <div id="stock-container">
                                                 <div  class="input-group input-group-sm mb-3" style="float:left; width: 33%;" th:each="stock : ${stockList}" th:object="${stock}">
                                                     <span class="input-group-text" id="stockSize" name="stockSize" th:text="${stock.stockSize}"></span>
-                                                    <input type="number" class="form-control" placeholder="수량 입력" aria-describedby="inputGroup-sizing-sm" th:value="*{stockCount}">
+                                                    <input type="number" class="form-control stockSize" placeholder="수량 입력" aria-describedby="inputGroup-sizing-sm" th:value="*{stockCount}">
                                                     <button class="btn btn-outline-secondary" type="button" id="delStockBtn" name="delStockBtn">삭제</button>
                                                 </div>
                                             </div>
@@ -147,7 +147,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button id="saveButton" name="saveButton" type="submit" class="btn btn-primary">수정</button>
+                                <div>
+                                    <button style="float: left; width: 50%" id="saveButton" name="saveButton" type="submit" class="btn btn-outline-primary">수정</button>
+                                    <button style="width: 50%" id="delButton" name="delButton" type="submit" class="btn btn-outline-danger" onclick="deleteProduct()">삭제</button>
+                                </div>
                                 <div>
                                     <input type="hidden" id="totalHash" name="totalHash" value="">
                                     <input type="hidden" id="totalStock" name="totalStock" value="">
@@ -173,6 +176,16 @@
             };
             reader.readAsDataURL(event.target.files[0]);
         }
+
+        function deleteProduct() {
+            if (confirm('정말로 이 상품을 삭제하시겠습니까?')) {
+                var form = document.getElementById('productForm');
+                form.action = '/seller/pm/del';
+                form.submit();
+            }
+        }
+
+
     </script>
     <script type="text/javascript">
         $(document).ready(function() {

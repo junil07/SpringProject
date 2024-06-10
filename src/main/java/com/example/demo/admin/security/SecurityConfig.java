@@ -79,9 +79,9 @@ public class SecurityConfig {
                                 .requestMatchers(
                                         "/css/**", "/assets/**"
                                         , "/demo/**", "/images/**", "/js/**", "/plugins/**"
-                                        ,"/buyer/**", "/buyer/detail", "/seller/**"
+                                        ,"/buyer/**","/buyer/productList/**", "/buyer/detail", "/seller/**"
                                         , "/error", "/error/**", "/errorpage/**", "/reviews/**"
-                                        ,"/cart/**","/updateCartProductCount", "/deleteSelectedCartItems"
+                                        ,"/cart/**","/updateCartProductCount", "/deleteSelectedCartItems","/save_payment","/cart/direct"
                                 ).permitAll()
                                 .requestMatchers("/buyer/detail").hasRole(Role.BUYER.name())
                                 .anyRequest().authenticated())
@@ -108,8 +108,8 @@ public class SecurityConfig {
     @Bean
     @Order(1)
     public SecurityFilterChain sellerFilterChain(HttpSecurity http,
-                                                 CustomAuthenticationEntryPoint customAuthenticationEntryPoint,
-                                                 CustomAccessDeniedHandler customAccessDeniedHandler) throws Exception {
+                                                 SellerAuthenticationEntryPoint sellerAuthenticationEntryPoint,
+                                                 SellerAccessDeniedHandler sellerAccessDeniedHandler) throws Exception {
         http
                 .securityMatcher(new AntPathRequestMatcher("/seller/**"))
                 .csrf(AbstractHttpConfigurer::disable)
@@ -119,10 +119,10 @@ public class SecurityConfig {
                                 .requestMatchers(
                                         "/css/**", "/assets/**"
                                         , "/demo/**", "/images/**", "/js/**", "/plugins/**"
-                                        , "/seller/**"
+                                        , "/seller/login", "/seller/logout"
                                         , "/error", "/error/**", "/errorpage/**"
                                 ).permitAll()
-                                // .requestMatchers("/buyer/detail").hasRole(Role.BUYER.name())
+                                .requestMatchers("/seller/**").hasRole(Role.SELLER.name())
                                 .anyRequest().authenticated())
                 .formLogin((formLogin) ->
                         formLogin
@@ -139,8 +139,8 @@ public class SecurityConfig {
                 .userDetailsService(sellerDetailsService)
                 .exceptionHandling((exceptionHandling) ->
                         exceptionHandling
-                                .authenticationEntryPoint(customAuthenticationEntryPoint)
-                                .accessDeniedHandler(customAccessDeniedHandler));
+                                .authenticationEntryPoint(sellerAuthenticationEntryPoint)
+                                .accessDeniedHandler(sellerAccessDeniedHandler));
         return http.build();
     }
 

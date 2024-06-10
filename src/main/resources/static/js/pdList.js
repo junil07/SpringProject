@@ -119,7 +119,7 @@ if (addStockBtn && sizeInput && countInput && stockContainer) {
             newDiv.style.width = '33%';
 
             const newSpan = document.createElement('span');
-            newSpan.className = 'input-group-text';
+            newSpan.className = 'input-group-text stockClass';
             newSpan.textContent = sizeValue;
 
             const newInput = document.createElement('input');
@@ -167,8 +167,6 @@ if (addStockBtn && sizeInput && countInput && stockContainer) {
     console.error("하나 이상의 요소를 찾을 수 없습니다.");
 }
 
-
-
 //동적으로 불러온 상자에 삭제 이벤트 추가
 document.addEventListener('click', function(e) {
     if (e.target && e.target.id === 'delStockBtn') {
@@ -176,8 +174,6 @@ document.addEventListener('click', function(e) {
         getStockCountList();
     }
 });
-
-
 
 //사이즈, 재고 수량 이중리스트로 만들어줌
 function getStockCountList() {
@@ -199,21 +195,6 @@ function getStockCountList() {
     totalStock.value = stockList;
 }
 
-//예외처리
-saveButton.addEventListener('click', function() {
-    // 세 번째 카테고리 선택값 확인
-    const selectedCategoryId = subSubCategorySelect.value;
-
-    // 세 번째 카테고리 선택값이 없는 경우 경고창 표시
-    if (!selectedCategoryId) {
-        alert('카테고리를 선택해주세요.');
-        event.preventDefault();
-    }
-
-
-});
-
-
 //초기값 설정
 const hidden = document.getElementById('totalHash');
 getStockCountList();
@@ -225,6 +206,93 @@ function getAllHashtags() {
     return Array.from(textBoxes).map(textBox => textBox.textContent);
 }
 
+// 이벤트가 DOM 요소들을 로드한 후 실행되도록 함
+document.addEventListener('DOMContentLoaded', function () {
+    // B 테이블의 체크박스 요소들을 선택
+    var checkboxes = document.querySelectorAll('#b input[name="productCheckbox"]');
+
+    checkboxes.forEach(function (checkbox) {
+        checkbox.addEventListener('change', function () {
+            if (checkbox.checked) {
+                // 선택된 체크박스의 부모 행을 복제하여 A 테이블에 추가
+                var productRow = checkbox.closest('tr').cloneNode(true);
+                document.querySelector('#a tbody').appendChild(productRow);
+            } else {
+                // 선택 해제된 경우 A 테이블에서 해당 행 삭제
+                var productId = checkbox.value;
+                var rows = document.querySelectorAll('#a tbody tr');
+                rows.forEach(function (row) {
+                    if (row.getAttribute('data-product-id') === productId) {
+                        row.remove();
+                    }
+                });
+            }
+        });
+    });
+});
+
+//예외처리
+saveButton.addEventListener('click', function() {
+
+    // 유효성 검사 함수 추가
+    document.getElementById('productForm').addEventListener('submit', function (event) {
+
+        var requiredFields = [
+            'productname',
+            'productprice',
+            'productdiscount',
+            'productexplain',
+            'productDetailMate',
+            'productDetailHeight',
+            'productDetailMaker',
+            'productDetailCountry',
+            'productDetailColor',
+            'productDetailYear',
+            'productDetailAs',
+            'productDetailWarning',
+            'productDetailStandard'
+        ];
+        var isValid = true;
+
+        requiredFields.forEach(function (fieldId) {
+            var field = document.getElementById(fieldId);
+            if (field && field.value.trim() === '' || field.value == 0) {
+                isValid = false;
+                field.style.borderColor = 'red'; // 경고 표시
+            } else if (field) {
+                field.style.borderColor = ''; // 오류가 없을 때 원래 상태로 되돌리기
+            }
+        });
+
+        if (!isValid ) {
+            alert('모든 필수 항목을 입력해주세요.');
+            event.preventDefault();
+        }
+    });
+
+//    //재고 하나 이상
+//    const stockElements = document.querySelectorAll('.stockClass');
+//    var num = 0;
+//    stockElements.forEach(element => {
+//            num++;
+//        });
+//    console.log(num);
+//    if(num === 0) {
+//        alert('치수를 하나 이상 추가해주세요.');
+//        event.preventDefault();
+//    }
+
+    // 세 번째 카테고리 선택값 확인
+    const selectedCategoryId = subSubCategorySelect.value;
+
+    // 세 번째 카테고리 선택값이 없는 경우 경고창 표시
+    if (!selectedCategoryId) {
+        alert('카테고리를 선택해주세요.');
+        event.preventDefault();
+    }
+
+
+});
 
 
 

@@ -15,6 +15,10 @@ import java.util.Optional;
 public interface SellerRepository1 extends JpaRepository<Seller, String> {
     Optional<Seller> findBysellerId(String sellerId);
 
+
     //박승섭 임시 사용중
     List<Seller> findBySellerId(@Param("sellerId") String sellerId);
+    Optional<Seller> findBySellerNameAndSellerEmail(String sellerName, String sellerEmail);
+    Optional<Seller> findBySellerIdAndSellerEmail(String sellerId, String sellerEmail);
+
 }

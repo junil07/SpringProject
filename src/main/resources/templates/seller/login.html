@@ -16,6 +16,7 @@
     <link rel="mask-icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-b4b4269c16397ad2f0f7a01bcdf513a1994f4c94b8af2f191c09eb0d601762b1.svg" color="#111">
     <!-- Iconify JavaScript 파일 -->
     <script src="https://code.iconify.design/2/2.1.2/iconify.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
 
@@ -68,6 +69,19 @@
             color: red;
         }
 
+        .hide {
+            display: none;
+        }
+
+        .forgotIdOrPwd {
+            text-align: center;
+            width: 80%;
+        }
+
+        .colorBaby {
+            color: #0032ed !important;
+        }
+
     </style>
 
 </head>
@@ -107,7 +121,7 @@
                                                     아이디 혹은 비밀번호를 잘못 입력하셨습니다.
                                                 </div>
                                                 <a href="#" class="btn mt-4" onclick="buyerLogin()">Submit</a>
-                                            <p class="mb-0 mt-4 text-center"><a href="#" class="link" data-bs-toggle="modal" data-bs-target="#staticBackdrop1">Forgot your ID or password?</a></p>
+                                            <p class="mb-0 mt-4 text-center"><a class="link" id="buyerBtn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Forgot your ID or password?</a></p>
                                             <p class="mb-0 mt-4 text-center"><a href="/buyer/register" class="link">make account?</a></p>
                                         </div>
                                     </div>
@@ -128,7 +142,7 @@
                                                     아이디 혹은 비밀번호를 잘못 입력하셨습니다.
                                                 </div>
                                                 <a href="#" class="btn mt-4" onclick="sellerLogin()">Submit</a>
-                                            <p class="mb-0 mt-4 text-center"><a class="link" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Forgot your ID or password?</a></p>
+                                            <p class="mb-0 mt-4 text-center"><a class="link" id="sellerBtn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Forgot your ID or password?</a></p>
                                             <p class="mb-0 mt-4 text-center"><a href="signup" class="link">make account?</a></p>
                                         </div>
                                     </div>
@@ -142,63 +156,56 @@
     </div>
 </main>
 
-<!-- 구매자 비밀번호 찾기 모달 -->
-<div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header" style="align-items: center;">
-                <h1 class="modal-title fs-5" id="findAccount1">구매자 계정 찾기 및 재발급</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">&times;</button>
-            </div>
-            <div class="modal-body sexyBody">
-                ...
-            </div>
-            <div class="modal-footer" style="justify-content: center;">
-                <button type="button" class="btn btn-secondary btnWidth">아이디 찾기</button>
-                <button type="button" class="btn btn-primary btnWidth">비밀번호 재발급</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- 판매자 비밀번호 찾기 모달 -->
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header" style="align-items: center;">
-                <h1 class="modal-title fs-5" id="findAccount">판매자 계정 찾기 및 재발급</h1>
+                <h1 class="modal-title fs-5" id="findAccount"></h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">&times;</button>
             </div>
             <div class="modal-body sexyBody">
                 <!-- 이름과 이메일을 넣어 찾기 버튼 누르는 div -->
-                <div class="" style="text-align: center; width: 80%">
+                <div class="idFindDisplay forgotIdOrPwd">
                     <label class="labelBaby">이름 입력</label>
-                    <input type="text" class="inputBaby">
+                    <input type="text" class="inputBaby" id="findSellerName1">
                     <label class="labelBaby">이메일 입력</label>
-                    <input type="text" class="inputBaby">
-                    <a class="sellerIdFind">찾기</a>
-                    <div class="sellerIdAlert1">이름 또는 이메일을 확인해주세요.</div>
+                    <input type="text" class="inputBaby" id="findSellerEmail1">
+                    <a class="sellerIdFind" id="findSellerIdBtn">아이디 찾기</a>
                 </div>
                 <!-- 찾은 아이디를 보여주는 div -->
-                <div class="hide">
-
+                <div class="idFoundDisplay forgotIdOrPwd hide">
+                    <label class="labelBaby" id="foundSellerId1"></label>
                 </div>
                 <!-- 아이디와 이메일을 입력하고 재발급 버튼 누르는 div -->
-                <div class="hide">
-
+                <div class="pwdFindDisplay forgotIdOrPwd hide">
+                    <label class="labelBaby">아이디 입력</label>
+                    <input type="text" class="inputBaby" id="idForReset1">
+                    <label class="labelBaby">이메일 입력</label>
+                    <input type="text" class="inputBaby" id="emailForReset1">
+                    <a class="sellerIdFind" id="sellerPwdResetBtn">인증번호 전송</a>
                 </div>
                 <!-- 인증번호를 누르는 div -->
-                <div class="hide">
-
+                <div class="verificationCodeDisplay forgotIdOrPwd hide">
+                    <label class="labelBaby">인증번호 입력</label>
+                    <div>
+                        <input type="text" class="inputBaby" id="verificationCodeInput">
+                        <a class="sellerIdFind" onclick="verificationCheck()">확인</a>
+                        <input type="hidden" id="verificationCodeHidden">
+                    </div>
                 </div>
-                <!-- 새로 발급된 비밀번호를 보여주는 div -->
-                <div class="hide">
-
+                <!-- 새로 비밀번호를 설정하는걸 보여주는 div -->
+                <div class="pwdResetDisplay forgotIdOrPwd hide">
+                    <label class="labelBaby" id="newSellerPwd1">새 비밀번호</label>
+                    <input type="password" class="inputBaby" id="newSellerPwd2">
+                    <label class="labelBaby" id="newSellerPwd3">새 비밀번호 확인</label>
+                    <input type="password" class="inputBaby" id="newSellerPwd4">
+                    <a class="sellerIdFind" id="getNewPwd">설정</a>
                 </div>
             </div>
             <div class="modal-footer" style="justify-content: center;">
-                <button type="button" class="btn btn-secondary btnWidth">아이디 찾기</button>
-                <button type="button" class="btn btn-primary btnWidth">비밀번호 재발급</button>
+                <button type="button" class="btn btn-secondary btnWidth" id="idFindBtn" onclick="letsFindId()">아이디 찾기</button>
+                <button type="button" class="btn btn-primary btnWidth" id="pwdResetBtn" onclick="letsResetPwd()">비밀번호 재발급</button>
             </div>
         </div>
     </div>

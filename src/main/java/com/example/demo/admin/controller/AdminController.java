@@ -1,8 +1,10 @@
 package com.example.demo.admin.controller;
 
+import com.example.demo.admin.model.ProductInfo;
 import com.example.demo.admin.service.AdminServiceImple;
 import com.example.demo.admin.service.BuyerServiceImple;
 import com.example.demo.admin.service.ProductServiceImple;
+import com.example.demo.buyer.entity.ProductView;
 import com.example.demo.seller.domain.Product;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.security.core.Authentication;
@@ -22,13 +24,16 @@ public class AdminController {
 	private AdminServiceImple adminService;
 	private BuyerServiceImple buyerService;
 	private ProductServiceImple productService;
+	private ProductInfo productInfo;
 
 	public AdminController(HttpSession httpSession, AdminServiceImple adminService,
-						   BuyerServiceImple buyerService, ProductServiceImple productService) {
+						   BuyerServiceImple buyerService, ProductServiceImple productService,
+						   ProductInfo productInfo) {
 		this.httpSession = httpSession;
 		this.adminService = adminService;
 		this.buyerService = buyerService;
 		this.productService = productService;
+		this.productInfo = productInfo;
 	}
 
 	// 메인 페이지
@@ -53,7 +58,6 @@ public class AdminController {
 		if (principal != null) {
 			alert = "이미 로그인이 되었습니다";
 		}
-
 		model.addAttribute("alert", alert);
 
 		return page;
@@ -61,7 +65,7 @@ public class AdminController {
 
 	// 상품 등록 승인
 	@RequestMapping("approval")
-	public String approval(Principal principal, Model model) {
+	public String approval(Principal principal, Model model, ProductInfo productInfo) {
 		User user = (User) ((Authentication) principal).getPrincipal();
 		String adminName = adminService.findName(user.getUsername());
 		List<Product> productList = productService.getProductList(0);
@@ -70,7 +74,57 @@ public class AdminController {
 		model.addAttribute("adminName", adminName);
 		model.addAttribute("productList", productList);
 		model.addAttribute("columnName", columnName);
+		model.addAttribute("productInfo", productInfo);
 
 		return "admin/menu/approval";
+	}
+
+	// 승인 하기
+	@RequestMapping("approvalProc")
+	public String approvalProc(ProductInfo productInfo, Model model) {
+		List<String> checkList = productService.ProductApproval(productInfo.getId());
+
+		if (checkList.contains("1") && !checkList.contains("0")) {
+			model.addAttribute("error", "변경하였습니다");
+		} else if (checkList.contains("1") && checkList.contains("0")) {
+			model.addAttribute("error", "중간에 오류가 발생하였습니다");
+		} else {
+			model.addAttribute("error", "변경에 실패하였습니다");
+		}
+		model.addAttribute("location", "/admin/approval");
+
+		return "admin/proc/approvalProc";
+	}
+
+	// 물품 리스트 관리
+	@RequestMapping("productManage")
+	public String productManage(ProductInfo productInfo, Principal principal, Model model) {
+		User user = (User) ((Authentication) principal).getPrincipal();
+		String adminName = adminService.findName(user.getUsername());
+
+		List<Product> productList = productService.getProductList(1);
+		List<ProductView> productViews = productService.productView(productList);
+
+		model.addAttribute("productInfo", productInfo);
+		model.addAttribute("productViews", productViews);
+		model.addAttribute("adminName", adminName);
+
+		return "admin/menu/productManage";
+	}
+
+	@RequestMapping("productStop")
+	public String productStop(ProductInfo productInfo, Model model) {
+		List<String> checkList = productService.ProductStop(productInfo.getId());
+
+		if (checkList.contains("1") && !checkList.contains("0")) {
+			model.addAttribute("error", "변경하였습니다");
+		} else if (checkList.contains("1") && checkList.contains("0")) {
+			model.addAttribute("error", "중간에 오류가 발생하였습니다");
+		} else {
+			model.addAttribute("error", "변경에 실패하였습니다");
+		}
+		model.addAttribute("location", "/admin/productManage");
+
+		return "admin/proc/approvalProc";
 	}
 }

@@ -32,6 +32,7 @@ public class ReviewController {
             @RequestParam("productId") Integer productId,
             @RequestParam("rating") Integer rating,
             @RequestParam("content") String content,
+            @RequestParam("buyerId") String buyerId,
             @RequestPart(value = "files[]", required = false) List<MultipartFile> files) {
         System.out.print("Product ID: " + productId + ", Rating: " + rating + ", Content: " + content);
 
@@ -42,7 +43,8 @@ public class ReviewController {
         }
 
         try {
-            reviewService.addReview(productId, rating, content, files);
+            System.out.print(buyerId);
+            reviewService.addReview(productId,buyerId ,rating, content, files);
             return ResponseEntity.ok("리뷰가 성공적으로 등록되었습니다.");
         } catch (Exception e) {
             e.printStackTrace(); // 오류 출력

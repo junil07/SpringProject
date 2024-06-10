@@ -189,6 +189,15 @@
         #productimage{
             display:none;
         }
+
+        .productRelationBox{
+            height: 200px;
+            width: 200px;
+        }
+
+        .productRelationImg{
+            display : flex;
+        }
     </style>
 </th:block>
 <th:block layout:fragment="pageContent">
@@ -228,99 +237,114 @@
                                                    : (stock.stockCount < 20 ? stock.stockSize + 'mm (품절임박)' : stock.stockSize + 'mm')}"
                                         th:value="${productDetailList.productDiscount == 0 ? productDetailList.productPrice + '원'
                                                     : ((100 - productDetailList.productDiscount) * productDetailList.productPrice / 100) + '원'}"
+                                        th:data-stockSize="${stock.stockCount}"
                                         th:classappend="${stock.stockCount < 20 && stock.stockCount != 0 ? 'low-stock' : ''}"
                                         th:disabled="${stock.stockCount == 0}">
                                 </option>
                             </select>
                             <script>
-                            $(document).ready(function() {
-                                function updateTotalPrice() {
-                                    var totalPrice = 0;
-                                    $('#selectedOption .option-item').each(function() {
-                                        var itemPrice = parseInt($(this).find('h3:last').text().replace('원', ''));
-                                        totalPrice += itemPrice;
-                                    });
-                                    $('#totalPrice h1').text(totalPrice + '원');
-                                }
+                                $(document).ready(function() {
+                                    function updateTotalPrice() {
+                                        var totalPrice = 0;
+                                        $('#selectedOption .option-item').each(function() {
+                                            var itemPrice = parseInt($(this).find('h3:last').text().replace('원', ''));
+                                            totalPrice += itemPrice;
+                                        });
+                                        $('#totalPrice h1').text(totalPrice + '원');
+                                    }
 
-                                $('#stockSelect').change(function() {
-                                    var selectedText = $(this).find('option:selected').text().replace(/\s*\(.*?\)\s*/g, '');
-                                    var selectedValue = parseInt($(this).find('option:selected').val().replace('원', ''));
-                                    var existingItem = null;
+                                    $('#stockSelect').change(function() {
+                                        var selectedOption = $(this).find('option:selected');
+                                        var selectedText = selectedOption.text().replace(/\s*\(.*?\)\s*/g, '');
+                                        var selectedValue = parseInt(selectedOption.val().replace('원', ''));
+                                        var stockSize = parseInt(selectedOption.attr('data-stockSize'));
+                                        var existingItem = null;
 
-                                    // 중복 항목 찾기
-                                    $('#selectedOption .option-item').each(function() {
-                                        if ($(this).find('h3:first').text() === selectedText) {
-                                            existingItem = $(this);
-                                            return false; // break loop
-                                        }
-                                    });
+                                        // 중복 항목 찾기
+                                        $('#selectedOption .option-item').each(function() {
+                                            if ($(this).find('h3:first').text() === selectedText) {
+                                                existingItem = $(this);
+                                                return false; // break loop
+                                            }
+                                        });
 
-                                    if (existingItem) {
-                                        // 중복 항목이 있으면 카운터 값 증가
-                                        var counterValue = parseInt(existingItem.find('.counter-value').text());
-                                        existingItem.find('.counter-value').text(counterValue + 1);
-                                        existingItem.find('h3:last').text(selectedValue * (counterValue + 1) + '원');
-                                    } else {
-                                        // 중복 항목이 없으면 새 항목 추가
-                                        var selectedOptionText = '<hr style="border: 1px; margin:0px; background-color:black;">' +
-                                                                 '<div class="container option-item">' +
-                                                                    '<div class="row">' +
-                                                                        '<div class="col-sm-4" style="text-align: right;">' +
-                                                                            '<h3 style="display: inline-block; margin:10px;">' + selectedText + '</h3>' +
-                                                                        '</div>' +
-                                                                        '<div class="col-sm-4">' +
-                                                                            '<div class="counter-container" style="display: flex; justify-content: center; align-items: center;margin: 5px;">' +
-                                                                                '<button class="counter-btn btn btn-outline-dark" id="decrementBtn">-</button>' +
-                                                                                '<div class="counter-value-container" style="width:40px; text-align: center;">' +
-                                                                                    '<span class="counter-value" id="counterValue">1</span>' +
+                                        if (existingItem) {
+                                            // 중복 항목이 있으면 카운터 값 증가
+                                            var counterValue = parseInt(existingItem.find('.counter-value').text());
+                                            if (counterValue < stockSize) {
+                                                existingItem.find('.counter-value').text(counterValue + 1);
+                                                existingItem.find('h3:last').text(selectedValue * (counterValue + 1) + '원');
+                                            } else {
+                                                alert("남은 재고보다 수량이 많습니다");
+                                            }
+                                        } else {
+                                            // 중복 항목이 없으면 새 항목 추가
+                                            var selectedOptionText = '<hr style="border: 1px; margin:0px; background-color:black;">' +
+                                                                     '<div class="container option-item">' +
+                                                                        '<div class="row">' +
+                                                                            '<div class="col-sm-4" style="text-align: right;">' +
+                                                                                '<h3 style="display: inline-block; margin:10px;">' + selectedText + '</h3>' +
+                                                                            '</div>' +
+                                                                            '<div class="col-sm-4">' +
+                                                                                '<div class="counter-container" style="display: flex; justify-content: center; align-items: center;margin: 5px;">' +
+                                                                                    '<button class="counter-btn btn btn-outline-dark" id="decrementBtn">-</button>' +
+                                                                                    '<div class="counter-value-container" style="width:40px; text-align: center;">' +
+                                                                                        '<span class="counter-value" id="counterValue">1</span>' +
+                                                                                    '</div>' +
+                                                                                    '<button class="counter-btn btn btn-outline-dark" id="incrementBtn">+</button>' +
                                                                                 '</div>' +
-                                                                                '<button class="counter-btn btn btn-outline-dark" id="incrementBtn">+</button>' +
+                                                                            '</div>' +
+                                                                            '<div class="col-sm-4" style="text-align: left;">' +
+                                                                                '<h3 style="display: inline-block; margin:10px; color: red;">' + selectedValue + '원</h3>' +
+                                                                                '<button class="close-btn" id="closeBtn" style="background: none; border: none; font-size: 20px; margin-left: 10px;">X</button>' +
                                                                             '</div>' +
                                                                         '</div>' +
-                                                                        '<div class="col-sm-4" style="text-align: left;">' +
-                                                                            '<h3 style="display: inline-block; margin:10px; color: red;">' + selectedValue + '원</h3>' +
-                                                                            '<button class="close-btn" id="closeBtn" style="background: none; border: none; font-size: 20px; margin-left: 10px;">X</button>' +
-                                                                        '</div>' +
-                                                                    '</div>' +
-                                                                 '</div>';
-                                        $('#selectedOption').append(selectedOptionText);
-                                    }
-                                    updateTotalPrice(); // 총 결제 금액 업데이트
-                                });
-
-                                // 이벤트 위임을 사용하여 동적으로 생성된 버튼에 이벤트를 적용
-                                $('#selectedOption').on('click', '.counter-btn', function() {
-                                    var counterValueContainer = $(this).siblings('.counter-value-container').find('.counter-value');
-                                    var counterValue = parseInt(counterValueContainer.text());
-                                    var selectedText = $(this).closest('.option-item').find('h3:first').text();
-                                    var selectedValue = 0;
-
-                                    // 옵션의 값을 찾기 위해 stockSelect에서 다시 찾기
-                                    $('#stockSelect option').each(function() {
-                                        if ($(this).text().replace(/\s*\(.*?\)\s*/g, '') === selectedText) {
-                                            selectedValue = parseInt($(this).val().replace('원', ''));
-                                            return false; // break loop
+                                                                     '</div>';
+                                            $('#selectedOption').append(selectedOptionText);
                                         }
+                                        updateTotalPrice(); // 총 결제 금액 업데이트
                                     });
 
-                                    if ($(this).attr('id') === 'incrementBtn') {
-                                        counterValueContainer.text(counterValue + 1);
-                                        $(this).closest('.option-item').find('h3:last').text(selectedValue * (counterValue + 1) + '원');
-                                    } else if ($(this).attr('id') === 'decrementBtn' && counterValue > 1) {
-                                        counterValueContainer.text(counterValue - 1);
-                                        $(this).closest('.option-item').find('h3:last').text(selectedValue * (counterValue - 1) + '원');
-                                    }
-                                    updateTotalPrice(); // 총 결제 금액 업데이트
+                                    // 이벤트 위임을 사용하여 동적으로 생성된 버튼에 이벤트를 적용
+                                    $('#selectedOption').on('click', '.counter-btn', function() {
+                                        var counterValueContainer = $(this).siblings('.counter-value-container').find('.counter-value');
+                                        var counterValue = parseInt(counterValueContainer.text());
+                                        var selectedText = $(this).closest('.option-item').find('h3:first').text();
+                                        var selectedValue = 0;
+                                        var stockSize = 0;
+
+                                        // 옵션의 값을 찾기 위해 stockSelect에서 다시 찾기
+                                        $('#stockSelect option').each(function() {
+                                            if ($(this).text().replace(/\s*\(.*?\)\s*/g, '') === selectedText) {
+                                                selectedValue = parseInt($(this).val().replace('원', ''));
+                                                stockSize = parseInt($(this).attr('data-stockSize'));
+                                                return false; // break loop
+                                            }
+                                        });
+
+                                        if ($(this).attr('id') === 'incrementBtn') {
+                                            if (counterValue < stockSize) {
+                                                counterValueContainer.text(counterValue + 1);
+                                                $(this).closest('.option-item').find('h3:last').text(selectedValue * (counterValue + 1) + '원');
+                                            } else {
+                                                alert("남은 재고보다 수량이 많습니다");
+                                            }
+                                        } else if ($(this).attr('id') === 'decrementBtn' && counterValue > 1) {
+                                            counterValueContainer.text(counterValue - 1);
+                                            $(this).closest('.option-item').find('h3:last').text(selectedValue * (counterValue - 1) + '원');
+                                        }
+                                        updateTotalPrice(); // 총 결제 금액 업데이트
+                                    });
+
+                                    $('#selectedOption').on('click', '.close-btn', function() {
+                                        $(this).closest('.option-item').prev('hr').remove(); // 이전 hr 삭제
+                                        $(this).closest('.option-item').next('hr').remove(); // 다음 hr 삭제
+                                        $(this).closest('.option-item').remove();
+                                        updateTotalPrice(); // 총 결제 금액 업데이트
+                                    });
                                 });
-                                $('#selectedOption').on('click', '.close-btn', function() {
-                                    $(this).closest('.option-item').prev('hr').remove(); // 이전 hr 삭제
-                                    $(this).closest('.option-item').next('hr').remove(); // 다음 hr 삭제
-                                    $(this).closest('.option-item').remove();
-                                    updateTotalPrice(); // 총 결제 금액 업데이트
-                                });
-                            });
                             </script>
+
 
                             <hr class="form-separator">
                             <div id="selectedOption" style="background: #f0f1f4;"></div>
@@ -330,14 +354,56 @@
                             </div>
                         </div>
                         <div style="display: flex; justify-content: center;">
+                            <div th:if="${buyerId!=null}">
+                                <input type="hidden" id="buyerId" th:value="${buyerId}">
+                            </div>
                             <button type="button" id="cartInsert" class="btn btn-secondary" style="width:370px; height:60px; margin-top:30px; margin-right:30px;">장바구니</button>
-                            <button type="button" class="btn btn-dark" style="width:370px; height:60px; margin-top:30px;">바로구매</button>
+                            <button type="button" id="directBuy" class="btn btn-dark" style="width:370px; height:60px; margin-top:30px;">바로구매</button>
                         </div>
                         <script>
                             $(document).ready(function(){
+                                var buyerId = $('#buyerId').length > 0 ? $('#buyerId').val() : null;
+
                                 $('#cartInsert').on('click', function(event){
                                     event.preventDefault();
                                     var cartItems = [];
+                                    $('#selectedOption .option-item').each(function(){
+                                        var productId = $('.product_Id').val();
+                                        var sizeText = $(this).find('h3:first').text();
+                                        var size = sizeText.replace('mm', '').trim(); // 'mm' 제거 및 공백 제거
+                                        var quantity = parseInt($(this).find('.counter-value').text());
+                                        cartItems.push({
+                                            product: { productId: productId }, // 수정: product 필드로 감싸기
+                                            cartProductSize: size,
+                                            cartProductCount: quantity,
+                                        });
+                                    });
+
+                                    if(buyerId != null){
+                                        var _data = {
+                                            buyerId: buyerId,
+                                            cartItems: cartItems
+                                        };
+                                        $.ajax({
+                                            url: '/cart/insert',
+                                            type: 'POST',
+                                            contentType: 'application/json',
+                                            data: JSON.stringify(_data),
+                                            success: function(result){
+                                                alert('장바구니에 추가되었습니다.');
+                                            },
+                                            error: function(err) {
+                                                alert('장바구니 추가에 실패했습니다.');
+                                            }
+                                        });
+                                    } else {
+                                        alert('로그인이 필요합니다.');
+                                    }
+                                });
+
+                                $('#directBuy').on('click', function(event){
+                                    event.preventDefault();
+                                    var cartItems=[];
                                     $('#selectedOption .option-item').each(function(){
                                         var productId = $('.product_Id').val();
                                         var sizeText = $(this).find('h3:first').text();
@@ -350,24 +416,92 @@
                                         });
                                     });
 
-                                    $.ajax({
-                                        url: '/cart/insert',
-                                        type: 'POST',
-                                        contentType: 'application/json',
-                                        data: JSON.stringify(cartItems),
-                                        success: function(result){
-                                            alert('장바구니에 추가되었습니다.');
-                                        },
-                                        error: function(err) {
-                                            alert('장바구니 추가에 실패했습니다.');
-                                        }
-                                    });
+                                    if(buyerId!=null){
+                                        var _data = {
+                                                buyerId: buyerId,
+                                                cartItems: cartItems
+                                        };
+                                        $.ajax({
+                                            url:'/cart/direct',
+                                            type: 'POST',
+                                            contentType: 'application/json',
+                                            data: JSON.stringify(_data),
+                                            success:function(result){
+                                                alert('구매 페이지로 이동합니다.');
+                                                window.location.href = '/buyer/productBuy?cartIds=' + result.cartIds.join(',');
+                                            },
+                                            error: function(err){
+                                                alert('오류가 발생하였습니다.');
+                                            }
+                                        });
+                                    }
                                 });
                             });
                         </script>
                     </div>
                 </div>
             </div>
+            여기야 여기
+<!--            <div class="productRelationBox" >-->
+<!--                <a href="#" >-->
+<!--                    <div class="productRelationImg d-flex" th:each="productImage : ${productImageList}">-->
+<!--                        <img th:src="@{/assets/image/pMain/__${productImage.productImageSname}____${productImage.productImageExtension}__}" alt="연관상품 이미지" class="">-->
+<!--                    </div>-->
+<!--                </a>-->
+<!--            </div>-->
+            <h3>연관 상품</h3>
+            <hr style="border:1px solid BLACK;margin-top:10px; margin-bottom:10px;">
+            <div class="row">
+                <div class="col-md-4 productRelationImg" th:each="productImage : ${productImageList}">
+                    <div class="card h-100">
+                        <a href="javascript:void(0);" class="productLink" th:data-product-id="${productImage.product.productId}">
+                            <img th:src="@{/assets/image/pMain/__${productImage.productImageSname}____${productImage.productImageExtension}__}"
+                                 alt="연관상품 이미지" class="card-img-top productRelation" style="width:200px; height:200px;">
+                            <div class="card-body">
+                                <h4 class="card-title" th:text="${productImage.product.productName}"></h4>
+                                <div th:if="${productImage.product.productDiscount==0}">
+                                    <h5 th:text="${productImage.product.productPrice+'원'}"></h5>
+                                </div>
+                                <div th:if="${productImage.product.productDiscount!=0}">
+                                    <h5 th:text="${productImage.product.productPrice+'원'}"
+                                        style="color:#666; margin-top:5px; position: relative; display: inline-block;"></h5>
+                                    <h5 th:text="${((100 - productImage.product.productDiscount) * productImage.product.productPrice / 100) + '원'}" style="color:red;"></h5>
+                                    <h5 th:text="${'['+productImage.product.productDiscount+'%]'}" style="margin-top:5px; color:red;"></h5>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             <div class="row" style="margin-top:20px;">
                 <div class="col-xs-12" style="width: 1200px;">
                     <div class="tabCommon mt-20">
@@ -429,6 +563,9 @@
                         <div class="tab-content" id="product-reviews">
                             <div class="review-container" id="reviewFormContainer">
                                 <input type="hidden" class="product_Id" th:value="${productDetailList.productId}">
+                                <div th:if="${buyerId!=null}">
+                                    <input type="hidden" class="buyerId" th:value="${buyerId}">
+                                </div>
                                 <div>
                                     <h2>리뷰 등록</h2>
                                     <hr style="border: 1px; color:black; ">
@@ -458,6 +595,7 @@
                                         var fileNo = 0;
                                         var filesArr = [];
                                         var ratingValue = 0; // 별점 값 초기화
+                                        var buyerId = $('#buyerId').length > 0 ? $('#buyerId').val() : null;
 
                                         // 별점 관련 코드
                                         function updateRatingValue(value) {
@@ -564,7 +702,9 @@
                                             formData.append('productId', productIdValue);
                                             formData.append('rating', ratingValue); // 전역 변수 사용
                                             formData.append('content', reviewContent);
-
+                                            if(buyerId!=null){
+                                                formData.append('buyerId', buyerId);
+                                            }
                                             // 파일 배열이 비어있는 경우를 처리
                                             if (filesArr.length > 0) {
                                                 filesArr.forEach(function(file, index) {
@@ -573,21 +713,24 @@
                                             } else {
                                                 formData.append('files', new Blob()); // 빈 Blob을 추가하여 빈 파일 배열을 전송
                                             }
-
-                                            $.ajax({
-                                                url: '/reviews/add',
-                                                type: 'POST',
-                                                data: formData,
-                                                contentType: false,
-                                                processData: false,
-                                                success: function(response) {
-                                                    alert('리뷰가 성공적으로 등록되었습니다.');
-                                                    location.reload(); // 성공 후 페이지 새로고침 또는 다른 동작
-                                                },
-                                                error: function(error) {
-                                                    alert('리뷰 등록에 실패했습니다.');
-                                                }
-                                            });
+                                            if(buyerId!=null){
+                                                $.ajax({
+                                                    url: '/reviews/add',
+                                                    type: 'POST',
+                                                    data: formData,
+                                                    contentType: false,
+                                                    processData: false,
+                                                    success: function(response) {
+                                                        alert('리뷰가 성공적으로 등록되었습니다.');
+                                                        location.reload(); // 성공 후 페이지 새로고침 또는 다른 동작
+                                                    },
+                                                    error: function(error) {
+                                                        alert('리뷰 등록에 실패했습니다.');
+                                                    }
+                                                });
+                                            }else{
+                                                alert("로그인이 필요합니다!");
+                                            }
                                         });
                                     });
                                 </script>
@@ -623,7 +766,7 @@
                                              class="imageLarge" style="margin-top:10px;">
                                             <button th:attr="id='toggleSizeButton-' + ${review.reviewId}" class="btn btn-dark">이미지 확대</button>
                                         </div>
-                                        <div>
+                                        <div th:if="${buyerId==review.buyer.buyerId}">
                                             <button th:attr="id='deleteButton-' + ${review.reviewId}" th:data-review-id="${review.reviewId}" class="btn btn-danger">삭제</button>
                                         </div>
                                         <script>
@@ -707,6 +850,31 @@
                                 $('.tab[data-tab="product-info"]').click();
                             });
 
+                        </script>
+
+                        <script>
+                            $(document).ready(function(){
+                                $('.productRelation').on('click', function(){
+                                    var productId = $(this).closest('a').data('product-id'); // 클릭된 a 태그의 data-product-id 가져오기
+                                    console.log(productId); // productId 값 확인 (디버깅용)
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "/buyer/detail", // Spring 컨트롤러의 매핑 URL
+                                        data: {
+                                            productId: productId // 올바른 productId 넘기기
+                                        },
+                                        success: function(data) {
+                                            // 성공 시 원하는 작업 수행
+                                            console.log("Success! Redirecting to /buyer/detail?productId=" + productId);
+                                            window.location.href = "/buyer/detail?productId=" + productId; // URL로 이동
+                                        },
+                                        error: function(error) {
+                                            // 오류 처리
+                                            console.error("Error in redirecting to /buyer/detail");
+                                        }
+                                    });
+                                });
+                            });
                         </script>
                     </div>
                 </div>

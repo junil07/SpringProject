@@ -4,19 +4,39 @@ public class ProductOrderSummaryDTO {
     private Integer productId;
     private String productCode;
     private String productName;
+    private int productDiscount;
     private int productPrice;
     private int totalCount;
-    private String productImageName;
+    private String productImageSname;
     private String productImageExtension;
+    private String productDetailMaker;
 
-    public ProductOrderSummaryDTO(Integer productId, String productCode,String productName, int productPrice, int totalCount, String productImageName, String productImageExtension) {
+    public String getProductDetailMaker() {
+        return productDetailMaker;
+    }
+
+    public void setProductDetailMaker(String productDetailMaker) {
+        this.productDetailMaker = productDetailMaker;
+    }
+
+    public int getProductDiscount() {
+        return productDiscount;
+    }
+
+    public void setProductDiscount(int productDiscount) {
+        this.productDiscount = productDiscount;
+    }
+
+    public ProductOrderSummaryDTO(Integer productId, String productCode, String productName,int productDiscount ,int productPrice, int totalCount, String productImageSname, String productImageExtension, String productDetailMaker) {
         this.productId = productId;
         this.productCode = productCode;
         this.productName = productName;
         this.productPrice = productPrice;
+        this.productDiscount = productDiscount;
         this.totalCount = totalCount;
-        this.productImageName = productImageName;
+        this.productImageSname = productImageSname;
         this.productImageExtension = productImageExtension;
+        this.productDetailMaker = productDetailMaker;
     }
 
     // Getters and setters
@@ -56,12 +76,12 @@ public class ProductOrderSummaryDTO {
         this.totalCount = totalCount;
     }
 
-    public String getProductImageName() {
-        return productImageName;
+    public String getProductImageSname() {
+        return productImageSname;
     }
 
-    public void setProductImageName(String productImageName) {
-        this.productImageName = productImageName;
+    public void setProductImageSname(String productImageSname) {
+        this.productImageSname = productImageSname;
     }
 
     public String getProductImageExtension() {
