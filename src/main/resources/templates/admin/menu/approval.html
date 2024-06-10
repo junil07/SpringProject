@@ -75,6 +75,50 @@
                                         <td>[[${product.category.categoryName}]]</td>
                                     </tr>
 
+
+                                    <tr th:each="product : ${productList}">
+                                        <td style="width: 5%; position: sticky; left: 0; background: white;">
+                                            <div class="custom-control custom-checkbox pl-4">
+                                                <input type="checkbox" class="checkBaby" th:id="${product.productId}">
+                                            </div>
+                                        </td>
+                                        <td>[[${product.productId}]]</td>
+                                        <td>[[${product.seller.sellerId}]]</td>
+                                        <td>[[${product.productName}]]</td>
+                                        <td>[[${product.productPrice}]]</td>
+                                        <td>[[${product.productDiscount}]]%</td>
+                                        <td>[[${product.productHashtag}]]</td>
+                                        <td>[[${product.category.categoryName}]]</td>
+                                    </tr>
+                                    <tr th:each="product : ${productList}">
+                                        <td style="width: 5%; position: sticky; left: 0; background: white;">
+                                            <div class="custom-control custom-checkbox pl-4">
+                                                <input type="checkbox" class="checkBaby" th:id="${product.productId}">
+                                            </div>
+                                        </td>
+                                        <td>[[${product.productId}]]</td>
+                                        <td>[[${product.seller.sellerId}]]</td>
+                                        <td>[[${product.productName}]]</td>
+                                        <td>[[${product.productPrice}]]</td>
+                                        <td>[[${product.productDiscount}]]%</td>
+                                        <td>[[${product.productHashtag}]]</td>
+                                        <td>[[${product.category.categoryName}]]</td>
+                                    </tr>
+                                    <tr th:each="product : ${productList}">
+                                        <td style="width: 5%; position: sticky; left: 0; background: white;">
+                                            <div class="custom-control custom-checkbox pl-4">
+                                                <input type="checkbox" class="checkBaby" th:id="${product.productId}">
+                                            </div>
+                                        </td>
+                                        <td>[[${product.productId}]]</td>
+                                        <td>[[${product.seller.sellerId}]]</td>
+                                        <td>[[${product.productName}]]</td>
+                                        <td>[[${product.productPrice}]]</td>
+                                        <td>[[${product.productDiscount}]]%</td>
+                                        <td>[[${product.productHashtag}]]</td>
+                                        <td>[[${product.category.categoryName}]]</td>
+                                    </tr>
+
                                 </tbody>
                             </table>
                         </div>

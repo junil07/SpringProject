@@ -22,6 +22,7 @@ var findAccount = document.getElementById('findAccount');
 // 뒤로가기 눌러서 로그인 페이지 진입 시 페이지 새로고침
 window.addEventListener('pageshow', function(event) {
   // persisted 속성이 true이면 뒤로가기로 페이지에 진입한 것
+  console.log(event.persisted);
   if (event.persisted) {
     // 새로고침
     window.location.reload();

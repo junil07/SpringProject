@@ -4,6 +4,7 @@ import com.example.demo.admin.model.ProductInfo;
 import com.example.demo.admin.service.AdminServiceImple;
 import com.example.demo.admin.service.BuyerServiceImple;
 import com.example.demo.admin.service.ProductServiceImple;
+import com.example.demo.buyer.entity.ProductView;
 import com.example.demo.seller.domain.Product;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.security.core.Authentication;
@@ -90,18 +91,40 @@ public class AdminController {
 		} else {
 			model.addAttribute("error", "변경에 실패하였습니다");
 		}
+		model.addAttribute("location", "/admin/approval");
 
 		return "admin/proc/approvalProc";
 	}
 
 	// 물품 리스트 관리
 	@RequestMapping("productManage")
-	public String productManage(Principal principal, Model model) {
+	public String productManage(ProductInfo productInfo, Principal principal, Model model) {
 		User user = (User) ((Authentication) principal).getPrincipal();
 		String adminName = adminService.findName(user.getUsername());
 
+		List<Product> productList = productService.getProductList(1);
+		List<ProductView> productViews = productService.productView(productList);
+
+		model.addAttribute("productInfo", productInfo);
+		model.addAttribute("productViews", productViews);
 		model.addAttribute("adminName", adminName);
 
 		return "admin/menu/productManage";
+	}
+
+	@RequestMapping("productStop")
+	public String productStop(ProductInfo productInfo, Model model) {
+		List<String> checkList = productService.ProductStop(productInfo.getId());
+
+		if (checkList.contains("1") && !checkList.contains("0")) {
+			model.addAttribute("error", "변경하였습니다");
+		} else if (checkList.contains("1") && checkList.contains("0")) {
+			model.addAttribute("error", "중간에 오류가 발생하였습니다");
+		} else {
+			model.addAttribute("error", "변경에 실패하였습니다");
+		}
+		model.addAttribute("location", "/admin/productManage");
+
+		return "admin/proc/approvalProc";
 	}
 }

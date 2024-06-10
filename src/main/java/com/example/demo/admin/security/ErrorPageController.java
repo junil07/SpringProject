@@ -30,4 +30,18 @@ public class ErrorPageController {
     public String error500() {
         return "error/500";
     }
+
+    // Seller 권한 부족
+    @RequestMapping("sellerAuthentication")
+    public String sellerAuthentication() {
+        return "error/sellerAuthentication";
+    }
+
+    // Seller 접근 거부
+    @RequestMapping("seller")
+    public String errorSeller() {
+        return "error/seller";
+    }
+
+
 }
