@@ -6,12 +6,16 @@ import com.example.demo.admin.model.Activation;
 import com.example.demo.admin.model.BuyerInfo;
 import com.example.demo.admin.model.Grade;
 import com.example.demo.admin.model.SellerInfo;
+import com.example.demo.admin.service.AdminService;
 import com.example.demo.admin.service.BuyerServiceImple;
 import com.example.demo.admin.service.SellerServiceImple;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,21 +29,26 @@ public class UserManageController {
     private Grade grade;
     private BuyerInfo buyerInfo;
     private SellerInfo sellerInfo;
+    private AdminService adminService;
 
     public UserManageController(BuyerServiceImple buyerService, SellerServiceImple sellerService,
                                 Activation activation, Grade grade,
-                                BuyerInfo buyerInfo, SellerInfo sellerInfo) {
+                                BuyerInfo buyerInfo, SellerInfo sellerInfo,
+                                AdminService adminService) {
         this.buyerService = buyerService;
         this.sellerService = sellerService;
         this.activation = activation;
         this.grade = grade;
         this.buyerInfo = buyerInfo;
         this.sellerInfo = sellerInfo;
+        this.adminService = adminService;
     }
 
     // 구매자 관리
     @RequestMapping("buyermanagement")
-    public String buyermanagement(Model model) {
+    public String buyermanagement(Principal principal, Model model) {
+        User user = (User) ((Authentication) principal).getPrincipal();
+        String adminName = adminService.findName(user.getUsername());
         String[] column = {"아이디", "이름", "생년월일", "이메일", "주소", "전화번호", "계정\n활성화", "마지막 로그인", "등급"};
         List columnName = new ArrayList<>();
         for (int i = 0; i < column.length; i++) {
@@ -47,6 +56,7 @@ public class UserManageController {
         }
         List<Buyer> buyerList = buyerService.getBuyerList();
 
+        model.addAttribute("adminName", adminName);
         model.addAttribute("columnName", columnName);
         model.addAttribute("buyerList", buyerList);
         model.addAttribute("grade", grade);
@@ -130,7 +140,9 @@ public class UserManageController {
 
     // 판매자 관리
     @RequestMapping("sellermanagement")
-    public String sellermanagement(Model model) {
+    public String sellermanagement(Principal principal, Model model) {
+        User user = (User) ((Authentication) principal).getPrincipal();
+        String adminName = adminService.findName(user.getUsername());
         String[] column = {"아이디", "이름", "생년월일", "이메일", "주소", "전화번호", "사업자 번호", "계정 활성화", "마지막 로그인"};
         List columnName = new ArrayList<>();
         for (int i = 0; i < column.length; i++) {
@@ -138,6 +150,7 @@ public class UserManageController {
         }
         List<Seller> sellerList = sellerService.getSellerList();
 
+        model.addAttribute("adminName", adminName);
         model.addAttribute("columnName", columnName);
         model.addAttribute("sellerList", sellerList);
         model.addAttribute("activation", activation);

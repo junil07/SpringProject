@@ -5,6 +5,7 @@ import com.example.demo.admin.repository.BuyerRepository1;
 import com.example.demo.admin.security.SecurityServiceImple;
 import com.example.demo.admin.service.BuyerService;
 import com.example.demo.admin.service.BuyerServiceImple;
+import com.example.demo.admin.service.SendMessageService;
 import com.example.demo.buyer.DTO.BuyerDTO;
 import com.example.demo.buyer.entity.*;
 import com.example.demo.buyer.repository.CartRepository;
@@ -37,10 +38,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+
+import java.util.HashMap;
+import java.util.Random;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
 
 @Controller
 public class BuyerController {
@@ -79,6 +84,9 @@ public class BuyerController {
 	private PasswordEncoder passwordEncoder;
 
 	@Autowired
+	private SendMessageService sendMessageService;
+  
+  @Autowired
 	private BuyerRepository1 buyerRepository1;
 
 	@Autowired
@@ -195,7 +203,7 @@ public class BuyerController {
 		return "redirect:/buyer/login";
 	}
 
-	// ID 중복확인 - ajax용
+	// ID 중복확인 - ajax
 	@RequestMapping("/buyer/idCheck")
 	@ResponseBody
 	public int idDuplicate(@RequestBody String buyerId) {
@@ -203,7 +211,62 @@ public class BuyerController {
 		return idCheck;
 	}
 
-	@RequestMapping(value = {"/buyer/productBuy", "/buyer/productBuy"}, method = {RequestMethod.GET, RequestMethod.POST})
+	// 이름과 이메일로 사용자 있는지 찾기 - ajax
+	@RequestMapping("/buyer/idFind")
+	@ResponseBody
+	public Buyer findId(@RequestBody BuyerDTO request) {
+		Buyer buyer = buyerService1.idFind(request.getBuyerName(), request.getBuyerEmail());
+		System.out.println("호출 확인" + " " + request.getBuyerName() + " " + request.getBuyerEmail());
+		return buyer;
+	}
+
+	// 아이디와 이메일로 있는지 확인 - ajax
+	@RequestMapping("/buyer/buyerFind")
+	@ResponseBody
+	public Map<String, String> findBuyer(@RequestBody BuyerDTO request) {
+		String verificationCode = "";
+		Map<String, Object> responseDate = new HashMap<>();
+
+		Buyer buyer = buyerService1.buyerFind(request.getBuyerId(), request.getBuyerEmail());
+
+		if (buyer != null) {
+			Random random = new Random();
+			StringBuilder sb = new StringBuilder();
+
+			for (int i = 0; i < 6; i++) {
+				int digit = random.nextInt(10);
+				sb.append(digit);
+			}
+			verificationCode = sb.toString();
+			String messageText = "인증 번호는 [" + verificationCode + "] 입니다.";
+			// 메세지 보내는거 일단 잘못보내는거 무서워서 내 번호로 고정해놓음
+			sendMessageService.sendMessage("tetest", messageText);
+		}
+
+		Map<String, String> response = new HashMap<>();
+		response.put("verificationCode", verificationCode);
+		System.out.println("호출 되었다1");
+		System.out.println(verificationCode);
+		return response;
+	}
+
+	// 새 비밀번호 설정 - ajax
+	@RequestMapping("/buyer/newPwd")
+	@ResponseBody
+	public int newPwd(@RequestBody BuyerDTO request) {
+		int result = 0;
+		boolean flag = buyerService1.buyerPwdUpdate(request.getBuyerId(), request.getBuyerPassword());
+
+		if (flag) {
+			result = 1;
+		}
+
+		return result;
+	}
+
+}
+
+  @RequestMapping(value = {"/buyer/productBuy", "/buyer/productBuy"}, method = {RequestMethod.GET, RequestMethod.POST})
 	public String productBuy(@AuthenticationPrincipal User user,Principal principal,@RequestParam("cartIds") List<Integer> cartIds,Model model){
 		List<Category> categories = categoryService.getRows();
 		List<List<Cart>> cartList = new ArrayList<>();
@@ -325,3 +388,4 @@ public class BuyerController {
 		return "/buyer/productList";
 	}
 }
+

@@ -1,11 +1,24 @@
 var checkboxBoss = document.getElementById('checkBoss')
 var checkboxes = document.querySelectorAll('.checkBaby');
 var hiddenInput = document.getElementById('hiddenInput');
+var thTest = document.querySelectorAll('.thTest');
+var tdTest = document.querySelectorAll('.tdTest');
 var idList = [];
 
-function letsApproval() {
-    if (confirm("승인 하시겠습니까?")) {
-        document.approvalFrm.submit();
+function resizeAll() {
+    for ( var i = 0; i < thTest.length; i++ ) {
+        var resizedTd = window.getComputedStyle(tdTest[i]).getPropertyValue('width');
+        console.log(thTest[i].style.width);
+        thTest[i].style.width = resizedTd;
+        console.log(thTest[i].style.width);
+    }
+}
+
+resizeAll();
+
+function letsStop() {
+    if (confirm("판매 중지하시겠습니까?")) {
+        document.pmFrm.submit();
     } else {
 
     }
