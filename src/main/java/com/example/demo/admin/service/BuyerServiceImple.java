@@ -164,6 +164,20 @@ public class BuyerServiceImple implements BuyerService {
         return flag;
     }
 
+    @Transactional
+    @Override
+    public boolean buyerPwdUpdate(String buyerId, String buyerPwd) {
+        boolean flag = false;
+        Buyer buyer = buyerRepository1.findBybuyerId(buyerId).orElse(null);
+
+        if (buyer != null) {
+            buyer.setBuyerPassword(passwordEncoder.encode(buyerPwd));
+            flag = true;
+        }
+
+        return flag;
+    }
+
     // Buyer 아이디 있는지 확인 있으면 1 없으면 0
     @Override
     public int idCheck(String buyerId) {
@@ -181,6 +195,18 @@ public class BuyerServiceImple implements BuyerService {
     @Override
     public Buyer register(Buyer buyer) {
         return buyerRepository1.save(buyer);
+    }
+
+    @Override
+    public Buyer idFind(String buyerName, String buyerEmail) {
+        Buyer buyer = buyerRepository1.findByBuyerNameAndBuyerEmail(buyerName, buyerEmail).orElse(null);
+        return buyer;
+    }
+
+    @Override
+    public Buyer buyerFind(String buyerId, String buyerEmail) {
+        Buyer buyer = buyerRepository1.findByBuyerIdAndBuyerEmail(buyerId, buyerEmail).orElse(null);
+        return buyer;
     }
 
     // Buyer 비밀번호 전체 암호화 하는데 사용했음

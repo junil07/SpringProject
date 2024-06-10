@@ -14,6 +14,7 @@ public interface ProductRelationRepository extends JpaRepository<ProductRelation
     List<ProductRelation> findByProductRelationOne(int relationNum);
     List<ProductRelation> findByProductRelationTwo(int productRelationTwo);
     ProductRelation findByProductRelationCode(String productRelationCode);
+    ProductRelation findByProduct(Product product);
 
     //ONE 코드 max 값
     @Query("SELECT MAX(e.productRelationOne) FROM ProductRelation e")

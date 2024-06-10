@@ -189,6 +189,15 @@
         #productimage{
             display:none;
         }
+
+        .productRelationBox{
+            height: 200px;
+            width: 200px;
+        }
+
+        .productRelationImg{
+            display : flex;
+        }
     </style>
 </th:block>
 <th:block layout:fragment="pageContent">
@@ -432,7 +441,67 @@
                     </div>
                 </div>
             </div>
-            //
+            여기야 여기
+<!--            <div class="productRelationBox" >-->
+<!--                <a href="#" >-->
+<!--                    <div class="productRelationImg d-flex" th:each="productImage : ${productImageList}">-->
+<!--                        <img th:src="@{/assets/image/pMain/__${productImage.productImageSname}____${productImage.productImageExtension}__}" alt="연관상품 이미지" class="">-->
+<!--                    </div>-->
+<!--                </a>-->
+<!--            </div>-->
+            <h3>연관 상품</h3>
+            <hr style="border:1px solid BLACK;margin-top:10px; margin-bottom:10px;">
+            <div class="row">
+                <div class="col-md-4 productRelationImg" th:each="productImage : ${productImageList}">
+                    <div class="card h-100">
+                        <a href="javascript:void(0);" class="productLink" th:data-product-id="${productImage.product.productId}">
+                            <img th:src="@{/assets/image/pMain/__${productImage.productImageSname}____${productImage.productImageExtension}__}"
+                                 alt="연관상품 이미지" class="card-img-top productRelation" style="width:200px; height:200px;">
+                            <div class="card-body">
+                                <h4 class="card-title" th:text="${productImage.product.productName}"></h4>
+                                <div th:if="${productImage.product.productDiscount==0}">
+                                    <h5 th:text="${productImage.product.productPrice+'원'}"></h5>
+                                </div>
+                                <div th:if="${productImage.product.productDiscount!=0}">
+                                    <h5 th:text="${productImage.product.productPrice+'원'}"
+                                        style="color:#666; margin-top:5px; position: relative; display: inline-block;"></h5>
+                                    <h5 th:text="${((100 - productImage.product.productDiscount) * productImage.product.productPrice / 100) + '원'}" style="color:red;"></h5>
+                                    <h5 th:text="${'['+productImage.product.productDiscount+'%]'}" style="margin-top:5px; color:red;"></h5>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             <div class="row" style="margin-top:20px;">
                 <div class="col-xs-12" style="width: 1200px;">
                     <div class="tabCommon mt-20">
@@ -781,6 +850,31 @@
                                 $('.tab[data-tab="product-info"]').click();
                             });
 
+                        </script>
+
+                        <script>
+                            $(document).ready(function(){
+                                $('.productRelation').on('click', function(){
+                                    var productId = $(this).closest('a').data('product-id'); // 클릭된 a 태그의 data-product-id 가져오기
+                                    console.log(productId); // productId 값 확인 (디버깅용)
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "/buyer/detail", // Spring 컨트롤러의 매핑 URL
+                                        data: {
+                                            productId: productId // 올바른 productId 넘기기
+                                        },
+                                        success: function(data) {
+                                            // 성공 시 원하는 작업 수행
+                                            console.log("Success! Redirecting to /buyer/detail?productId=" + productId);
+                                            window.location.href = "/buyer/detail?productId=" + productId; // URL로 이동
+                                        },
+                                        error: function(error) {
+                                            // 오류 처리
+                                            console.error("Error in redirecting to /buyer/detail");
+                                        }
+                                    });
+                                });
+                            });
                         </script>
                     </div>
                 </div>

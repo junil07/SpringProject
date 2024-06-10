@@ -13,7 +13,8 @@ import java.io.IOException;
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
-    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
+    public void handle(HttpServletRequest request, HttpServletResponse response,
+                       AccessDeniedException accessDeniedException) throws IOException, ServletException {
         System.out.println("AccessDeniedException 발생: " + accessDeniedException.getMessage());
         request.setAttribute("errorMessage", accessDeniedException.getMessage());
         response.sendRedirect("/error/403");
