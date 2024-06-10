@@ -114,7 +114,12 @@
 				</div>
 				<div class="card mb-4" id="listtable">
 					<div class="card-header">
-						<div class="fas fa-table me-1">목록 (총<span id="itemCountSpan" th:text="${orderitem.size()}"></span> 개)</div>
+						<div class="d-flex">
+							<div class="fas fa-table me-1">목록 (총<span id="itemCountSpan" th:text="${orderitem.size()}"></span> 개)</div>
+							<div style="margin-left:auto;">
+								<button type="button" class="btn btn-info btn-sm btn-no-radius" id="downloadExcel" style="margin-left:5px;">엑셀 다운로드</button>
+							</div>
+						</div>
 						<div class="d-flex mt-2 mb-2">
 							<button type="button" class="btn btn-info btn-sm btn-no-radius" id="exchange">교환재배송처리</button>
 							<button type="button" class="btn btn-info btn-sm btn-no-radius" id="exchangesucess" style="margin-left:5px;">교환완료처리</button>
@@ -128,7 +133,7 @@
 							<tr>
 								<th data-sortable="false" class="text-center"><input type="checkbox" id="allcheck"></th>
 								<th>상품주문번호</th>
-								<th>주문번호</th>
+								<th>통합주문번호</th>
 								<th>제품CODE</th>
 								<th>제품명</th>
 								<th>제품가격</th>
@@ -147,7 +152,7 @@
 								<td th:text="${o.product.productCode}"></td>
 								<td th:text="${o.product.productName}"></td>
 								<td th:text="${o.product.productPrice}"></td>
-								<td th:text="${o.orderitemDate}"></td>
+								<td th:text="${o.orderlist.orderlistDate}"></td>
 								<td th:text="${o.orderitemDstatus}"></td>
 								<td th:text="${o.orderitemDate}"></td>
 								<td th:text="${o.orderitemCase}"></td>
@@ -314,6 +319,11 @@
 	<script>
 		document.getElementById('exchange').addEventListener('click', function() {
 			var checkedRows = document.querySelectorAll('.row-checkbox:checked');
+			// 체크된 값이 없으면 경고창을 띄움
+			if (checkedRows.length === 0) {
+				alert('선택된 항목이 없습니다.');
+				return;
+			}
 			var data = [];
 			var hasReturnOrder = false;
 
@@ -346,7 +356,7 @@
 						console.log('전송성공');
 						console.log(data);
 						// 데이터 전송 성공 후 테이블 업데이트
-						updateexchange(checkedRows, '교환수거중');
+						updateexchange(checkedRows);
 					} else {
 						console.error('Failed to send data');
 					}
@@ -355,9 +365,12 @@
 			xhr.send(JSON.stringify(data));
 		});
 		function  updateexchange(checkedRows){
-		  checkedRows.forEach(function(rowCheckbox) {
+			const today = formatDate(new Date());
+		  	checkedRows.forEach(function(rowCheckbox) {
 				var row = rowCheckbox.closest('tr');
 				var statusCell = row.querySelector('td:nth-child(10)');
+				var statusDate = row.querySelector('td:nth-child(9)');
+				statusDate.textContent = today;
 				statusCell.textContent = '교환수거중';
 			});
 
@@ -376,6 +389,11 @@
 	<script>
 		document.getElementById('exchangesucess').addEventListener('click', function() {
 			var checkedRows = document.querySelectorAll('.row-checkbox:checked');
+			// 체크된 값이 없으면 경고창을 띄움
+			if (checkedRows.length === 0) {
+				alert('선택된 항목이 없습니다.');
+				return;
+			}
 			var data = [];
 			var hasReturnOrder = false;
 
@@ -408,7 +426,7 @@
 						console.log('전송성공');
 						console.log(data);
 						// 데이터 전송 성공 후 테이블 업데이트
-						updatesucess(checkedRows, '교환완료');
+						updatesucess(checkedRows);
 					} else {
 						console.error('Failed to send data');
 					}
@@ -417,9 +435,12 @@
 			xhr.send(JSON.stringify(data));
 		});
 		function  updatesucess(checkedRows){
+		const today = formatDate(new Date());
 		  checkedRows.forEach(function(rowCheckbox) {
 				var row = rowCheckbox.closest('tr');
 				var statusCell = row.querySelector('td:nth-child(10)');
+				var statusDate = row.querySelector('td:nth-child(9)');
+				statusDate.textContent = today;
 				statusCell.textContent = '교환완료';
 			});
 
@@ -438,6 +459,11 @@
 	<script>
 		document.getElementById('exchangefail').addEventListener('click', function() {
 			var checkedRows = document.querySelectorAll('.row-checkbox:checked');
+			// 체크된 값이 없으면 경고창을 띄움
+			if (checkedRows.length === 0) {
+				alert('선택된 항목이 없습니다.');
+				return;
+			}
 			var data = [];
 			var hasReturnOrder = false;
 
@@ -471,7 +497,7 @@
 						console.log('전송성공');
 						console.log(data);
 						// 데이터 전송 성공 후 테이블 업데이트
-						updateexchangefail(checkedRows, '정상처리');
+						updateexchangefail(checkedRows);
 					} else {
 						console.error('Failed to send data');
 					}
@@ -500,6 +526,11 @@
 	<script>
 		document.getElementById('exchangetoreturn').addEventListener('click', function() {
 			var checkedRows = document.querySelectorAll('.row-checkbox:checked');
+			// 체크된 값이 없으면 경고창을 띄움
+			if (checkedRows.length === 0) {
+				alert('선택된 항목이 없습니다.');
+				return;
+			}
 			var data = [];
 			var hasReturnOrder = false;
 
@@ -532,7 +563,7 @@
 						console.log('전송성공');
 						console.log(data);
 						// 데이터 전송 성공 후 테이블 업데이트
-						updatereturn(checkedRows, '반품요청');
+						updatereturn(checkedRows);
 					} else {
 						console.error('Failed to send data');
 					}
@@ -556,6 +587,52 @@
 			alert('반품요청으로 처리되었습니다.');
 		    reloadSection();
 		}
+	</script>
+	<!--테이블 엑셀 다운로드-->
+	<script>
+		document.getElementById('downloadExcel').addEventListener('click', function() {
+            // 현재 페이지 데이터 수집
+            var tableRows = document.querySelectorAll('#datatablesSimple tbody tr');
+            var rowData = Array.from(tableRows).map(function(row) {
+                return {
+                    orderitemId: row.cells[1].innerText,
+                    orderlistId: row.cells[2].innerText,
+                    productCode: row.cells[3].innerText,
+                    productName: row.cells[4].innerText,
+                    productPrice: row.cells[5].innerText,
+                    orderlistDate: row.cells[6].innerText,
+                    orderitemDstatus: row.cells[7].innerText,
+                    orderitemDate: row.cells[8].innerText,
+                    orderitemCase: row.cells[9].innerText
+                };
+            });
+
+            // 서버로 데이터 전송
+            fetch('/api/exchange/download', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(rowData)
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                var url = window.URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url;
+
+                // 파일명에 오늘 날짜를 포함시킴
+				const today = new Date();
+				const formattedDate = today.toISOString().split('T')[0];
+				const fileName = formattedDate + " 교환내역.xlsx";
+
+                a.download = fileName;
+                document.body.appendChild(a); // Firefox에서 필요
+                a.click();
+                a.remove();
+            })
+            .catch(error => console.error('Error downloading the file:', error));
+        });
 	</script>
 	<style>
 		input[type="radio"] {

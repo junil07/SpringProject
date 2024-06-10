@@ -1,8 +1,10 @@
 package com.example.demo.admin.service;
 
 import com.example.demo.admin.Entity.Seller;
+import com.example.demo.seller.DTO.SellerDTO;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface SellerService {
 
@@ -20,4 +22,6 @@ public interface SellerService {
     public Seller sellerFind(String sellerId, String sellerEmail);
     public boolean sellerPwdUpdate(String sellerId, String sellerPwd);
 
+    //박승섭 사용중
+    List<Seller> getSellersList(String sellerId);
 }

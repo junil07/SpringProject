@@ -24,13 +24,19 @@
       <li class="nav-item dropdown pe-3">
 
         <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-          <span class="d-none d-md-block dropdown-toggle ps-2">판매자 이름 넣기</span>
+          <ul>
+            <li th:if="${#lists.isEmpty(myaccount)} == false">
+              <span class="d-none d-md-block dropdown-toggle ps-2">
+                  <span th:text="${myaccount[0].sellerName}" class="fw-bold fs-6" style="color:black;">Seller Name</span>
+              </span>
+            </li>
+          </ul>
+<!--            [[${user}]]</span>-->
         </a><!-- End Profile Iamge Icon -->
 
         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-          <li class="dropdown-header">
-            <h6>판매자 이름</h6>
-            <span>주요 판매 품목</span>
+          <li class="dropdown-header" th:if="${#lists.isEmpty(myaccount)} == false">
+            <span th:text="${myaccount[0].sellerName}" class="fw-bold fs-6" style="color:black;">Seller Name</span>
           </li>
           <li>
             <hr class="dropdown-divider">
@@ -57,7 +63,7 @@
           </li>
 
           <li>
-            <a class="dropdown-item d-flex align-items-center" href="#">
+            <a class="dropdown-item d-flex align-items-center" href="/seller/logout">
               <i class="bi bi-box-arrow-right"></i>
               <span>로그아웃</span>
             </a>
