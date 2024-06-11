@@ -10,5 +10,5 @@ import java.util.List;
 public interface ProductImageRepository extends JpaRepository<ProductImage,String> {
     ProductImage findByproduct(Product product);
 
-    List<ProductImage> findByProduct_Category_CategoryName(String categoryName);
+    List<ProductImage> findByProduct_Category_CategoryNameOrderByProduct_ProductIdDesc(String categoryName);
 }

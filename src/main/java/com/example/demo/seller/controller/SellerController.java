@@ -51,10 +51,10 @@ public class SellerController {
 	private SecurityServiceImple securityService;
 	private PasswordEncoder passwordEncoder;
 	private SendMessageService sendMessageService;
-//	OrderitemService orderitemService
+	//   OrderitemService orderitemService
 	public SellerController(OrderitemService orderitemService, SellerService sellerService,
 							ProductService productService, BuyerDTO buyerDTO
-							,SellerDTO sellerDTO, SecurityServiceImple securityService,
+			,SellerDTO sellerDTO, SecurityServiceImple securityService,
 							SellerServiceImple sellerServiceImple, PasswordEncoder passwordEncoder,
 							SendMessageService sendMessageService){
 		this.orderitemService = orderitemService;
@@ -157,9 +157,9 @@ public class SellerController {
 				.filter(o -> o.getOrderitemDate().isAfter(currentDate))
 				.collect(Collectors.toList());
 		model.addAttribute("todayend", todayend);
-//		//////////////
-//		List<Seller> sellers = sellerService.getAllSellers();
-//		model.addAttribute("sellers", sellers);
+//      //////////////
+//      List<Seller> sellers = sellerService.getAllSellers();
+//      model.addAttribute("sellers", sellers);
 		System.out.println(user.getUsername());
 		model.addAttribute("user", user.getUsername());
 		return "seller/index";
@@ -359,12 +359,12 @@ public class SellerController {
 	}
 
 	// 메세지 요청 - ajax
-	/*
-	@RequestMapping(value = "/seller/sendSMS", method = RequestMethod.POST)
-	@ResponseBody
-	public SingleMessageSentResponse sendSMS() {
-		return "ss";
-	}
-	 */
+   /*
+   @RequestMapping(value = "/seller/sendSMS", method = RequestMethod.POST)
+   @ResponseBody
+   public SingleMessageSentResponse sendSMS() {
+      return "ss";
+   }
+    */
 
 }

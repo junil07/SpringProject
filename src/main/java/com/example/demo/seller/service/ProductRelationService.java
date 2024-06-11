@@ -60,6 +60,9 @@ public class ProductRelationService {
         //product 객체 불러옴
         Product product = productService.getProduct(productId);
         //product에 해당하는 연관상품 객체 불러옴
+        if(productRelationRepository.findByProduct(product) == null) {
+            return null;
+        }
         ProductRelation productRelation = productRelationRepository.findByProduct(product);
         //이에 해당하는 연관상품 리스트 불러옴
         List<ProductRelation> productRelationList = productRelationRepository.findByProductRelationOne(productRelation.getProductRelationOne());
@@ -124,7 +127,8 @@ public class ProductRelationService {
             productRelationRepository.deleteAll(productRelationList);
         }
 
-        int oneMax = productRelationRepository.findMaxOne()+1;
+        int oneMax = productRelationRepository.findMaxOne().orElse(0);
+
         int twoMax = 1;
         for (int i = 0; i < relationList.size(); i++) {
             Product product = productService.getProductByCode(relationList.get(i));

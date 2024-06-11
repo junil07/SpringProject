@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Repository
@@ -18,7 +19,7 @@ public interface ProductRelationRepository extends JpaRepository<ProductRelation
 
     //ONE 코드 max 값
     @Query("SELECT MAX(e.productRelationOne) FROM ProductRelation e")
-    int findMaxOne();
+    Optional<Integer> findMaxOne();
 
 }
 
