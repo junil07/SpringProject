@@ -127,7 +127,7 @@ public class ProductRelationService {
             productRelationRepository.deleteAll(productRelationList);
         }
 
-        int oneMax = productRelationRepository.findMaxOne().orElse(0);
+        int oneMax = productRelationRepository.findMaxOne().orElse(0) + 1;
 
         int twoMax = 1;
         for (int i = 0; i < relationList.size(); i++) {

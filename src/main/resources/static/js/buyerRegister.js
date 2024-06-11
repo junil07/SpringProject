@@ -228,9 +228,9 @@ function phoneNumber(value) {
 // 회원가입 버튼 눌렀을 시
 function signUp() {
 
-    document.getElementById('buyerAddress2').value = "(" + result2 + ")" + " " + result3 + " "
-                    + document.getElementById('buyerAddress1').value + " " + result1;
-    buyerPhone1.value = phoneNumber(buyerPhone.value);
+    document.getElementById('buyerAddress2').value = result2 + " / " + result3 + " / "
+                        + document.getElementById('buyerAddress1').value + " " + result1;
+        buyerPhone1.value = phoneNumber(buyerPhone.value);
 
     // 빈칸일 때
     if (buyerId.value.trim() === "") {

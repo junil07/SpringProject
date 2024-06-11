@@ -1,6 +1,7 @@
 package com.example.demo.admin.controller;
 
 import com.example.demo.admin.model.ProductInfo;
+import com.example.demo.admin.security.SecurityServiceImple;
 import com.example.demo.admin.service.AdminServiceImple;
 import com.example.demo.admin.service.BuyerServiceImple;
 import com.example.demo.admin.service.ProductServiceImple;
@@ -8,6 +9,7 @@ import com.example.demo.buyer.entity.ProductView;
 import com.example.demo.seller.domain.Product;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,15 +27,17 @@ public class AdminController {
 	private BuyerServiceImple buyerService;
 	private ProductServiceImple productService;
 	private ProductInfo productInfo;
+	private SecurityServiceImple securityService;
 
 	public AdminController(HttpSession httpSession, AdminServiceImple adminService,
 						   BuyerServiceImple buyerService, ProductServiceImple productService,
-						   ProductInfo productInfo) {
+						   ProductInfo productInfo, SecurityServiceImple securityService) {
 		this.httpSession = httpSession;
 		this.adminService = adminService;
 		this.buyerService = buyerService;
 		this.productService = productService;
 		this.productInfo = productInfo;
+		this.securityService = securityService;
 	}
 
 	// 메인 페이지
@@ -49,14 +53,18 @@ public class AdminController {
 
 	// 로그인 페이지로 이동
 	@RequestMapping("login")
-	public String loginPage(Principal principal, Model model) {
+	public String loginPage(@AuthenticationPrincipal User user, Principal principal, Model model) {
 
 		System.out.println("로그인 페이지 이동");
 		String page = "admin/login";
 		String alert = "";
 
 		if (principal != null) {
-			alert = "이미 로그인이 되었습니다";
+			if (securityService.hasRole(user, "ROLE_ADMIN")) { // 만약 '구매자'의 권한을 갖고 있다면
+				alert = "이미 로그인이 되었습니다";
+			} else { // 다른 권한을 갖고 있거나
+
+			}
 		}
 		model.addAttribute("alert", alert);
 
