@@ -270,7 +270,7 @@ public class BuyerController {
 		return result;
 	}
 
-}
+
 
   @RequestMapping(value = {"/buyer/productBuy", "/buyer/productBuy"}, method = {RequestMethod.GET, RequestMethod.POST})
 	public String productBuy(@AuthenticationPrincipal User user,Principal principal,@RequestParam("cartIds") List<Integer> cartIds,Model model){

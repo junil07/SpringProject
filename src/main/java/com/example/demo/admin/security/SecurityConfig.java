@@ -120,7 +120,9 @@ public class SecurityConfig {
                                         "/css/**", "/assets/**"
                                         , "/demo/**", "/images/**", "/js/**", "/plugins/**"
                                         , "/seller/login", "/seller/logout"
-                                        , "/error", "/error/**", "/errorpage/**"
+                                        , "/error", "/error/**", "/errorpage/**", "/seller/logout", "/seller/signup"
+                                        , "/seller/reallogin", "/seller/idCheck", "/seller/idFind"
+                                        , "/seller/sellerFind", "/seller/newPwd"
                                 ).permitAll()
                                 .requestMatchers("/seller/**").hasRole(Role.SELLER.name())
                                 .anyRequest().authenticated())

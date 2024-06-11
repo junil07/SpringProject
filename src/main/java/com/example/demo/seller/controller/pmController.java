@@ -68,6 +68,7 @@ public class pmController {
 
 				model.addAttribute("product", product);
 
+
 			} else { // 여기는 판매자 권한이 없을 때,
 				alert = "판매자가 아니면 접근할 수 없습니다.";
 				return "/seller/login";
