@@ -441,7 +441,6 @@
                     </div>
                 </div>
             </div>
-            여기야 여기
 <!--            <div class="productRelationBox" >-->
 <!--                <a href="#" >-->
 <!--                    <div class="productRelationImg d-flex" th:each="productImage : ${productImageList}">-->
@@ -452,7 +451,7 @@
             <h3>연관 상품</h3>
             <hr style="border:1px solid BLACK;margin-top:10px; margin-bottom:10px;">
             <div class="row">
-                <div class="col-md-4 productRelationImg" th:each="productImage : ${productImageList}">
+                <div class="col-md-3     productRelationImg" th:each="productImage : ${productImageList}">
                     <div class="card h-100">
                         <a href="javascript:void(0);" class="productLink" th:data-product-id="${productImage.product.productId}">
                             <img th:src="@{/assets/image/pMain/__${productImage.productImageSname}____${productImage.productImageExtension}__}"

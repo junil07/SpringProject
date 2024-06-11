@@ -1,7 +1,8 @@
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{_layout/seller/index}">
 <!--
 <th:block layout:fragment="pageHead">
-	<title th:text="${pageName}"></title>
+    <title th:text="${pageName}"></title>
 </th:block>
 -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -12,131 +13,131 @@
 				<div class="card" style="min-width: 920px;">
 					<div class="card-body">
 						<h1 class="card-title fw-semibold mb-4" style="font-size:30px;">  상품 등록  </h1>
-							<form id="productForm" method="post" action="/products" th:action="@{products}" enctype="multipart/form-data">
-								<div class="card mb-0" style="float:left; width: 50%;" th:object="${productDTO}">
-									<div class="card-body">
-										<div style="width: 430px; height: 450px;">
-											<label for="preview" class="form-label">상품 이미지 미리보기</label>
-											<img id="preview" src="#" alt="미리보기" style="max-width: 400px; max-height: 400px;">
+						<form id="productForm" method="post" action="/products" th:action="@{products}" enctype="multipart/form-data">
+							<div class="card mb-0" style="float:left; width: 50%;" th:object="${productDTO}">
+								<div class="card-body">
+									<div style="width: 430px; height: 450px;">
+										<label for="preview" class="form-label">상품 이미지 미리보기</label>
+										<img id="preview" src="#" alt="미리보기" style="max-width: 400px; max-height: 400px; display: none;">
+									</div>
+									<div class="mb-3">
+										<label for="file" class="form-label">이미지 업로드</label>
+										<input type="file" class="form-control" id="file" name="file">
+									</div>
+									<div class="mb-3">
+										<label for="productname" class="form-label">이름</label>
+										<input type="text" class="form-control" id="productname" th:field="*{productName}">
+									</div>
+									<div class="mb-3">
+										<label for="productprice" class="form-label">가격</label>
+										<input type="number" class="form-control" id="productprice" th:field="*{productPrice}">
+									</div>
+									<div class="mb-3">
+										<label for="productdiscount" class="form-label">할인율</label>
+										<input type="number" class="form-control" id="productdiscount" th:field="*{productDiscount}">
+									</div>
+									<div class="mb-3">
+										<label for="hashText" class="form-label">해시태그</label>
+										<div class="input-group mb-3">
+											<input type="text" id="hashText" name="hashText" class="form-control" placeholder="해시태그 입력" aria-label="Recipient's username" aria-describedby="button-addon2">
+											<button class="btn btn-outline-secondary" type="button" id="addHashBtn" name="addHashBtn">추가</button>
+											<button class="btn btn-outline-secondary" type="button" id="delHashBtn" name="delHashBtn">삭제</button>
 										</div>
-										<div class="mb-3">
-											<label for="file" class="form-label">이미지 업로드</label>
-											<input type="file" class="form-control" id="file" name="file">
-										</div>
-										<div class="mb-3">
-											<label for="productname" class="form-label">이름</label>
-											<input type="text" class="form-control" id="productname" th:field="*{productName}">
-										</div>
-										<div class="mb-3">
-											<label for="productprice" class="form-label">가격</label>
-											<input type="number" class="form-control" id="productprice" th:field="*{productPrice}">
-										</div>
-										<div class="mb-3">
-											<label for="productdiscount" class="form-label">할인율</label>
-											<input type="number" class="form-control" id="productdiscount" th:field="*{productDiscount}">
-										</div>
-										<div class="mb-3">
-											<label for="hashText" class="form-label">해시태그</label>
-											<div class="input-group mb-3">
-												<input type="text" id="hashText" name="hashText" class="form-control" placeholder="해시태그 입력" aria-label="Recipient's username" aria-describedby="button-addon2">
-												<button class="btn btn-outline-secondary" type="button" id="addHashBtn" name="addHashBtn">추가</button>
-												<button class="btn btn-outline-secondary" type="button" id="delHashBtn" name="delHashBtn">삭제</button>
-											</div>
-											<div id="hashtag-container">
-												<div th:each="hashtagList : ${hashtagList}" th:if="${hashtagList != null and #lists.isEmpty(hashtagList) == false}" id="hashtag-box" name="hashtag-box" class="hashtag-box" th:text="${hashtagList}"></div>
-											</div>
-										</div>
-										<div class="mb-3">
-											<label for="productexplain" class="form-label">설명</label>
-											<div id="productexplain-text" class="form-text">html 코드 작성</div>
-											<textarea style="height:200px;" class="form-control" id="productexplain" th:field="*{productExplain}"></textarea>
+										<div id="hashtag-container">
+											<div th:each="hashtagList : ${hashtagList}" th:if="${hashtagList != null and #lists.isEmpty(hashtagList) == false}" id="hashtag-box" name="hashtag-box" class="hashtag-box" th:text="${hashtagList}"></div>
 										</div>
 									</div>
+									<div class="mb-3">
+										<label for="productexplain" class="form-label">설명</label>
+										<div id="productexplain-text" class="form-text">html 코드 작성</div>
+										<textarea style="height:200px;" class="form-control" id="productexplain" th:field="*{productExplain}"></textarea>
+									</div>
 								</div>
+							</div>
 
-								<div class="card" style="width: 50%; height: 100%; min-width: 430px" th:object="${productDetailDTO}">
-									<div class="card-body">
-										<div>
-											<div class="mb-3">
-												<label for="productDetailMate" class="form-label">소재</label>
-												<input type="text" class="form-control" id="productDetailMate" th:field="*{productDetailMate}">
+							<div class="card" style="width: 50%; height: 100%; min-width: 430px" th:object="${productDetailDTO}">
+								<div class="card-body">
+									<div>
+										<div class="mb-3">
+											<label for="productDetailMate" class="form-label">소재</label>
+											<input type="text" class="form-control" id="productDetailMate" th:field="*{productDetailMate}">
+										</div>
+										<div class="mb-3">
+											<label for="productDetailHeight" class="form-label">굽높이</label>
+											<input type="text" class="form-control" id="productDetailHeight" th:field="*{productDetailHeight}">
+										</div>
+										<div class="mb-3">
+											<label for="productDetailMaker" class="form-label">제조자</label>
+											<input type="text" class="form-control" id="productDetailMaker" th:field="*{productDetailMaker}">
+										</div>
+										<div class="mb-3">
+											<label for="productDetailCountry" class="form-label">제조국</label>
+											<input type="text" class="form-control" id="productDetailCountry" th:field="*{productDetailCountry}">
+										</div>
+										<div class="mb-3">
+											<label for="productDetailColor" class="form-label">색상</label>
+											<input type="text" class="form-control" id="productDetailColor" th:field="*{productDetailColor}">
+										</div>
+										<div class="mb-3">
+											<label for="addStock-count" class="form-label">치수(재고)</label>
+											<div class="input-group mb-3">
+												<input type="number" id="addStock-size" name="addStock-text" class="form-control" placeholder="사이즈 입력" aria-describedby="button-addon2">
+												<input type="number" id="addStock-count" name="addStock-text" class="form-control" placeholder="수량 입력" aria-describedby="button-addon2">
+												<button class="btn btn-outline-secondary" type="button" id="addStockBtn" name="addStockBtn">추가</button>
 											</div>
-											<div class="mb-3">
-												<label for="productDetailHeight" class="form-label">굽높이</label>
-												<input type="text" class="form-control" id="productDetailHeight" th:field="*{productDetailHeight}">
-											</div>
-											<div class="mb-3">
-												<label for="productDetailMaker" class="form-label">제조자</label>
-												<input type="text" class="form-control" id="productDetailMaker" th:field="*{productDetailMaker}">
-											</div>
-											<div class="mb-3">
-												<label for="productDetailCountry" class="form-label">제조국</label>
-												<input type="text" class="form-control" id="productDetailCountry" th:field="*{productDetailCountry}">
-											</div>
-											<div class="mb-3">
-												<label for="productDetailColor" class="form-label">색상</label>
-												<input type="text" class="form-control" id="productDetailColor" th:field="*{productDetailColor}">
-											</div>
-											<div class="mb-3">
-												<label for="addStock-count" class="form-label">치수(재고)</label>
-												<div class="input-group mb-3">
-													<input type="number" id="addStock-size" name="addStock-text" class="form-control" placeholder="사이즈 입력" aria-describedby="button-addon2">
-													<input type="number" id="addStock-count" name="addStock-text" class="form-control" placeholder="수량 입력" aria-describedby="button-addon2">
-													<button class="btn btn-outline-secondary" type="button" id="addStockBtn" name="addStockBtn">추가</button>
-												</div>
-												<div id="stock-container">
-													<div  class="input-group input-group-sm mb-3" style="float:left; width: 33%;" th:each="stock : ${stockList}" th:object="${stock}">
-														<span class="input-group-text stockClass" id="stockSize" name="stockSize" th:text="${stock.stockSize}"></span>
-														<input type="number" class="form-control" placeholder="수량 입력" aria-describedby="inputGroup-sizing-sm" th:value="*{stockCount}">
-														<button class="btn btn-outline-secondary" type="button" id="delStockBtn" name="delStockBtn">삭제</button>
-													</div>
-												</div>
-											</div>
-											<div class="mb-3" style="clear: left;">
-												<label for="productDetailYear" class="form-label">제조년월</label>
-												<input type="text" class="form-control" id="productDetailYear" th:field="*{productDetailYear}">
-											</div>
-											<div class="mb-3">
-												<label for="productDetailAs" class="form-label">A/S 책임자와 전화번호</label>
-												<input type="text" class="form-control" id="productDetailAs" th:field="*{productDetailAs}">
-											</div>
-											<div class="mb-3">
-												<label for="productDetailWarning" class="form-label">소재별 관리방법</label>
-												<textarea style="height:185px;" class="form-control" id="productDetailWarning" th:field="*{productDetailWarning}"></textarea>
-											</div>
-											<div class="mb-3">
-												<label for="productDetailStandard" class="form-label">품질보증기준</label>
-												<textarea style="height:185px;" class="form-control" id="productDetailStandard" th:field="*{productDetailStandard}"></textarea>
-											</div>
-											<label for="category" class="form-label">카테고리</label>
-											<div class="mb-3">
-												<div style="min-width:135px; float:left;">
-													<select id="category" class="form-select">
-														<option value="">==미선택==</option>
-														<th:block th:each="category : ${category}" th:if="${category.categoryDef == 0}">
-															<option th:value="${category.categoryId}" th:text="${category.categoryName}"></option>
-														</th:block>
-													</select>
-												</div>
-												<div style="min-width:135px; float:left;">
-													<select id="subCategory" class="form-select">
-														<option value="">==미선택==</option>
-													</select>
-												</div>
-												<div style="min-width:135px; float:left;">
-													<select id="subSubCategory" class="form-select">
-														<option value="">==미선택==</option>
-													</select>
+											<div id="stock-container">
+												<div  class="input-group input-group-sm mb-3" style="float:left; width: 33%;" th:each="stock : ${stockList}" th:object="${stock}">
+													<span class="input-group-text stockClass" id="stockSize" name="stockSize" th:text="${stock.stockSize}"></span>
+													<input type="number" class="form-control" placeholder="수량 입력" aria-describedby="inputGroup-sizing-sm" th:value="*{stockCount}">
+													<button class="btn btn-outline-secondary" type="button" id="delStockBtn" name="delStockBtn">삭제</button>
 												</div>
 											</div>
 										</div>
+										<div class="mb-3" style="clear: left;">
+											<label for="productDetailYear" class="form-label">제조년월</label>
+											<input type="text" class="form-control" id="productDetailYear" th:field="*{productDetailYear}">
+										</div>
+										<div class="mb-3">
+											<label for="productDetailAs" class="form-label">A/S 책임자와 전화번호</label>
+											<input type="text" class="form-control" id="productDetailAs" th:field="*{productDetailAs}">
+										</div>
+										<div class="mb-3">
+											<label for="productDetailWarning" class="form-label">소재별 관리방법</label>
+											<textarea style="height:185px;" class="form-control" id="productDetailWarning" th:field="*{productDetailWarning}"></textarea>
+										</div>
+										<div class="mb-3">
+											<label for="productDetailStandard" class="form-label">품질보증기준</label>
+											<textarea style="height:185px;" class="form-control" id="productDetailStandard" th:field="*{productDetailStandard}"></textarea>
+										</div>
+										<label for="category" class="form-label">카테고리</label>
+										<div class="mb-3">
+											<div style="min-width:135px; float:left;">
+												<select id="category" class="form-select">
+													<option value="">==미선택==</option>
+													<th:block th:each="category : ${category}" th:if="${category.categoryDef == 0}">
+														<option th:value="${category.categoryId}" th:text="${category.categoryName}"></option>
+													</th:block>
+												</select>
+											</div>
+											<div style="min-width:135px; float:left;">
+												<select id="subCategory" class="form-select">
+													<option value="">==미선택==</option>
+												</select>
+											</div>
+											<div style="min-width:135px; float:left;">
+												<select id="subSubCategory" class="form-select">
+													<option value="">==미선택==</option>
+												</select>
+											</div>
+										</div>
 									</div>
-									<button id="saveButton" name="saveButton" type="submit" class="btn btn-primary">등록</button>
 								</div>
-								<input type="hidden" id="totalHash" name="totalHash" value="">
-								<input type="hidden" id="totalStock" name="totalStock" value="">
-								<input type="hidden" id="categoryId" name="categoryId" th:value="*{categoryId}">
-							</form>
+								<button id="saveButton" name="saveButton" type="submit" class="btn btn-primary">등록</button>
+							</div>
+							<input type="hidden" id="totalHash" name="totalHash" value="">
+							<input type="hidden" id="totalStock" name="totalStock" value="">
+							<input type="hidden" id="categoryId" name="categoryId" th:value="*{categoryId}">
+						</form>
 					</div>
 				</div>
 			</div>
@@ -148,29 +149,33 @@
 	<script src="/js/pdList.js"></script>
 	<script>
 		document.addEventListener('DOMContentLoaded', function () {
-			var productImageInput = document.getElementById("file");
-			if (productImageInput) {
-				productImageInput.onchange = function (evt) {
-					var reader = new FileReader();
-					reader.onload = function (e) {
-						var previewImage = document.getElementById("preview");
-						if (previewImage) {
-							previewImage.src = e.target.result;
-						}
-					};
-					reader.readAsDataURL(this.files[0]);
-				};
-			}
+            var productImageInput = document.getElementById("file");
+            if (productImageInput) {
+                productImageInput.onchange = function (evt) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var previewImage = document.getElementById("preview");
+                        if (previewImage) {
+                            previewImage.src = e.target.result;
+                            previewImage.style.display = 'block';
+                        }
+                    };
+                    reader.readAsDataURL(this.files[0]);
+                };
+            }
 
-		//파일
-		saveButton.addEventListener('click', function() {
-			var fileInput = document.getElementById("file");
-			if (fileInput && fileInput.files.length === 0) {
-				alert('사진을 첨부해주세요.');
-				event.preventDefault();
-			}
-			});
-		}
+            //파일
+            var saveButton = document.getElementById("saveButton");
+            if (saveButton) {
+                saveButton.addEventListener('click', function(event) {
+                    var fileInput = document.getElementById("file");
+                    if (fileInput && fileInput.files.length === 0) {
+                        alert('사진을 첨부해주세요.');
+                        event.preventDefault();
+                    }
+                });
+            }
+        });
 	</script>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -188,13 +193,11 @@
                             $.each(data, function(key, value) {
                                 $('#subCategory').append('<option value="'+ value.categoryId +'">'+ value.categoryName +'</option>');
                             });
-                            // 추가적인 로직이 필요하다면 여기에 추가
                         }
                     });
                 } else {
                     $('#subCategory').empty();
                     $('#subCategory').append('<option value="">Select SubCategory</option>');
-                    // 추가적인 로직이 필요하다면 여기에 추가
                 }
             });
         });
@@ -228,6 +231,5 @@
             });
         });
 	</script>
-
 </th:block>
 </html>
