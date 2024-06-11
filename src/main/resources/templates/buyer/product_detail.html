@@ -448,31 +448,30 @@
 <!--                    </div>-->
 <!--                </a>-->
 <!--            </div>-->
-            <h3>연관 상품</h3>
-            <hr style="border:1px solid BLACK;margin-top:10px; margin-bottom:10px;">
-            <div class="row">
-                <div class="col-md-3     productRelationImg" th:each="productImage : ${productImageList}">
-                    <div class="card h-100">
-                        <a href="javascript:void(0);" class="productLink" th:data-product-id="${productImage.product.productId}">
-                            <img th:src="@{/assets/image/pMain/__${productImage.productImageSname}____${productImage.productImageExtension}__}"
-                                 alt="연관상품 이미지" class="card-img-top productRelation" style="width:200px; height:200px;">
-                            <div class="card-body">
-                                <h4 class="card-title" th:text="${productImage.product.productName}"></h4>
-                                <div th:if="${productImage.product.productDiscount==0}">
-                                    <h5 th:text="${productImage.product.productPrice+'원'}"></h5>
+                <h3>연관 상품</h3>
+                <hr style="border:1px solid BLACK;margin-top:10px; margin-bottom:10px;">
+                <div class="row">
+                    <div class="col-md-3     productRelationImg" th:each="productImage : ${productImageList}">
+                        <div class="card h-100">
+                            <a href="javascript:void(0);" class="productLink" th:data-product-id="${productImage.product.productId}">
+                                <img th:src="@{/assets/image/pMain/__${productImage.productImageSname}____${productImage.productImageExtension}__}"
+                                     alt="연관상품 이미지" class="card-img-top productRelation" style="width:200px; height:200px;">
+                                <div class="card-body">
+                                    <h4 class="card-title" th:text="${productImage.product.productName}"></h4>
+                                    <div th:if="${productImage.product.productDiscount==0}">
+                                        <h5 th:text="${productImage.product.productPrice+'원'}"></h5>
+                                    </div>
+                                    <div th:if="${productImage.product.productDiscount!=0}">
+                                        <h5 th:text="${productImage.product.productPrice+'원'}"
+                                            style="color:#666; margin-top:5px; position: relative; display: inline-block;"></h5>
+                                        <h5 th:text="${((100 - productImage.product.productDiscount) * productImage.product.productPrice / 100) + '원'}" style="color:red;"></h5>
+                                        <h5 th:text="${'['+productImage.product.productDiscount+'%]'}" style="margin-top:5px; color:red;"></h5>
+                                    </div>
                                 </div>
-                                <div th:if="${productImage.product.productDiscount!=0}">
-                                    <h5 th:text="${productImage.product.productPrice+'원'}"
-                                        style="color:#666; margin-top:5px; position: relative; display: inline-block;"></h5>
-                                    <h5 th:text="${((100 - productImage.product.productDiscount) * productImage.product.productPrice / 100) + '원'}" style="color:red;"></h5>
-                                    <h5 th:text="${'['+productImage.product.productDiscount+'%]'}" style="margin-top:5px; color:red;"></h5>
-                                </div>
-                            </div>
-                        </a>
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
-
 
 
 

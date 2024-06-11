@@ -148,11 +148,12 @@ public class BuyerController {
 		//연관상품 사진
 		//해당 상품의 연관 상품 리스트
 		List<Product> productList = productRelationService.getRPListProduct(productId);
-		model.addAttribute("productList", productList);
-		//해당 상품의 연관 상품 이미지 리스트
-		List<ProductImage> productImageList = productImageService.getProductImageList(productList);
-		model.addAttribute("productImageList", productImageList);
-
+		if(productList != null) {
+			model.addAttribute("productList", productList);
+			//해당 상품의 연관 상품 이미지 리스트
+			List<ProductImage> productImageList = productImageService.getProductImageList(productList);
+			model.addAttribute("productImageList", productImageList);
+		}
 		return "buyer/product_detail";
 	}
 

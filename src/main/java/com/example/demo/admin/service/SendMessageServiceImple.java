@@ -19,7 +19,7 @@ public class SendMessageServiceImple implements SendMessageService {
     public void sendMessage(String sellerPhoneNum, String text) {
         Message message = new Message();
         message.setFrom("01064109376");    // 보내는 사람 전화번호 하이푼 있으면 안됨
-        message.setTo("01064109376");      // 받는 사람 전화번호  하이푼 있으면 안됨
+        message.setTo("01092381584");      // 받는 사람 전화번호  하이푼 있으면 안됨
         message.setText(text);    // 보낼 메세지
         SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
         System.out.println("오예 테스트 : " + response);

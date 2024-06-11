@@ -15,7 +15,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Product findByProductCode(String productCode);
 
 
-    List<Product> findByCategory_CategoryName(String categoryName);
+    List<Product> findByCategory_CategoryNameOrderByProductIdDesc(String categoryName);
 
     @Query("SELECT MAX(e.productId) FROM Product e")
     Long findMaxPrimaryKey();

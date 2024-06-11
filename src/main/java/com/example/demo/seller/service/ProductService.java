@@ -176,11 +176,11 @@ public class ProductService{
     }
 
     public List<Product> getProductsByCategoryName(String categoryName) {
-        return productRepository.findByCategory_CategoryName(categoryName);
+        return productRepository.findByCategory_CategoryNameOrderByProductIdDesc(categoryName);
     }
 
     public List<ProductImage> getProductImagesByCategoryName(String categoryName) {
-        return productImageRepository.findByProduct_Category_CategoryName(categoryName);
+        return productImageRepository.findByProduct_Category_CategoryNameOrderByProduct_ProductIdDesc(categoryName);
     }
 
     //판매자 아이디 가져오기
