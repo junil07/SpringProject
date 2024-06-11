@@ -93,7 +93,7 @@
 							<thead>
 							<tr>
 								<th style="width:5%;">목록</th>
-								<th style="width:8%;">상품주문번호</th>
+								<th style="width:10%;">상품주문번호</th>
 								<th>상품코드</th>
 								<th>상품명</th>
 								<th>개수</th>
@@ -226,7 +226,7 @@
                     tbody.innerHTML = ''; // 테이블 데이터 초기화
                     var itemCount = 0;
                     productData.forEach(function(item) {
-                        var orderDate = item.querySelector('td:nth-child(6)').textContent;
+                        var orderDate = item.querySelector('td:nth-child(7)').textContent;
                         if (orderDate >= startDate && orderDate <= endDate) {
                             tbody.appendChild(item.cloneNode(true));
                             itemCount++;

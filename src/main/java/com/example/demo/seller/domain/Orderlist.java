@@ -22,7 +22,7 @@ public class Orderlist {
     private int orderlistTprice;
 
     @Column(name = "ORDERLIST_DATE",nullable = false)
-    private LocalDateTime orderlistDate = LocalDateTime.now();;
+    private LocalDate orderlistDate = LocalDate.now();;
 
     @Column(name = "ORDERLIST_ADDRESS")
     private String orderlistAddress;
@@ -36,7 +36,7 @@ public class Orderlist {
     public Orderlist(){
 
     }
-    public Orderlist(String orderlistAddress, LocalDateTime orderlistDate, int orderlistTprice,
+    public Orderlist(String orderlistAddress, LocalDate orderlistDate, int orderlistTprice,
                      Buyer buyer){
         this.orderlistAddress = orderlistAddress;
         this.orderlistDate = orderlistDate;
@@ -60,11 +60,11 @@ public class Orderlist {
         this.orderlistTprice = orderlistTprice;
     }
 
-    public LocalDateTime getOrderlistDate() {
+    public LocalDate getOrderlistDate() {
         return orderlistDate;
     }
 
-    public void setOrderlistDate(LocalDateTime orderlistDate) {
+    public void setOrderlistDate(LocalDate orderlistDate) {
         this.orderlistDate = orderlistDate;
     }
 

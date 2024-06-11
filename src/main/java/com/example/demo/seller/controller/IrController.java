@@ -60,21 +60,22 @@ public class IrController {
 	//리뷰 관리
 	@RequestMapping("reviews")
 	public String reviews(@AuthenticationPrincipal User user,Model model) {
-		var userId = user.getUsername();
+		var sellerId = user.getUsername();
 		List<Orderitem> orderitem = orderitemService.getOrderitemList();
 		//유저 이름 출력 필요요소
 		List<Seller> seller = sellerServiceImple.getSellerList();
 		List<Seller> myaccount = seller.stream()
-				.filter(s -> userId.equals(s.getSellerId()))
+				.filter(s -> sellerId.equals(s.getSellerId()))
 				.collect((Collectors.toList()));
 		model.addAttribute("myaccount",myaccount);
+
 		//개인 아이디로만 출력
 		List<Orderitem> privateorder = orderitem.stream()
 				.filter(o -> user.getUsername().equals(o.getProduct().getSeller().getSellerId()))
 				.collect(Collectors.toList());
 		model.addAttribute("privateorder", privateorder);
 
-		List<Product> Productlist = productService.getProductList();
+		List<Product> Productlist = productService.getProductList(sellerId);
 		List<Product> reivewlist = Productlist.stream()
 				.filter(p -> user.getUsername().equals(p.getSeller().getSellerId()))
 				.collect(Collectors.toList());
